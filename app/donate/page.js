@@ -1,7 +1,7 @@
 export default function Donate() {
   return (
-    <div className="min-h-screen bg-black text-white flex flex-col items-center p-6">
-      <h1 className="text-3xl font-bold mb-4">Donate</h1>
+    <div className="min-h-screen bg-black text-white flex flex-col items-center p-6 relative" style={{ backgroundImage: "radial-gradient(white 1px, transparent 1px)", backgroundSize: "10px 10px" }}>
+      <h1 className="text-3xl font-bold mb-4">𝗗𝗢𝗡𝗔𝗧𝗘</h1>
       
       {/* QRIS Image */}
       <div className="bg-gray-800 p-4 rounded-lg shadow-lg w-full max-w-sm text-center">
@@ -23,7 +23,8 @@ export default function Donate() {
           />
           <div>
             <p className="text-lg font-semibold">DANA</p>
-            <p className="text-sm text-gray-400">082159690832 (M. F**** N*** I****)</p>
+            <p className="text-sm text-gray-400">082159690832</p>
+            <p className="text-sm text-gray-400">A/N M. F**** N*** I****</p>
           </div>
         </div>
         
@@ -35,10 +36,16 @@ export default function Donate() {
           />
           <div>
             <p className="text-lg font-semibold">GOPAY</p>
-            <p className="text-sm text-gray-400">082159690832 (M. F**** N*** I****)</p>
+            <p className="text-sm text-gray-400">082159690832 </p>
+            <p className="text-sm text-gray-400">A/N M. F**** N*** I****</p>
           </div>
         </div>
       </div>
+
+      {/* Footer */}
+      <footer className="mt-8 p-4 border border-white bg-black text-center rounded-lg">
+        <p className="text-white font-semibold">Terimakasih telah donasi! Semoga Rezeki anda dilancarkan.</p>
+      </footer>
     </div>
   );
 }
