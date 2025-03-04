@@ -42,7 +42,7 @@ export default function Donate() {
 
       {/* Footer */}
       <footer className="mt-8 p-4 border border-white bg-black text-center rounded-lg">
-        <p className="text-white font-semibold">𝐓𝐞𝐫𝐢𝐦𝐚𝐤𝐚𝐬𝐢𝐡 𝐲𝐚𝐧𝐠 𝐭𝐞𝐥𝐚𝐡 𝐝𝐨𝐧𝐚𝐬𝐢! 𝐒𝐞𝐦𝐨𝐠𝐚 𝐑𝐞𝐳𝐞𝐤𝐢 𝐚𝐧𝐝𝐚 𝐝𝐢𝐥𝐚𝐧𝐜𝐚𝐫𝐤𝐚𝐧.</p>
+        <p className="text-white font-semibold">Thanks yang sudah Donasi! Semoga rezekinya dilancarkan.</p>
       </footer>
     </div>
   );
