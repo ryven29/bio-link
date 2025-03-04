@@ -1,8 +1,8 @@
 import "./globals.css"
 
 export const metadata = {
-  title: "𝐑𝐲𝐯𝐞𝐧.",
-  description: "Welcome To Bio Link Ryven, Find Out Info About Him, And Stalk Him!",
+  title: "Ryven",
+  description: "Bio-Link Ryven",
   author: "Ryven",
   keywords: "ryven, venzy, ryzen, fikk, fikri, ryvenz",
     robots: {
