@@ -37,7 +37,7 @@ const links = [
         artist: "Pada Akhirnya, Tidak ada seorangpun yang peduli kecuali dirimu sendiri...",
         albumArt: "https://nyimpens.vercel.app/assets/logoku.png",
         url: "",
-        audioSrc: "https://tmpfiles.org/dl/21298590/pxh7p5koo7.opus",
+        audioSrc: "https://files.catbox.moe/jfzauo.mp3",
     },
 ]
 
