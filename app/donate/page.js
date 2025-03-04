@@ -1,6 +1,6 @@
 export default function Donate() {
   return (
-    <div className="min-h-screen bg-black text-white flex flex-col items-center p-6 relative" style={{ backgroundImage: "radial-gradient(white 1px, transparent 1px)", backgroundSize: "10px 10px" }}>
+    <div className="min-h-screen bg-black text-white flex flex-col items-center p-6 relative" style={{ backgroundImage: "radial-gradient(white 0.5px, transparent 1px)", backgroundSize: "15px 15px" }}>
       <h1 className="text-3xl font-bold mb-4">𝗗𝗢𝗡𝗔𝗧𝗘</h1>
       
       {/* QRIS Image */}
@@ -10,7 +10,7 @@ export default function Donate() {
           alt="QRIS ALL PAYMENT" 
           className="w-full rounded-md"
         />
-        <p className="mt-2 text-sm text-gray-300">QRIS ALL PAYMENT</p>
+        <p className="mt-2 text-sm text-gray-300">𝐐𝐑𝐈𝐒 𝐀𝐋𝐋 𝐏𝐀𝐘𝐌𝐄𝐍𝐓</p>
       </div>
       
       {/* Payment List */}
@@ -22,9 +22,8 @@ export default function Donate() {
             className="w-12 h-12 rounded-md"
           />
           <div>
-            <p className="text-lg font-semibold">DANA</p>
-            <p className="text-sm text-gray-400">082159690832</p>
-            <p className="text-sm text-gray-400">A/N M. F**** N*** I****</p>
+            <p className="text-lg font-semibold"><b>DANA</b></p>
+            <p className="text-sm text-gray-400">082159690832 (M. F**** N*** I****)</p>
           </div>
         </div>
         
@@ -35,16 +34,15 @@ export default function Donate() {
             className="w-12 h-12 rounded-md"
           />
           <div>
-            <p className="text-lg font-semibold">GOPAY</p>
-            <p className="text-sm text-gray-400">082159690832 </p>
-            <p className="text-sm text-gray-400">A/N M. F**** N*** I****</p>
+            <p className="text-lg font-semibold"><b>GOPAY</b></p>
+            <p className="text-sm text-gray-400">082159690832 (M. F**** N*** I****)</p>
           </div>
         </div>
       </div>
 
       {/* Footer */}
       <footer className="mt-8 p-4 border border-white bg-black text-center rounded-lg">
-        <p className="text-white font-semibold">Terimakasih telah donasi! Semoga Rezeki anda dilancarkan.</p>
+        <p className="text-white font-semibold">𝐓𝐞𝐫𝐢𝐦𝐚𝐤𝐚𝐬𝐢𝐡 𝐲𝐚𝐧𝐠 𝐭𝐞𝐥𝐚𝐡 𝐝𝐨𝐧𝐚𝐬𝐢! 𝐒𝐞𝐦𝐨𝐠𝐚 𝐑𝐞𝐳𝐞𝐤𝐢 𝐚𝐧𝐝𝐚 𝐝𝐢𝐥𝐚𝐧𝐜𝐚𝐫𝐤𝐚𝐧.</p>
       </footer>
     </div>
   );
