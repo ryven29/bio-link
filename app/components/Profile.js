@@ -23,7 +23,7 @@ const Profile = () => {
                     <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-full animate-pulse"></div>
                 </div>
                 <h1 className="text-lg font-bold mt-2 flex items-center justify-center">
-                    ხαlxzzy
+                    𝐑𝐲𝐯𝐞𝐧.
                     <RiVerifiedBadgeFill className="inline text-blue-500 ml-1 items-center text-sm"/>
                 </h1>
 
@@ -33,10 +33,10 @@ const Profile = () => {
                         #Coding
                     </span>
                     <span className="bg-white/5 px-3 py-1 rounded-full text-xs hover:bg-white/10 transition-all hover:scale-105 ring-1 ring-green-700 text-yellow-400">
-                        #Game
+                        #Gaming
                     </span>
                     <span className="bg-white/5 px-3 py-1 rounded-full text-xs hover:bg-white/10 transition-all hover:scale-105 ring-1 ring-green-700 text-yellow-400">
-                        #Sleep
+                        #Reading
                     </span>
                     <span className="bg-white/5 px-3 py-1 rounded-full text-xs hover:bg-white/10 transition-all hover:scale-105 ring-1 ring-green-700 text-yellow-400">
                         #Music
