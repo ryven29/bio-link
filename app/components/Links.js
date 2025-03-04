@@ -7,21 +7,21 @@ import { HiArrowRight } from "react-icons/hi"
 
 const links = [
     {
-        title: "API",
-        description: "My First Projects API",
-        url: "https://apii.ambalzz.biz.id",
+        title: "Glyphic",
+        description: "My First Projects Bot Glyphic",
+        url: "https://wa.me/6283875901265",
         icon: "/fire-svgrepo-com.svg",
     },
     {
         title: "WhatsApp Channels",
-        description: "Follow To Know About Code",
+        description: "Follow untuk seputar info/kode",
         url: "https://whatsapp.com/channel/0029VaSY7Lp8F2pCmQLKNn0g",
         icon: "/planet-1301-svgrepo-com.svg",
     },
     {
-        title: "Shiina Public Bot Group",
-        description: "Get Online Friends Here",
-        url: "https://chat.whatsapp.com/FW78A12iQIdK3snmkSKzQ3",
+        title: "Glyphic Bot Group",
+        description: "Dapatkan Teman Online dan Bermain Bot Disini",
+        url: "https://chat.whatsapp.com/E60tqTa5EH30D63dXBwIQH",
         icon: "/stars-svgrepo-com.svg",
     },
     {
@@ -34,7 +34,7 @@ const links = [
         title: "",
         isSpotify: true,
         songTitle: "",
-        artist: "tetap coli walau kontol nyeri",
+        artist: "Pada Akhirnya, Tidak ada seorangpun yang peduli kecuali dirimu sendiri...",
         albumArt: "https://nyimpens.vercel.app/assets/logoku.png",
         url: "",
         audioSrc: "https://tmpfiles.org/dl/21298590/pxh7p5koo7.opus",
