@@ -37,7 +37,7 @@ const links = [
         artist: "Pada akhirnya, tidak ada seorangpun yang peduli kecuali dirimu sendiri...",
         albumArt: "https://files.catbox.moe/tjkp83.jpg",
         url: "",
-        audioSrc: "https://files.catbox.moe/xy4w2h.opus",
+        audioSrc: "https://files.catbox.moe/jfzauo.mp3",
     },
 ]
 
