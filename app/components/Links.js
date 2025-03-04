@@ -1,8 +1,8 @@
 "use client"
 
-import React, { useEffect, useRef } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import Link from "next/link"
-import { FaSpotify } from "react-icons/fa"
+import { FaSpotify, FaPlay, FaPause } from "react-icons/fa"
 import { HiArrowRight } from "react-icons/hi"
 
 const links = [
@@ -48,9 +48,11 @@ const Links = () => {
     const analyserRef = useRef(null)
     const dataArrayRef = useRef(null)
     const sourceRef = useRef(null)
+    const [isPlaying, setIsPlaying] = useState(false)
+    const [audioInitialized, setAudioInitialized] = useState(false)
 
-    useEffect(() => {
-        if (!canvasRef.current || !audioRef.current) return
+    const initializeAudio = () => {
+        if (!canvasRef.current || !audioRef.current || audioInitialized) return
 
         const canvas = canvasRef.current
         const ctx = canvas.getContext("2d")
@@ -60,34 +62,64 @@ const Links = () => {
 
         const audio = audioRef.current
 
-        if (!audioContextRef.current) {
+        try {
             audioContextRef.current = new (window.AudioContext || window.webkitAudioContext)()
-        }
-        const audioContext = audioContextRef.current
+            const audioContext = audioContextRef.current
 
-        if (!analyserRef.current) {
             analyserRef.current = audioContext.createAnalyser()
             analyserRef.current.fftSize = 64
-        }
-        const analyser = analyserRef.current
+            const analyser = analyserRef.current
 
-        if (!dataArrayRef.current) {
             dataArrayRef.current = new Uint8Array(analyser.frequencyBinCount)
-        }
-        const dataArray = dataArrayRef.current
+            const dataArray = dataArrayRef.current
 
-        if (!sourceRef.current) {
             sourceRef.current = audioContext.createMediaElementSource(audio)
             sourceRef.current.connect(analyser)
             analyser.connect(audioContext.destination)
+
+            setAudioInitialized(true)
+            draw()
+        } catch (error) {
+            console.error("Error initializing audio context:", error)
         }
+    }
 
-        function draw() {
-            requestAnimationFrame(draw)
-            analyser.getByteFrequencyData(dataArray)
+    const togglePlay = (e) => {
+        e.preventDefault()
+        e.stopPropagation()
+        
+        if (!audioInitialized) {
+            initializeAudio()
+        }
+        
+        const audio = audioRef.current
+        if (isPlaying) {
+            audio.pause()
+        } else {
+            // Resume AudioContext if it was suspended
+            if (audioContextRef.current && audioContextRef.current.state === 'suspended') {
+                audioContextRef.current.resume()
+            }
+            audio.play().catch(err => console.error("Playback failed:", err))
+        }
+        setIsPlaying(!isPlaying)
+    }
 
-            ctx.clearRect(0, 0, canvas.width, canvas.height)
+    const draw = () => {
+        if (!analyserRef.current || !dataArrayRef.current || !canvasRef.current) return
 
+        requestAnimationFrame(draw)
+        
+        const canvas = canvasRef.current
+        const ctx = canvas.getContext("2d")
+        const analyser = analyserRef.current
+        const dataArray = dataArrayRef.current
+        
+        analyser.getByteFrequencyData(dataArray)
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height)
+
+        if (isPlaying) {
             const barWidth = canvas.width / dataArray.length
             dataArray.forEach((value, index) => {
                 const barHeight = (value / 255) * canvas.height
@@ -95,9 +127,34 @@ const Links = () => {
                 ctx.fillRect(index * barWidth, canvas.height - barHeight, barWidth - 2, barHeight)
             })
         }
+    }
 
-        draw()
+    // Set up the visualization when component mounts
+    useEffect(() => {
+        // We'll initialize audio only when the user interacts
+        // But we can set up the canvas right away
+        if (canvasRef.current) {
+            const canvas = canvasRef.current
+            const ctx = canvas.getContext("2d")
+            canvas.width = 100
+            canvas.height = 40
+            ctx.clearRect(0, 0, canvas.width, canvas.height)
+        }
+
+        return () => {
+            // Clean up
+            if (audioContextRef.current) {
+                audioContextRef.current.close()
+            }
+        }
     }, [])
+
+    // Set up the drawing loop when audio is initialized
+    useEffect(() => {
+        if (audioInitialized) {
+            draw()
+        }
+    }, [audioInitialized, isPlaying])
 
     return (
         <div className="w-full max-w-md mt-6 space-y-3">
@@ -114,6 +171,12 @@ const Links = () => {
                                     alt="Album Art"
                                     className="rounded-full"/>
                                 <div className="absolute inset-0 bg-gradient-to-r from-green-500/30 to-blue-500/30 rounded-full animate-pulse"></div>
+                                <button 
+                                    onClick={togglePlay}
+                                    className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-full opacity-0 hover:opacity-100 transition-opacity"
+                                >
+                                    {isPlaying ? <FaPause size={14} /> : <FaPlay size={14} />}
+                                </button>
                             </div>
                             <div className="flex-1">
                                 <p className="text-xs text-gray-400">
@@ -123,7 +186,7 @@ const Links = () => {
                             <div className="relative">
                                 <canvas ref={canvasRef} className="absolute bottom-0 right-0 opacity-70"></canvas>
                             </div>
-                            <audio ref={audioRef} src={link.audioSrc} autoPlay loop></audio>
+                            <audio ref={audioRef} src={link.audioSrc} loop></audio>
                         </div>
                     ) : (
                         <div className="flex items-center space-x-3 w-full">
