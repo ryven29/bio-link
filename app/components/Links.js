@@ -34,10 +34,10 @@ const links = [
         title: "",
         isSpotify: true,
         songTitle: "",
-        artist: "Pada Akhirnya, Tidak ada seorangpun yang peduli kecuali dirimu sendiri...",
-        albumArt: "https://nyimpens.vercel.app/assets/logoku.png",
+        artist: "Pada akhirnya, tidak ada seorangpun yang peduli kecuali dirimu sendiri...",
+        albumArt: "https://files.catbox.moe/tjkp83.jpg",
         url: "",
-        audioSrc: "https://files.catbox.moe/jfzauo.mp3",
+        audioSrc: "https://files.catbox.moe/xy4w2h.opus",
     },
 ]
 
