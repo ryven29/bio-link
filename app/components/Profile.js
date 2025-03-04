@@ -27,7 +27,7 @@ const Profile = () => {
                     <RiVerifiedBadgeFill className="inline text-blue-500 ml-1 items-center text-sm"/>
                 </h1>
 
-                <p className="text-gray-400 text-xs">No memories...</p>
+                <p className="text-gray-400 text-xs">No memories🥀</p>
                 <div className="flex justify-center gap-2 mt-3">
                     <span className="bg-white/5 px-3 py-1 rounded-full text-xs hover:bg-white/10 transition-all hover:scale-105 ring-1 ring-green-700 text-yellow-400">
                         #Coding
