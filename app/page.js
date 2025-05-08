@@ -14,7 +14,7 @@ export default function Home() {
   useEffect(() => {
     const handleContextMenu = (event) => {
       event.preventDefault()
-      alert("Klik Kanan Detected!\nMau ngapain bang? mau inspect?\n\n𝓡𝔂𝓿𝓮𝓷.")
+      alert("inspect this bio is not allowed :)\nRyven")
     }
     document.addEventListener("contextmenu", handleContextMenu)
     return () => {
