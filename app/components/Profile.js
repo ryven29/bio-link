@@ -6,7 +6,7 @@ import { RiVerifiedBadgeFill } from "react-icons/ri"
 
 const Profile = () => {
     const [imgSrc, setImgSrc] = useState(
-        "https://files.catbox.moe/f2jvvd.jpg"
+        "https://files.catbox.moe/tmobkc.png"
     )
 
     return (
