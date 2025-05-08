@@ -18,7 +18,7 @@ const Profile = () => {
                         alt="Profile"
                         className="w-20 h-20 rounded-full border-2 border-gray-500 bg-gray-600 transition-transform hover:scale-105"
                         onError={() =>
-                            setImgSrc("https://files.catbox.moe/f2jvvd.jpg")
+                            setImgSrc("https://files.catbox.moe/tmobkc.png")
                         }/>
                     <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-full animate-pulse"></div>
                 </div>
