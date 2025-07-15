@@ -44,7 +44,7 @@ const Profile = () => {
                 </div>
                 <div className="flex justify-center gap-4 mt-4 text-xl text-gray-400">
                     <a
-                        href="https://instagram.com/fikrinrirham_"
+                        href="https://instagram.com/fikkrinrirham"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-zinc-400 hover:text-zinc-100 transition-colors">
