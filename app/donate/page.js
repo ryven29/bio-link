@@ -6,7 +6,7 @@ export default function Donate() {
       {/* QRIS Image */}
       <div className="bg-gray-800 p-4 rounded-lg shadow-lg w-full max-w-sm text-center">
         <img 
-          src="https://telegra.ph/file/254e5d2e9dbbd53990642.jpg" 
+          src="https://files.catbox.moe/jzn65a.jpg" 
           alt="QRIS ALL PAYMENT" 
           className="w-full rounded-md"
         />
