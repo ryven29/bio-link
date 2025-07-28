@@ -1,6 +1,5 @@
 "use client";
 import { useEffect, useState } from "react";
-import "animate.css";
 
 export default function Donate() {
   const [showContent, setShowContent] = useState(false);
