@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 export default function Donate() {
   const [showContent, setShowContent] = useState(false);
   const [typedText, setTypedText] = useState("");
-  const fullText = "𝗗𝗢𝗡𝗔𝗧𝗘";
+  const fullText = "Donasi";
 
   useEffect(() => {
     let index = 0;
