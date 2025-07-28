@@ -7,15 +7,20 @@ export default function Donate() {
   const [typedText, setTypedText] = useState("");
   const fullText = "𝗗𝗢𝗡𝗔𝗧𝗘";
 
-  useEffect(() => {
-    let index = 0;
-    const interval = setInterval(() => {
+useEffect(() => {
+  let index = 0;
+  const interval = setInterval(() => {
+    if (index < fullText.length) {
       setTypedText((prev) => prev + fullText[index]);
       index++;
-      if (index >= fullText.length) clearInterval(interval);
-    }, 150);
-    setTimeout(() => setShowContent(true), 1000);
-  }, []);
+    } else {
+      clearInterval(interval);
+      setShowContent(true);
+    }
+  }, 150);
+  return () => clearInterval(interval); // prevent memory leaks
+}, []);
+
 
   return (
     <div className="min-h-screen bg-black text-white flex flex-col items-center p-6 relative"
