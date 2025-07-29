@@ -155,7 +155,7 @@ const RyvenStore = () => {
             transition={{ duration: 0.8, delay: 0.2 }}
           >
             Top Up Game
-<span className="block text-transparent bg-clip-text bg-gradient-to-r from-cyan-200 to-purple-200">
+<span className="block text-transparent bg-clip-text bg-gradient-to-r from-cyan-200 via-pink-300 to-purple-200 drop-shadow-md">
   Tercepat & Termurah
 </span>
           </motion.h2>
@@ -380,7 +380,7 @@ const RyvenStore = () => {
           </motion.h3>
           <div className="flex flex-wrap justify-center gap-6">
             <motion.a
-              href="https://wa.me/6281234567890"
+              href="https://wa.me/628991103457"
               className="flex items-center space-x-3 bg-green-600 text-white px-6 py-3 rounded-full hover:bg-green-700 transition-all"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -389,7 +389,7 @@ const RyvenStore = () => {
               <span>WhatsApp</span>
             </motion.a>
             <motion.a
-              href="https://instagram.com/ryvenstore"
+              href="https://instagram.com/fikrinrirham"
               className="flex items-center space-x-3 bg-pink-600 text-white px-6 py-3 rounded-full hover:bg-pink-700 transition-all"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -398,7 +398,7 @@ const RyvenStore = () => {
               <span>Instagram</span>
             </motion.a>
             <motion.a
-              href="https://t.me/ryvenstore"
+              href="https://t.me/Ry_ven"
               className="flex items-center space-x-3 bg-blue-600 text-white px-6 py-3 rounded-full hover:bg-blue-700 transition-all"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
