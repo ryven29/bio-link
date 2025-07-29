@@ -130,11 +130,11 @@ const RyvenStore = () => {
               <Gamepad2 className="text-3xl text-cyan-400" />
               <h1 className="text-2xl font-bold text-white">Ryven Store</h1>
             </motion.div>
-            <nav className="hidden md:flex space-x-6">
-<a href="#games" className="text-white hover:text-cyan-300 drop-shadow-md transition-all duration-200">Games</a>
-<a href="#why-us" className="text-white hover:text-cyan-300 drop-shadow-md transition-all duration-200">Mengapa Kami</a>
-<a href="#testimonials" className="text-white hover:text-cyan-300 drop-shadow-md transition-all duration-200">Testimoni</a>
-<a href="#contact" className="text-white hover:text-cyan-300 drop-shadow-md transition-all duration-200">Kontak</a>
+<nav className="hidden md:flex space-x-6">
+              <a href="#games" className="text-white font-semibold text-lg shadow-lg hover:text-cyan-300 hover:scale-105 transition-all duration-200">Games</a>
+              <a href="#why-us" className="text-white font-semibold text-lg shadow-lg hover:text-cyan-300 hover:scale-105 transition-all duration-200">Mengapa Kami</a>
+              <a href="#testimonials" className="text-white font-semibold text-lg shadow-lg hover:text-cyan-300 hover:scale-105 transition-all duration-200">Testimoni</a>
+              <a href="#contact" className="text-white font-semibold text-lg shadow-lg hover:text-cyan-300 hover:scale-105 transition-all duration-200">Kontak</a>
             </nav>
           </div>
         </div>
