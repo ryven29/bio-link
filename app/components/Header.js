@@ -78,7 +78,8 @@ const Header = () => {
                                     }}
                                     className="space-y-2">
                                     {[
-                                        { href: "/", label: "Home" }                                                                     ].map(link => (
+                                        { href: "/", label: "Home" },
+                                        { href: "/topup", label: "Top Up Game }          ].map(link => (
                                         <motion.div
                                             key={link.href}
                                             variants={{
