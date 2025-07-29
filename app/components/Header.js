@@ -14,6 +14,11 @@ const Header = () => {
         exit: { opacity: 0, y: -20 }
     }
 
+    const navLinks = [
+        { href: "/", label: "Home" },
+        { href: "/topup", label: "Top Up Game" }
+    ]
+
     return (
         <motion.header
             initial={{ y: -100 }}
@@ -27,7 +32,7 @@ const Header = () => {
                         <Link
                             href="/"
                             className="text-lg font-bold bg-gradient-to-r from-yellow-400 via-orange-400 to-pink-500 bg-clip-text text-transparent">
-                        <Typing/>
+                            <Typing/>
                         </Link>
                     </motion.div>
 
@@ -77,9 +82,7 @@ const Header = () => {
                                         }
                                     }}
                                     className="space-y-2">
-                                    {[
-                                        { href: "/", label: "Home" },
-                                        { href: "/topup", label: "Top Up Game }          ].map(link => (
+                                    {navLinks.map(link => (
                                         <motion.div
                                             key={link.href}
                                             variants={{
@@ -89,7 +92,7 @@ const Header = () => {
                                             <Link
                                                 href={link.href}
                                                 onClick={() => setIsOpen(false)}
-                                                className={`block px-4 py-2 rounded-lg text-white hover:bg-gray-700 transition-all`}>
+                                                className="block px-4 py-2 rounded-lg text-white hover:bg-gray-700 transition-all">
                                                 {link.label}
                                             </Link>
                                         </motion.div>
