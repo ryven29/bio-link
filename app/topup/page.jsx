@@ -6,7 +6,7 @@ const games = [
   {
     name: "Mobile Legends",
     description: "Top up diamond Mobile Legends dengan harga terbaik.",
-    image: "https://static.wikia.nocookie.net/mobile-legends/images/2/27/Mobile_Legends_New_Logo.png",
+    image: "https://files.catbox.moe/jtzb9p.webp",
     packages: [
       { name: "5 Diamonds", price: 10000 },
       { name: "12 Diamonds", price: 20000 },
@@ -18,7 +18,7 @@ const games = [
   {
     name: "Free Fire",
     description: "Top up diamond Free Fire cepat & aman.",
-    image: "https://cdn.duniagames.co.id/community/202103/article/1616426063624cbcd7efdc5.jpg",
+    image: "https://files.catbox.moe/88vkwh.jpg",
     packages: [
       { name: "5 Diamonds", price: 10000 },
       { name: "12 Diamonds", price: 20000 },
@@ -30,7 +30,7 @@ const games = [
   {
     name: "PUBG",
     description: "Top up UC PUBG Mobile instan & terpercaya.",
-    image: "https://seeklogo.com/images/P/pubg-mobile-logo-8B67FDC5FA-seeklogo.com.png",
+    image: "https://files.catbox.moe/hxy4br.jpeg",
     packages: [
       { name: "60 UC", price: 12000 },
       { name: "325 UC", price: 60000 },
