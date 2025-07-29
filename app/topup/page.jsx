@@ -154,12 +154,12 @@ export default function RyvenStore() {
         ))}
       </div>
 
-      <div className="relative z-10 p-6">
+      <div className="relative z-10 px-4 py-6 md:px-6">
         {/* Header */}
         <header className="text-center mb-12">
           <div className="flex items-center justify-center mb-4">
-            <Gamepad2 className="w-12 h-12 text-cyan-400 mr-4" />
-            <h1 className="text-6xl font-black">
+            <Gamepad2 className="w-12 h-12 text-cyan-400 mr-4 flex-shrink-0" />
+            <h1 className="text-4xl md:text-6xl font-black whitespace-nowrap">
               <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600">
                 RYVEN
               </span>
@@ -169,13 +169,13 @@ export default function RyvenStore() {
           <p className="text-xl text-gray-300 max-w-2xl mx-auto">
             Platform top up gaming terpercaya dengan teknologi cyber security terdepan
           </p>
-          <div className="flex justify-center items-center space-x-8 mt-6 text-sm">
+          <div className="flex justify-center items-center flex-wrap gap-4 md:gap-8 mt-6 text-sm">
             <div className="flex items-center">
               <Users className="w-4 h-4 text-cyan-400 mr-2" />
               <span>500K+ Gamers</span>
             </div>
             <div className="flex items-center">
-              <Star className="w-4 h-4 text-yellow-400 mr-2" />
+              <Star className="w-4 h-4 text-yellow-400 mr-2" fill="currentColor" />
               <span>4.9/5 Rating</span>
             </div>
             <div className="flex items-center">
@@ -192,7 +192,7 @@ export default function RyvenStore() {
               Mengapa Pilih Ryven Store?
             </span>
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 max-w-6xl mx-auto px-4">
             {whyChooseUs.map((item, index) => (
               <div key={index} className="bg-gradient-to-br from-slate-800/50 to-blue-900/20 p-6 rounded-xl border border-cyan-500/20 backdrop-blur-sm hover:border-cyan-400/40 transition-all duration-300 group">
                 <div className="text-cyan-400 mb-4 group-hover:scale-110 transition-transform duration-300">
@@ -206,13 +206,13 @@ export default function RyvenStore() {
         </section>
 
         {/* Games Section */}
-        <section className="mb-16">
+        <section className="mb-16 pb-20">
           <h2 className="text-3xl font-bold text-center mb-8">
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-500">
               Pilih Game Favoritmu
             </span>
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 max-w-6xl mx-auto px-4">
             {games.map((game) => (
               <div
                 key={game.name}
@@ -234,9 +234,9 @@ export default function RyvenStore() {
                   <p className="text-sm text-gray-300 mb-4">{game.description}</p>
                   <button 
                     onClick={() => handleTopUpClick(game)}
-                    className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold px-4 py-3 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-cyan-500/30"
+                    className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold px-4 py-3 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-cyan-500/30 flex items-center justify-center"
                   >
-                    <Zap className="w-4 h-4 inline mr-2" />
+                    <Zap className="w-4 h-4 mr-2" />
                     Top Up Sekarang
                   </button>
                 </div>
@@ -252,16 +252,16 @@ export default function RyvenStore() {
               Testimoni Gamers
             </span>
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 max-w-6xl mx-auto px-4">
             {testimonials.map((testimonial, index) => (
               <div key={index} className="bg-gradient-to-br from-slate-800/50 to-blue-900/20 p-6 rounded-xl border border-cyan-500/20 backdrop-blur-sm">
                 <div className="flex items-center mb-4">
-                  <div className="flex text-yellow-400">
+                  <div className="flex text-yellow-400 mr-3">
                     {[...Array(testimonial.rating)].map((_, i) => (
-                      <Star key={i} className="w-4 h-4 fill-current" />
+                      <Star key={i} className="w-4 h-4" fill="currentColor" />
                     ))}
                   </div>
-                  <span className="ml-2 text-cyan-300 font-semibold">{testimonial.name}</span>
+                  <span className="text-cyan-300 font-semibold">{testimonial.name}</span>
                 </div>
                 <p className="text-gray-300 text-sm mb-3">"{testimonial.comment}"</p>
                 <div className="text-xs text-cyan-400">Game: {testimonial.game}</div>
@@ -350,9 +350,9 @@ export default function RyvenStore() {
                       )}
                     </button>
                   ) : (
-                    <div className="bg-gradient-to-r from-green-600 to-emerald-600 text-white p-4 rounded-lg text-center animate-fade-in border border-green-400/30">
-                      <CheckCircle className="w-6 h-6 inline mr-2" />
-                      ✅ Payment Successful! Top up sedang diproses...
+                    <div className="bg-gradient-to-r from-green-600 to-emerald-600 text-white p-4 rounded-lg text-center animate-fade-in border border-green-400/30 flex items-center justify-center">
+                      <CheckCircle className="w-6 h-6 mr-2" />
+                      Payment Successful! Top up sedang diproses...
                     </div>
                   )}
                 </div>
