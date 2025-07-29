@@ -131,10 +131,10 @@ const RyvenStore = () => {
               <h1 className="text-2xl font-bold text-white">Ryven Store</h1>
             </motion.div>
             <nav className="hidden md:flex space-x-6">
-<a href="#games" className="text-cyan-200 hover:text-white transition-colors duration-200">Games</a>
-<a href="#why-us" className="text-cyan-200 hover:text-white transition-colors duration-200">Mengapa Kami</a>
-<a href="#testimonials" className="text-cyan-200 hover:text-white transition-colors duration-200">Testimoni</a>
-<a href="#contact" className="text-cyan-200 hover:text-white transition-colors duration-200">Kontak</a>
+<a href="#games" className="text-white hover:text-cyan-300 drop-shadow-md transition-all duration-200">Games</a>
+<a href="#why-us" className="text-white hover:text-cyan-300 drop-shadow-md transition-all duration-200">Mengapa Kami</a>
+<a href="#testimonials" className="text-white hover:text-cyan-300 drop-shadow-md transition-all duration-200">Testimoni</a>
+<a href="#contact" className="text-white hover:text-cyan-300 drop-shadow-md transition-all duration-200">Kontak</a>
             </nav>
           </div>
         </div>
