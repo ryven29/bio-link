@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Gamepad2, Shield, Clock, Users, Star, MessageCircle, Instagram, Send, Coins } from 'lucide-react';
