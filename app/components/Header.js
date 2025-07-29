@@ -16,7 +16,7 @@ const Header = () => {
 
     const navLinks = [
         { href: "/", label: "Home" },
-        { href: "/topup", label: "Top Up Game" }
+        { href: "/topup", label: "Top Up Game (Testing)" }
     ]
 
     return (
