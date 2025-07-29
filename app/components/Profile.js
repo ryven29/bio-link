@@ -23,11 +23,11 @@ const Profile = () => {
                     <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-full animate-pulse"></div>
                 </div>
                 <h1 className="text-lg font-bold mt-2 flex items-center justify-center">
-                    𝐑𝐲𝐯𝐞𝐧
+                    𝐅𝐢𝐤𝐫𝐢
                     <RiVerifiedBadgeFill className="inline text-blue-500 ml-1 items-center text-sm"/>
                 </h1>
 
-                <p className="text-gray-400 text-xs">No memories🥀</p>
+                <p className="text-gray-400 text-xs">Welcome to my website bio👋</p>
                 <div className="flex justify-center gap-2 mt-3">
                     <span className="bg-white/5 px-3 py-1 rounded-full text-xs hover:bg-white/10 transition-all hover:scale-105 ring-1 ring-green-700 text-yellow-400">
                         #Coding
@@ -44,7 +44,7 @@ const Profile = () => {
                 </div>
                 <div className="flex justify-center gap-4 mt-4 text-xl text-gray-400">
                     <a
-                        href="https://instagram.com/fikkrinrirham"
+                        href="https://instagram.com/fikrinrirham"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-zinc-400 hover:text-zinc-100 transition-colors">
