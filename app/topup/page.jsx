@@ -155,7 +155,7 @@ const RyvenStore = () => {
             transition={{ duration: 0.8, delay: 0.2 }}
           >
             Top Up Game
-            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-400">
+            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 to-purple-600">
               Tercepat & Termurah
             </span>
           </motion.h2>
