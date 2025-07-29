@@ -12,11 +12,20 @@ export default function Home() {
   const [loadingComplete, setLoadingComplete] = useState(false)
 
   useEffect(() => {
+    const alreadyLoaded = sessionStorage.getItem("loaded")
+
+    if (alreadyLoaded) {
+      setLoadingComplete(true)
+    } else {
+      sessionStorage.setItem("loaded", "true")
+    }
+
     const handleContextMenu = (event) => {
       event.preventDefault()
       alert("inspect this bio is not allowed :)\nRyven")
     }
     document.addEventListener("contextmenu", handleContextMenu)
+
     return () => {
       document.removeEventListener("contextmenu", handleContextMenu)
     }
@@ -30,10 +39,10 @@ export default function Home() {
             <Loading onLoadComplete={() => setLoadingComplete(true)} />
           ) : (
             <>
-              <Header/>
-              <Profile/>
-              <Links/>
-              <Footer/>
+              <Header />
+              <Profile />
+              <Links />
+              <Footer />
             </>
           )
         }
