@@ -38,55 +38,21 @@ const links = [
         albumArt: "https://files.catbox.moe/tjkp83.jpg",
         url: "#",
         audioSrc: "https://files.catbox.moe/jfzauo.mp3",
+        // Alternative sources if catbox fails:
+        // audioSrc: "/audio/sample.mp3", // Put in public/audio/
+        // audioSrc: "https://www.soundjay.com/misc/sounds-of-speech.wav",
     },
 ]
 
 const SpotifyPlayer = ({ link }) => {
-    const canvasRef = useRef(null)
     const audioRef = useRef(null)
     const audioContextRef = useRef(null)
-    const analyserRef = useRef(null)
-    const sourceRef = useRef(null)
-    const animationRef = useRef(null)
     
     const [isPlaying, setIsPlaying] = useState(false)
     const [isLoading, setIsLoading] = useState(true)
     const [audioEnabled, setAudioEnabled] = useState(false)
     const [error, setError] = useState(null)
     const [volume, setVolume] = useState(0.7)
-
-    // Initialize canvas and audio context
-    useEffect(() => {
-        if (typeof window === 'undefined') return
-
-        const canvas = canvasRef.current
-        if (!canvas) return
-
-        const ctx = canvas.getContext("2d")
-        canvas.width = 100
-        canvas.height = 40
-
-        // Draw static bars initially
-        const drawStaticBars = () => {
-            ctx.clearRect(0, 0, canvas.width, canvas.height)
-            const barCount = 16
-            const barWidth = canvas.width / barCount
-            
-            for (let i = 0; i < barCount; i++) {
-                const barHeight = Math.random() * 15 + 5
-                ctx.fillStyle = '#374151'
-                ctx.fillRect(i * barWidth, canvas.height - barHeight, barWidth - 2, barHeight)
-            }
-        }
-
-        drawStaticBars()
-
-        return () => {
-            if (animationRef.current) {
-                cancelAnimationFrame(animationRef.current)
-            }
-        }
-    }, [])
 
     // Setup audio when enabled
     useEffect(() => {
@@ -119,41 +85,6 @@ const SpotifyPlayer = ({ link }) => {
         // Set volume
         audio.volume = volume
 
-        // Setup Web Audio API for visualization
-        const setupAudioContext = async () => {
-            try {
-                if (!audioContextRef.current) {
-                    const AudioContext = window.AudioContext || window.webkitAudioContext
-                    audioContextRef.current = new AudioContext()
-                }
-
-                const audioContext = audioContextRef.current
-
-                // Resume if suspended
-                if (audioContext.state === 'suspended') {
-                    await audioContext.resume()
-                }
-
-                if (!analyserRef.current) {
-                    analyserRef.current = audioContext.createAnalyser()
-                    analyserRef.current.fftSize = 64
-                    analyserRef.current.smoothingTimeConstant = 0.8
-                }
-
-                if (!sourceRef.current && audioContext.state === 'running') {
-                    sourceRef.current = audioContext.createMediaElementSource(audio)
-                    sourceRef.current.connect(analyserRef.current)
-                    analyserRef.current.connect(audioContext.destination)
-                }
-
-                startVisualization()
-            } catch (err) {
-                console.error('Audio context setup failed:', err)
-            }
-        }
-
-        setupAudioContext()
-
         return () => {
             audio.removeEventListener('loadstart', handleLoadStart)
             audio.removeEventListener('canplay', handleCanPlay)
@@ -163,45 +94,6 @@ const SpotifyPlayer = ({ link }) => {
             audio.removeEventListener('error', handleError)
         }
     }, [audioEnabled, volume])
-
-    const startVisualization = () => {
-        if (!canvasRef.current || !analyserRef.current) return
-
-        const canvas = canvasRef.current
-        const ctx = canvas.getContext("2d")
-        const analyser = analyserRef.current
-        const dataArray = new Uint8Array(analyser.frequencyBinCount)
-
-        const draw = () => {
-            if (!analyser) return
-
-            analyser.getByteFrequencyData(dataArray)
-            ctx.clearRect(0, 0, canvas.width, canvas.height)
-
-            const barWidth = canvas.width / dataArray.length
-            
-            // Create gradient
-            const gradient = ctx.createLinearGradient(0, canvas.height, 0, 0)
-            gradient.addColorStop(0, '#10b981')
-            gradient.addColorStop(0.5, '#3b82f6')
-            gradient.addColorStop(1, '#8b5cf6')
-
-            dataArray.forEach((value, index) => {
-                const barHeight = isPlaying ? (value / 255) * canvas.height * 0.8 : Math.random() * 8 + 2
-                ctx.fillStyle = isPlaying ? gradient : '#374151'
-                ctx.fillRect(
-                    index * barWidth, 
-                    canvas.height - barHeight, 
-                    barWidth - 1, 
-                    barHeight
-                )
-            })
-
-            animationRef.current = requestAnimationFrame(draw)
-        }
-
-        draw()
-    }
 
     const enableAudio = async (e) => {
         e.preventDefault()
@@ -285,7 +177,7 @@ const SpotifyPlayer = ({ link }) => {
                         isPlaying ? 'animate-pulse' : ''
                     }`} />
                     <span className="text-xs text-green-500 font-medium">
-                        {!audioEnabled ? 'Click to Enable' : 
+                        {!audioEnabled ? 'Click to Play' : 
                          isLoading ? 'Loading...' : 
                          error ? 'Error' :
                          isPlaying ? 'Now Playing' : 'Paused'}
@@ -296,12 +188,7 @@ const SpotifyPlayer = ({ link }) => {
                 </p>
             </div>
             
-            <div className="relative">
-                <canvas 
-                    ref={canvasRef} 
-                    className="opacity-70 rounded bg-gray-800"
-                />
-            </div>
+
             
             {audioEnabled && (
                 <audio 
