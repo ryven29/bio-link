@@ -37,7 +37,7 @@ const links = [
         artist: "Langkah kecil hari ini akan membawa kamu ke kemenangan besar.",
         albumArt: "https://files.catbox.moe/tjkp83.jpg",
         url: "#",
-        audioSrc: "https://files.catbox.moe/jfzauo.mp3",
+        audioSrc: "https://files.catbox.moe/e073yw.mp3",
         // Alternative sources if catbox fails:
         // audioSrc: "/audio/sample.mp3", // Put in public/audio/
         // audioSrc: "https://www.soundjay.com/misc/sounds-of-speech.wav",
