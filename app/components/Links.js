@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useState } from "react"
 import Link from "next/link"
-import { FaSpotify, FaPlay, FaPause } from "react-icons/fa"
+import { FaSpotify, FaPlay, FaPause, FaVolumeUp } from "react-icons/fa"
 import { HiArrowRight } from "react-icons/hi"
 
 const links = [
@@ -33,88 +33,103 @@ const links = [
     {
         title: "",
         isSpotify: true,
-        songTitle: "",
+        songTitle: "Motivational Quote",
         artist: "Langkah kecil hari ini akan membawa kamu ke kemenangan besar.",
         albumArt: "https://files.catbox.moe/tjkp83.jpg",
-        url: "",
+        url: "#",
         audioSrc: "https://files.catbox.moe/jfzauo.mp3",
     },
 ]
 
-const Links = () => {
+const SpotifyPlayer = ({ link }) => {
     const canvasRef = useRef(null)
     const audioRef = useRef(null)
     const audioContextRef = useRef(null)
     const analyserRef = useRef(null)
-    const dataArrayRef = useRef(null)
     const sourceRef = useRef(null)
     const animationRef = useRef(null)
     
     const [isPlaying, setIsPlaying] = useState(false)
-    const [isAudioReady, setIsAudioReady] = useState(false)
-    const [hasUserInteracted, setHasUserInteracted] = useState(false)
+    const [isLoading, setIsLoading] = useState(true)
+    const [audioEnabled, setAudioEnabled] = useState(false)
+    const [error, setError] = useState(null)
+    const [volume, setVolume] = useState(0.7)
 
-    // Handle user interaction untuk enable autoplay
+    // Initialize canvas and audio context
     useEffect(() => {
-        const handleUserInteraction = () => {
-            setHasUserInteracted(true)
-            document.removeEventListener('click', handleUserInteraction)
-            document.removeEventListener('touchstart', handleUserInteraction)
-            document.removeEventListener('keydown', handleUserInteraction)
-        }
-
-        document.addEventListener('click', handleUserInteraction)
-        document.addEventListener('touchstart', handleUserInteraction)
-        document.addEventListener('keydown', handleUserInteraction)
-
-        return () => {
-            document.removeEventListener('click', handleUserInteraction)
-            document.removeEventListener('touchstart', handleUserInteraction)
-            document.removeEventListener('keydown', handleUserInteraction)
-        }
-    }, [])
-
-    // Setup audio context dan visualizer
-    useEffect(() => {
-        if (!canvasRef.current || !audioRef.current) return
+        if (typeof window === 'undefined') return
 
         const canvas = canvasRef.current
-        const ctx = canvas.getContext("2d")
-        const audio = audioRef.current
+        if (!canvas) return
 
+        const ctx = canvas.getContext("2d")
         canvas.width = 100
         canvas.height = 40
 
+        // Draw static bars initially
+        const drawStaticBars = () => {
+            ctx.clearRect(0, 0, canvas.width, canvas.height)
+            const barCount = 16
+            const barWidth = canvas.width / barCount
+            
+            for (let i = 0; i < barCount; i++) {
+                const barHeight = Math.random() * 15 + 5
+                ctx.fillStyle = '#374151'
+                ctx.fillRect(i * barWidth, canvas.height - barHeight, barWidth - 2, barHeight)
+            }
+        }
+
+        drawStaticBars()
+
+        return () => {
+            if (animationRef.current) {
+                cancelAnimationFrame(animationRef.current)
+            }
+        }
+    }, [])
+
+    // Setup audio when enabled
+    useEffect(() => {
+        if (!audioEnabled || !audioRef.current) return
+
+        const audio = audioRef.current
+        
         // Audio event listeners
-        const handleCanPlayThrough = () => {
-            setIsAudioReady(true)
+        const handleLoadStart = () => setIsLoading(true)
+        const handleCanPlay = () => {
+            setIsLoading(false)
+            setError(null)
+        }
+        const handlePlay = () => setIsPlaying(true)
+        const handlePause = () => setIsPlaying(false)
+        const handleEnded = () => setIsPlaying(false)
+        const handleError = (e) => {
+            setError('Failed to load audio')
+            setIsLoading(false)
+            console.error('Audio error:', e)
         }
 
-        const handlePlay = () => {
-            setIsPlaying(true)
-        }
-
-        const handlePause = () => {
-            setIsPlaying(false)
-        }
-
-        const handleEnded = () => {
-            setIsPlaying(false)
-        }
-
-        audio.addEventListener('canplaythrough', handleCanPlayThrough)
+        audio.addEventListener('loadstart', handleLoadStart)
+        audio.addEventListener('canplay', handleCanPlay)
         audio.addEventListener('play', handlePlay)
         audio.addEventListener('pause', handlePause)
         audio.addEventListener('ended', handleEnded)
+        audio.addEventListener('error', handleError)
 
-        // Setup audio context
+        // Set volume
+        audio.volume = volume
+
+        // Setup Web Audio API for visualization
         const setupAudioContext = async () => {
             try {
                 if (!audioContextRef.current) {
-                    audioContextRef.current = new (window.AudioContext || window.webkitAudioContext)()
+                    const AudioContext = window.AudioContext || window.webkitAudioContext
+                    audioContextRef.current = new AudioContext()
                 }
+
                 const audioContext = audioContextRef.current
 
+                // Resume if suspended
                 if (audioContext.state === 'suspended') {
                     await audioContext.resume()
                 }
@@ -124,48 +139,60 @@ const Links = () => {
                     analyserRef.current.fftSize = 64
                     analyserRef.current.smoothingTimeConstant = 0.8
                 }
-                const analyser = analyserRef.current
 
-                if (!dataArrayRef.current) {
-                    dataArrayRef.current = new Uint8Array(analyser.frequencyBinCount)
-                }
-
-                if (!sourceRef.current) {
+                if (!sourceRef.current && audioContext.state === 'running') {
                     sourceRef.current = audioContext.createMediaElementSource(audio)
-                    sourceRef.current.connect(analyser)
-                    analyser.connect(audioContext.destination)
+                    sourceRef.current.connect(analyserRef.current)
+                    analyserRef.current.connect(audioContext.destination)
                 }
-            } catch (error) {
-                console.log('Audio context setup failed:', error)
+
+                startVisualization()
+            } catch (err) {
+                console.error('Audio context setup failed:', err)
             }
         }
 
         setupAudioContext()
 
-        // Visualizer animation
-        const draw = () => {
-            if (!analyserRef.current || !dataArrayRef.current) {
-                animationRef.current = requestAnimationFrame(draw)
-                return
-            }
+        return () => {
+            audio.removeEventListener('loadstart', handleLoadStart)
+            audio.removeEventListener('canplay', handleCanPlay)
+            audio.removeEventListener('play', handlePlay)
+            audio.removeEventListener('pause', handlePause)
+            audio.removeEventListener('ended', handleEnded)
+            audio.removeEventListener('error', handleError)
+        }
+    }, [audioEnabled, volume])
 
-            analyserRef.current.getByteFrequencyData(dataArrayRef.current)
-            
+    const startVisualization = () => {
+        if (!canvasRef.current || !analyserRef.current) return
+
+        const canvas = canvasRef.current
+        const ctx = canvas.getContext("2d")
+        const analyser = analyserRef.current
+        const dataArray = new Uint8Array(analyser.frequencyBinCount)
+
+        const draw = () => {
+            if (!analyser) return
+
+            analyser.getByteFrequencyData(dataArray)
             ctx.clearRect(0, 0, canvas.width, canvas.height)
 
-            const barWidth = canvas.width / dataArrayRef.current.length
+            const barWidth = canvas.width / dataArray.length
+            
+            // Create gradient
             const gradient = ctx.createLinearGradient(0, canvas.height, 0, 0)
             gradient.addColorStop(0, '#10b981')
             gradient.addColorStop(0.5, '#3b82f6')
             gradient.addColorStop(1, '#8b5cf6')
 
-            dataArrayRef.current.forEach((value, index) => {
-                const barHeight = isPlaying ? (value / 255) * canvas.height * 0.8 : Math.random() * 5
+            dataArray.forEach((value, index) => {
+                const barHeight = isPlaying ? (value / 255) * canvas.height * 0.8 : Math.random() * 8 + 2
                 ctx.fillStyle = isPlaying ? gradient : '#374151'
                 ctx.fillRect(
                     index * barWidth, 
                     canvas.height - barHeight, 
-                    barWidth - 2, 
+                    barWidth - 1, 
                     barHeight
                 )
             })
@@ -174,135 +201,160 @@ const Links = () => {
         }
 
         draw()
+    }
 
-        return () => {
-            audio.removeEventListener('canplaythrough', handleCanPlayThrough)
-            audio.removeEventListener('play', handlePlay)
-            audio.removeEventListener('pause', handlePause)
-            audio.removeEventListener('ended', handleEnded)
-            
-            if (animationRef.current) {
-                cancelAnimationFrame(animationRef.current)
-            }
-        }
-    }, [isPlaying])
-
-    // Auto play when user has interacted
-    useEffect(() => {
-        if (hasUserInteracted && isAudioReady && audioRef.current) {
-            const playAudio = async () => {
-                try {
+    const enableAudio = async (e) => {
+        e.preventDefault()
+        e.stopPropagation()
+        
+        setAudioEnabled(true)
+        
+        // Small delay to ensure state is updated
+        setTimeout(async () => {
+            try {
+                if (audioRef.current) {
                     await audioRef.current.play()
-                } catch (error) {
-                    console.log('Autoplay prevented:', error)
                 }
+            } catch (err) {
+                console.log('Initial play failed:', err)
             }
-            playAudio()
-        }
-    }, [hasUserInteracted, isAudioReady])
+        }, 100)
+    }
 
     const togglePlay = async (e) => {
         e.preventDefault()
         e.stopPropagation()
         
-        if (!audioRef.current || !isAudioReady) return
+        if (!audioEnabled) {
+            return enableAudio(e)
+        }
+
+        if (!audioRef.current) return
 
         try {
+            if (audioContextRef.current && audioContextRef.current.state === 'suspended') {
+                await audioContextRef.current.resume()
+            }
+
             if (isPlaying) {
                 audioRef.current.pause()
             } else {
-                // Resume audio context if suspended
-                if (audioContextRef.current && audioContextRef.current.state === 'suspended') {
-                    await audioContextRef.current.resume()
-                }
                 await audioRef.current.play()
             }
-        } catch (error) {
-            console.log('Play/pause error:', error)
+        } catch (err) {
+            console.error('Toggle play error:', err)
+            setError('Playback failed')
         }
     }
 
     return (
+        <div 
+            className="flex items-center space-x-3 w-full relative cursor-pointer"
+            onClick={togglePlay}
+        >
+            <div className="relative w-10 h-10 group">
+                <img
+                    src={link.albumArt}
+                    alt="Album Art"
+                    className={`rounded-full transition-all duration-300 ${
+                        isPlaying ? 'animate-spin' : ''
+                    }`}
+                    style={{ animationDuration: '4s' }}
+                />
+                <div className={`absolute inset-0 bg-gradient-to-r from-green-500/30 to-blue-500/30 rounded-full ${
+                    isPlaying ? 'animate-pulse' : ''
+                }`}></div>
+                
+                {/* Control Button Overlay */}
+                <div className="absolute inset-0 flex items-center justify-center bg-black/60 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                    {!audioEnabled ? (
+                        <FaVolumeUp className="text-white text-xs" />
+                    ) : isLoading ? (
+                        <div className="w-3 h-3 border border-white border-t-transparent rounded-full animate-spin"></div>
+                    ) : isPlaying ? (
+                        <FaPause className="text-white text-xs" />
+                    ) : (
+                        <FaPlay className="text-white text-xs ml-0.5" />
+                    )}
+                </div>
+            </div>
+            
+            <div className="flex-1">
+                <div className="flex items-center space-x-2">
+                    <FaSpotify className={`text-green-500 text-sm ${
+                        isPlaying ? 'animate-pulse' : ''
+                    }`} />
+                    <span className="text-xs text-green-500 font-medium">
+                        {!audioEnabled ? 'Click to Enable' : 
+                         isLoading ? 'Loading...' : 
+                         error ? 'Error' :
+                         isPlaying ? 'Now Playing' : 'Paused'}
+                    </span>
+                </div>
+                <p className="text-xs text-gray-400 mt-1">
+                    <em>{link.artist}</em>
+                </p>
+            </div>
+            
+            <div className="relative">
+                <canvas 
+                    ref={canvasRef} 
+                    className="opacity-70 rounded bg-gray-800"
+                />
+            </div>
+            
+            {audioEnabled && (
+                <audio 
+                    ref={audioRef} 
+                    src={link.audioSrc} 
+                    loop
+                    preload="metadata"
+                    playsInline
+                    crossOrigin="anonymous"
+                />
+            )}
+        </div>
+    )
+}
+
+const Links = () => {
+    return (
         <div className="w-full max-w-md mt-6 space-y-3">
             {links.map((link, index) => (
-                <Link
-                    key={index}
-                    href={link.url}
-                    className="flex items-center justify-between p-3 bg-black border border-gray-500 transition-all duration-300 cursor-pointer group text-white rounded-lg hover:border-gray-400">
+                <div key={index}>
                     {link.isSpotify ? (
-                        <div 
-                            className="flex items-center space-x-3 w-full relative"
-                            onClick={togglePlay}>
-                            <div className="relative w-10 h-10 group">
-                                <img
-                                    src={link.albumArt}
-                                    alt="Album Art"
-                                    className={`rounded-full transition-all duration-300 ${isPlaying ? 'animate-spin' : ''}`}
-                                    style={{ animationDuration: '3s' }}
-                                />
-                                <div className={`absolute inset-0 bg-gradient-to-r from-green-500/30 to-blue-500/30 rounded-full ${isPlaying ? 'animate-pulse' : ''}`}></div>
-                                
-                                {/* Play/Pause Button Overlay */}
-                                <div className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                                    {isPlaying ? (
-                                        <FaPause className="text-white text-xs" />
-                                    ) : (
-                                        <FaPlay className="text-white text-xs ml-0.5" />
-                                    )}
-                                </div>
-                            </div>
-                            
-                            <div className="flex-1">
-                                <div className="flex items-center space-x-2">
-                                    <FaSpotify className={`text-green-500 text-sm ${isPlaying ? 'animate-pulse' : ''}`} />
-                                    <span className="text-xs text-green-500 font-medium">
-                                        {isPlaying ? 'Now Playing' : 'Paused'}
-                                    </span>
-                                </div>
-                                <p className="text-xs text-gray-400 mt-1">
-                                    <em>{link.artist}</em>
-                                </p>
-                            </div>
-                            
-                            <div className="relative">
-                                <canvas 
-                                    ref={canvasRef} 
-                                    className="opacity-70 rounded"
-                                ></canvas>
-                            </div>
-                            
-                            <audio 
-                                ref={audioRef} 
-                                src={link.audioSrc} 
-                                loop
-                                preload="auto"
-                                playsInline
-                            />
+                        <div className="flex items-center justify-between p-3 bg-black border border-gray-500 transition-all duration-300 group text-white rounded-lg hover:border-gray-400">
+                            <SpotifyPlayer link={link} />
                         </div>
                     ) : (
-                        <div className="flex items-center space-x-3 w-full">
-                            {typeof link.icon === "string" &&
-                            link.icon.endsWith(".svg") ? (
-                                <img
-                                    src={link.icon}
-                                    alt={link.title}
-                                    className="w-6 h-6"
-                                    style={{ filter: "invert(1)" }}/>
-                            ) : (
-                                <span className="text-lg">{link.icon}</span>
-                            )}
-                            <div className="flex-1">
-                                <h3 className="text-sm font-medium">
-                                    {link.title}
-                                </h3>
-                                <p className="text-xs text-gray-400">
-                                    {link.description}
-                                </p>
+                        <Link
+                            href={link.url}
+                            className="flex items-center justify-between p-3 bg-black border border-gray-500 transition-all duration-300 cursor-pointer group text-white rounded-lg hover:border-gray-400"
+                        >
+                            <div className="flex items-center space-x-3 w-full">
+                                {typeof link.icon === "string" && link.icon.endsWith(".svg") ? (
+                                    <img
+                                        src={link.icon}
+                                        alt={link.title}
+                                        className="w-6 h-6"
+                                        style={{ filter: "invert(1)" }}
+                                    />
+                                ) : (
+                                    <span className="text-lg">{link.icon}</span>
+                                )}
+                                <div className="flex-1">
+                                    <h3 className="text-sm font-medium">
+                                        {link.title}
+                                    </h3>
+                                    <p className="text-xs text-gray-400">
+                                        {link.description}
+                                    </p>
+                                </div>
+                                <HiArrowRight className="text-gray-400 group-hover:text-white group-hover:translate-x-1 transition-all duration-200" />
                             </div>
-                            <HiArrowRight className="text-gray-400 group-hover:text-white group-hover:translate-x-1 transition-all duration-200" />
-                        </div>
+                        </Link>
                     )}
-                </Link>
+                </div>
             ))}
         </div>
     )
