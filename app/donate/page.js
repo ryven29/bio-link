@@ -32,7 +32,15 @@ const Typing = () => {
   }, [currentText, currentIndex, isDeleting, texts]);
   
   return (
-    <span style={{ position: 'relative' }}>
+    <span style={{ 
+      position: 'relative',
+      background: 'linear-gradient(45deg, #00ffff, #9333ea, #ec4899, #00ffff)',
+      WebkitBackgroundClip: 'text',
+      WebkitTextFillColor: 'transparent',
+      backgroundClip: 'text',
+      backgroundSize: '200% 200%',
+      animation: 'gradientShift 3s ease infinite'
+    }}>
       {currentText}
       <span style={{ color: '#00ffff', animation: 'blink 1s infinite' }}>|</span>
     </span>
@@ -172,6 +180,25 @@ const Header = () => {
 // Main Page Component
 export default function CyberpunkDonatePage() {
   const [glitchText, setGlitchText] = useState('DONATE');
+  const [copySuccess, setCopySuccess] = useState('');
+  
+  // Copy to clipboard function
+  const copyToClipboard = (text, type) => {
+    navigator.clipboard.writeText(text).then(() => {
+      setCopySuccess(type);
+      setTimeout(() => setCopySuccess(''), 2000);
+    }).catch(() => {
+      // Fallback for older browsers
+      const textArea = document.createElement('textarea');
+      textArea.value = text;
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textArea);
+      setCopySuccess(type);
+      setTimeout(() => setCopySuccess(''), 2000);
+    });
+  };
   
   useEffect(() => {
     const glitchChars = '!<>-_\\/[]{}—=+*^?#________';
@@ -281,6 +308,12 @@ export default function CyberpunkDonatePage() {
         @keyframes gridMove {
           0% { transform: translate(0, 0); }
           100% { transform: translate(50px, 50px); }
+        }
+        
+        @keyframes gradientShift {
+          0% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+          100% { background-position: 0% 50%; }
         }
         
         @keyframes blink {
@@ -419,7 +452,37 @@ export default function CyberpunkDonatePage() {
                     WebkitTextFillColor: 'transparent',
                     backgroundClip: 'text'
                   }}>DANA</p>
-                  <p style={{ fontSize: '14px', color: '#d1d5db', fontFamily: 'monospace' }}>082159690832</p>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <p style={{ fontSize: '14px', color: '#d1d5db', fontFamily: 'monospace' }}>082159690832</p>
+                    <button
+                      onClick={() => copyToClipboard('082159690832', 'dana')}
+                      style={{
+                        background: 'none',
+                        border: 'none',
+                        color: '#3b82f6',
+                        cursor: 'pointer',
+                        padding: '4px',
+                        borderRadius: '4px',
+                        transition: 'all 0.2s ease'
+                      }}
+                      onMouseEnter={(e) => {
+                        e.target.style.backgroundColor = 'rgba(59, 130, 246, 0.2)';
+                        e.target.style.transform = 'scale(1.1)';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.target.style.backgroundColor = 'transparent';
+                        e.target.style.transform = 'scale(1)';
+                      }}
+                    >
+                      <svg style={{ width: '16px', height: '16px' }} fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z"></path>
+                        <path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2 3 3 0 01-3 3H9a3 3 0 01-3-3z"></path>
+                      </svg>
+                    </button>
+                    {copySuccess === 'dana' && (
+                      <span style={{ fontSize: '12px', color: '#22c55e', fontWeight: 'bold' }}>Copied!</span>
+                    )}
+                  </div>
                   <p style={{ fontSize: '12px', color: '#9ca3af' }}>M. F**** N*** I****</p>
                 </div>
                 <div style={{ color: '#3b82f6', opacity: 0.5 }}>
@@ -469,7 +532,37 @@ export default function CyberpunkDonatePage() {
                     WebkitTextFillColor: 'transparent',
                     backgroundClip: 'text'
                   }}>GOPAY</p>
-                  <p style={{ fontSize: '14px', color: '#d1d5db', fontFamily: 'monospace' }}>082159690832</p>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <p style={{ fontSize: '14px', color: '#d1d5db', fontFamily: 'monospace' }}>082159690832</p>
+                    <button
+                      onClick={() => copyToClipboard('082159690832', 'gopay')}
+                      style={{
+                        background: 'none',
+                        border: 'none',
+                        color: '#22c55e',
+                        cursor: 'pointer',
+                        padding: '4px',
+                        borderRadius: '4px',
+                        transition: 'all 0.2s ease'
+                      }}
+                      onMouseEnter={(e) => {
+                        e.target.style.backgroundColor = 'rgba(34, 197, 94, 0.2)';
+                        e.target.style.transform = 'scale(1.1)';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.target.style.backgroundColor = 'transparent';
+                        e.target.style.transform = 'scale(1)';
+                      }}
+                    >
+                      <svg style={{ width: '16px', height: '16px' }} fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z"></path>
+                        <path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2 3 3 0 01-3 3H9a3 3 0 01-3-3z"></path>
+                      </svg>
+                    </button>
+                    {copySuccess === 'gopay' && (
+                      <span style={{ fontSize: '12px', color: '#22c55e', fontWeight: 'bold' }}>Copied!</span>
+                    )}
+                  </div>
                   <p style={{ fontSize: '12px', color: '#9ca3af' }}>M. F**** N*** I****</p>
                 </div>
                 <div style={{ color: '#22c55e', opacity: 0.5 }}>
