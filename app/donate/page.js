@@ -32,9 +32,9 @@ const Typing = () => {
   }, [currentText, currentIndex, isDeleting, texts]);
   
   return (
-    <span className="relative">
+    <span style={{ position: 'relative' }}>
       {currentText}
-      <span className="animate-pulse text-cyan-400">|</span>
+      <span style={{ color: '#00ffff', animation: 'blink 1s infinite' }}>|</span>
     </span>
   );
 };
@@ -48,44 +48,117 @@ const Header = () => {
     { href: "/topup", label: "Top Up Game" }
   ];
   
+  const headerStyle = {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    right: 0,
+    zIndex: 50,
+    backdropFilter: 'blur(10px)',
+    WebkitBackdropFilter: 'blur(10px)'
+  };
+  
+  const navStyle = {
+    padding: '16px',
+    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+    borderBottom: '1px solid rgba(0, 255, 255, 0.3)',
+    boxShadow: '0 4px 20px rgba(0, 255, 255, 0.1)'
+  };
+  
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md">
-      <nav className="p-4 bg-black/80 border-b border-cyan-500/30 shadow-lg shadow-cyan-500/10">
-        <div className="container mx-auto flex justify-between items-center">
-          <div className="relative group">
-            <div className="absolute -inset-2 bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 rounded-lg blur opacity-30 group-hover:opacity-50 transition duration-300"></div>
-            <div className="relative text-xl font-bold bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+    <header style={headerStyle}>
+      <nav style={navStyle}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div style={{ position: 'relative' }}>
+            <div style={{
+              fontSize: '20px',
+              fontWeight: 'bold',
+              background: 'linear-gradient(to right, #00ffff, #9333ea, #ec4899)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text'
+            }}>
               <Typing />
             </div>
           </div>
           
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="relative p-3 rounded-lg bg-gradient-to-r from-cyan-500/20 to-purple-500/20 border border-cyan-500/30 hover:border-cyan-400 transition-all duration-300 group"
+            style={{
+              position: 'relative',
+              padding: '12px',
+              borderRadius: '8px',
+              background: 'linear-gradient(to right, rgba(0, 255, 255, 0.2), rgba(147, 51, 234, 0.2))',
+              border: '1px solid rgba(0, 255, 255, 0.3)',
+              cursor: 'pointer',
+              transition: 'all 0.3s ease'
+            }}
           >
-            <div className="flex flex-col gap-1.5 w-6">
-              <span className={`block h-0.5 bg-cyan-400 transform transition-all duration-300 ${isOpen ? 'rotate-45 translate-y-2' : ''}`}></span>
-              <span className={`block h-0.5 bg-cyan-400 transition-all duration-300 ${isOpen ? 'opacity-0' : ''}`}></span>
-              <span className={`block h-0.5 bg-cyan-400 transform transition-all duration-300 ${isOpen ? '-rotate-45 -translate-y-2' : ''}`}></span>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', width: '24px' }}>
+              <span style={{
+                display: 'block',
+                height: '2px',
+                backgroundColor: '#00ffff',
+                transform: isOpen ? 'rotate(45deg) translateY(8px)' : 'none',
+                transition: 'all 0.3s ease'
+              }}></span>
+              <span style={{
+                display: 'block',
+                height: '2px',
+                backgroundColor: '#00ffff',
+                opacity: isOpen ? 0 : 1,
+                transition: 'all 0.3s ease'
+              }}></span>
+              <span style={{
+                display: 'block',
+                height: '2px',
+                backgroundColor: '#00ffff',
+                transform: isOpen ? 'rotate(-45deg) translateY(-8px)' : 'none',
+                transition: 'all 0.3s ease'
+              }}></span>
             </div>
           </button>
         </div>
         
         {isOpen && (
-          <div className="absolute top-full left-0 right-0 bg-black/90 border-b border-cyan-500/30 backdrop-blur-md">
-            <nav className="max-w-7xl mx-auto p-4">
-              <div className="space-y-2">
-                {navLinks.map((link, index) => (
-                  <div key={link.href} className="relative group">
-                    <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500 to-purple-500 rounded-lg blur opacity-0 group-hover:opacity-30 transition duration-300"></div>
-                    <a
-                      href={link.href}
-                      onClick={() => setIsOpen(false)}
-                      className="relative block px-4 py-3 rounded-lg text-cyan-300 hover:text-white border border-transparent hover:border-cyan-500/50 transition-all duration-300"
-                    >
-                      {link.label}
-                    </a>
-                  </div>
+          <div style={{
+            position: 'absolute',
+            top: '100%',
+            left: 0,
+            right: 0,
+            backgroundColor: 'rgba(0, 0, 0, 0.9)',
+            borderBottom: '1px solid rgba(0, 255, 255, 0.3)',
+            backdropFilter: 'blur(10px)'
+          }}>
+            <nav style={{ maxWidth: '1200px', margin: '0 auto', padding: '16px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                {navLinks.map((link) => (
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    onClick={() => setIsOpen(false)}
+                    style={{
+                      display: 'block',
+                      padding: '12px 16px',
+                      borderRadius: '8px',
+                      color: '#00ffff',
+                      textDecoration: 'none',
+                      border: '1px solid transparent',
+                      transition: 'all 0.3s ease'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.target.style.color = '#ffffff';
+                      e.target.style.borderColor = 'rgba(0, 255, 255, 0.5)';
+                      e.target.style.backgroundColor = 'rgba(0, 255, 255, 0.1)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.target.style.color = '#00ffff';
+                      e.target.style.borderColor = 'transparent';
+                      e.target.style.backgroundColor = 'transparent';
+                    }}
+                  >
+                    {link.label}
+                  </a>
                 ))}
               </div>
             </nav>
@@ -119,96 +192,288 @@ export default function CyberpunkDonatePage() {
     return () => clearInterval(glitchInterval);
   }, []);
   
+  const mainStyle = {
+    minHeight: '100vh',
+    backgroundColor: '#000000',
+    color: '#ffffff',
+    position: 'relative',
+    overflow: 'hidden'
+  };
+  
+  const backgroundStyle = {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: '#000000',
+    backgroundImage: `
+      linear-gradient(rgba(0, 255, 255, 0.1) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 255, 255, 0.1) 1px, transparent 1px)
+    `,
+    backgroundSize: '50px 50px',
+    animation: 'gridMove 20s linear infinite',
+    opacity: 0.2
+  };
+  
+  const contentStyle = {
+    position: 'relative',
+    zIndex: 10,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    minHeight: '100vh',
+    padding: '24px',
+    paddingTop: '96px'
+  };
+  
+  const titleStyle = {
+    fontSize: '60px',
+    fontWeight: 'bold',
+    textAlign: 'center',
+    position: 'relative',
+    marginBottom: '48px',
+    background: 'linear-gradient(to right, #00ffff, #9333ea, #ec4899)',
+    WebkitBackgroundClip: 'text',
+    WebkitTextFillColor: 'transparent',
+    backgroundClip: 'text',
+    textShadow: '0 0 30px rgba(0, 255, 255, 0.5)'
+  };
+  
+  const qrisContainerStyle = {
+    position: 'relative',
+    marginBottom: '32px',
+    padding: '24px',
+    backgroundColor: 'rgba(17, 24, 39, 0.8)',
+    backdropFilter: 'blur(10px',
+    border: '1px solid rgba(0, 255, 255, 0.5)',
+    borderRadius: '12px',
+    transition: 'all 0.5s ease',
+    cursor: 'pointer'
+  };
+  
+  const paymentCardStyle = {
+    position: 'relative',
+    marginBottom: '16px',
+    padding: '16px',
+    backgroundColor: 'rgba(17, 24, 39, 0.8)',
+    backdropFilter: 'blur(10px)',
+    borderRadius: '12px',
+    transition: 'all 0.3s ease',
+    cursor: 'pointer'
+  };
+  
+  const footerStyle = {
+    position: 'relative',
+    marginTop: '48px',
+    padding: '24px',
+    border: '1px solid rgba(147, 51, 234, 0.5)',
+    backgroundColor: 'rgba(17, 24, 39, 0.8)',
+    borderRadius: '12px',
+    textAlign: 'center',
+    transition: 'all 0.5s ease'
+  };
+  
   return (
-    <div className="min-h-screen bg-black text-white relative overflow-hidden">
-      {/* Animated Grid Background */}
-      <div className="fixed inset-0 bg-black">
-        <div 
-          className="absolute inset-0 opacity-20"
-          style={{
-            backgroundImage: `
-              linear-gradient(rgba(0, 255, 255, 0.1) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(0, 255, 255, 0.1) 1px, transparent 1px)
-            `,
-            backgroundSize: '50px 50px',
-            animation: 'grid-move 20s linear infinite'
-          }}
-        ></div>
-      </div>
+    <>
+      <style jsx>{`
+        @keyframes gridMove {
+          0% { transform: translate(0, 0); }
+          100% { transform: translate(50px, 50px); }
+        }
+        
+        @keyframes blink {
+          0%, 50% { opacity: 1; }
+          51%, 100% { opacity: 0; }
+        }
+        
+        @keyframes pulse {
+          0%, 100% { opacity: 0.3; }
+          50% { opacity: 0.7; }
+        }
+        
+        .hover-scale:hover {
+          transform: scale(1.05);
+        }
+        
+        .hover-glow:hover {
+          box-shadow: 0 0 30px rgba(0, 255, 255, 0.3);
+        }
+      `}</style>
       
-      {/* Floating Particles */}
-      <div className="fixed inset-0 pointer-events-none">
-        {[...Array(20)].map((_, i) => (
-          <div
-            key={i}
-            className="absolute w-1 h-1 bg-cyan-400 rounded-full opacity-50"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animation: `float ${3 + Math.random() * 4}s ease-in-out infinite ${Math.random() * 2}s`
-            }}
-          ></div>
-        ))}
-      </div>
-      
-      <Header />
-      
-      <main className="relative z-10 flex flex-col items-center justify-center min-h-screen p-6 pt-24">
-        {/* Glitch Title */}
-        <div className="relative mb-12">
-          <h1 className="text-6xl font-bold text-center relative">
-            <span className="bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-              {glitchText}
-            </span>
-            <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent opacity-30 animate-pulse">
-              {glitchText}
-            </div>
-          </h1>
-          <div className="absolute -inset-4 bg-gradient-to-r from-cyan-500 via-purple-500 to-pink-500 rounded-lg blur-xl opacity-20 animate-pulse"></div>
+      <div style={mainStyle}>
+        {/* Animated Grid Background */}
+        <div style={backgroundStyle}></div>
+        
+        {/* Floating Particles */}
+        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, pointerEvents: 'none', zIndex: 5 }}>
+          {[...Array(15)].map((_, i) => (
+            <div
+              key={i}
+              style={{
+                position: 'absolute',
+                width: '4px',
+                height: '4px',
+                backgroundColor: '#00ffff',
+                borderRadius: '50%',
+                opacity: 0.5,
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                animation: `pulse ${3 + Math.random() * 4}s ease-in-out infinite ${Math.random() * 2}s`
+              }}
+            />
+          ))}
         </div>
         
-        {/* QRIS Section */}
-        <div className="relative group mb-8">
-          <div className="absolute -inset-4 bg-gradient-to-r from-cyan-500 via-purple-500 to-pink-500 rounded-xl blur opacity-30 group-hover:opacity-50 transition duration-500"></div>
-          <div className="relative bg-gray-900/80 backdrop-blur-md border border-cyan-500/50 rounded-xl p-6 hover:border-cyan-400 transition-all duration-500 transform hover:scale-105">
-            <div className="relative overflow-hidden rounded-lg">
+        <Header />
+        
+        <main style={contentStyle}>
+          {/* Glitch Title */}
+          <h1 style={titleStyle}>
+            {glitchText}
+          </h1>
+          
+          {/* QRIS Section */}
+          <div 
+            className="hover-scale hover-glow"
+            style={qrisContainerStyle}
+            onMouseEnter={(e) => {
+              e.target.style.borderColor = '#00ffff';
+              e.target.style.transform = 'scale(1.05)';
+              e.target.style.boxShadow = '0 0 30px rgba(0, 255, 255, 0.3)';
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.borderColor = 'rgba(0, 255, 255, 0.5)';
+              e.target.style.transform = 'scale(1)';
+              e.target.style.boxShadow = 'none';
+            }}
+          >
+            <div style={{ position: 'relative', overflow: 'hidden', borderRadius: '8px' }}>
               <img 
                 src="https://files.catbox.moe/jzn65a.jpg" 
                 alt="QRIS ALL PAYMENT" 
-                className="w-full max-w-xs mx-auto rounded-lg shadow-2xl shadow-cyan-500/20 hover:shadow-cyan-500/40 transition-all duration-300"
+                style={{
+                  width: '100%',
+                  maxWidth: '300px',
+                  margin: '0 auto',
+                  display: 'block',
+                  borderRadius: '8px',
+                  boxShadow: '0 8px 32px rgba(0, 255, 255, 0.2)'
+                }}
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-lg"></div>
             </div>
-            <p className="mt-4 text-center text-cyan-300 font-semibold tracking-wider">
-              <span className="bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
-                QRIS ALL PAYMENT
-              </span>
+            <p style={{
+              marginTop: '16px',
+              textAlign: 'center',
+              color: '#00ffff',
+              fontWeight: '600',
+              letterSpacing: '2px',
+              background: 'linear-gradient(to right, #00ffff, #9333ea)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text'
+            }}>
+              QRIS ALL PAYMENT
             </p>
           </div>
-        </div>
-        
-        {/* Payment Methods */}
-        <div className="w-full max-w-md space-y-4">
-          {/* DANA */}
-          <div className="relative group">
-            <div className="absolute -inset-2 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl blur opacity-30 group-hover:opacity-50 transition duration-300"></div>
-            <div className="relative bg-gray-900/80 backdrop-blur-md border border-blue-500/50 rounded-xl p-4 hover:border-blue-400 transition-all duration-300 transform hover:scale-105 hover:rotate-1">
-              <div className="flex items-center space-x-4">
-                <div className="relative">
+          
+          {/* Payment Methods */}
+          <div style={{ width: '100%', maxWidth: '400px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            {/* DANA */}
+            <div 
+              style={{
+                ...paymentCardStyle,
+                border: '1px solid rgba(59, 130, 246, 0.5)'
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.borderColor = '#3b82f6';
+                e.target.style.transform = 'scale(1.05) rotate(1deg)';
+                e.target.style.boxShadow = '0 0 30px rgba(59, 130, 246, 0.3)';
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.borderColor = 'rgba(59, 130, 246, 0.5)';
+                e.target.style.transform = 'scale(1) rotate(0deg)';
+                e.target.style.boxShadow = 'none';
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                <div style={{ position: 'relative' }}>
                   <img 
                     src="https://telegra.ph/file/c605b34f0d4f0127735b4.jpg" 
                     alt="Dana" 
-                    className="w-14 h-14 rounded-lg shadow-lg shadow-blue-500/20 transform group-hover:scale-110 transition-transform duration-300"
+                    style={{
+                      width: '56px',
+                      height: '56px',
+                      borderRadius: '8px',
+                      boxShadow: '0 4px 20px rgba(59, 130, 246, 0.2)'
+                    }}
                   />
-                  <div className="absolute -inset-1 bg-blue-500 rounded-lg blur opacity-20 group-hover:opacity-40 transition-opacity duration-300"></div>
                 </div>
-                <div className="flex-1">
-                  <p className="text-xl font-bold bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">DANA</p>
-                  <p className="text-sm text-gray-300 font-mono">082159690832</p>
-                  <p className="text-xs text-gray-400">M. F**** N*** I****</p>
+                <div style={{ flex: 1 }}>
+                  <p style={{
+                    fontSize: '20px',
+                    fontWeight: 'bold',
+                    background: 'linear-gradient(to right, #3b82f6, #00ffff)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text'
+                  }}>DANA</p>
+                  <p style={{ fontSize: '14px', color: '#d1d5db', fontFamily: 'monospace' }}>082159690832</p>
+                  <p style={{ fontSize: '12px', color: '#9ca3af' }}>M. F**** N*** I****</p>
                 </div>
-                <div className="text-blue-400 opacity-50 group-hover:opacity-100 transition-opacity duration-300">
-                  <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                <div style={{ color: '#3b82f6', opacity: 0.5 }}>
+                  <svg style={{ width: '24px', height: '24px' }} fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+            
+            {/* GOPAY */}
+            <div 
+              style={{
+                ...paymentCardStyle,
+                border: '1px solid rgba(34, 197, 94, 0.5)'
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.borderColor = '#22c55e';
+                e.target.style.transform = 'scale(1.05) rotate(-1deg)';
+                e.target.style.boxShadow = '0 0 30px rgba(34, 197, 94, 0.3)';
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.borderColor = 'rgba(34, 197, 94, 0.5)';
+                e.target.style.transform = 'scale(1) rotate(0deg)';
+                e.target.style.boxShadow = 'none';
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                <div style={{ position: 'relative' }}>
+                  <img 
+                    src="https://files.catbox.moe/hrnxyn.webp" 
+                    alt="Gopay" 
+                    style={{
+                      width: '56px',
+                      height: '56px',
+                      borderRadius: '8px',
+                      boxShadow: '0 4px 20px rgba(34, 197, 94, 0.2)'
+                    }}
+                  />
+                </div>
+                <div style={{ flex: 1 }}>
+                  <p style={{
+                    fontSize: '20px',
+                    fontWeight: 'bold',
+                    background: 'linear-gradient(to right, #22c55e, #10b981)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text'
+                  }}>GOPAY</p>
+                  <p style={{ fontSize: '14px', color: '#d1d5db', fontFamily: 'monospace' }}>082159690832</p>
+                  <p style={{ fontSize: '12px', color: '#9ca3af' }}>M. F**** N*** I****</p>
+                </div>
+                <div style={{ color: '#22c55e', opacity: 0.5 }}>
+                  <svg style={{ width: '24px', height: '24px' }} fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
                   </svg>
                 </div>
@@ -216,66 +481,46 @@ export default function CyberpunkDonatePage() {
             </div>
           </div>
           
-          {/* GOPAY */}
-          <div className="relative group">
-            <div className="absolute -inset-2 bg-gradient-to-r from-green-500 to-emerald-500 rounded-xl blur opacity-30 group-hover:opacity-50 transition duration-300"></div>
-            <div className="relative bg-gray-900/80 backdrop-blur-md border border-green-500/50 rounded-xl p-4 hover:border-green-400 transition-all duration-300 transform hover:scale-105 hover:-rotate-1">
-              <div className="flex items-center space-x-4">
-                <div className="relative">
-                  <img 
-                    src="https://files.catbox.moe/hrnxyn.webp" 
-                    alt="Gopay" 
-                    className="w-14 h-14 rounded-lg shadow-lg shadow-green-500/20 transform group-hover:scale-110 transition-transform duration-300"
-                  />
-                  <div className="absolute -inset-1 bg-green-500 rounded-lg blur opacity-20 group-hover:opacity-40 transition-opacity duration-300"></div>
-                </div>
-                <div className="flex-1">
-                  <p className="text-xl font-bold bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent">GOPAY</p>
-                  <p className="text-sm text-gray-300 font-mono">082159690832</p>
-                  <p className="text-xs text-gray-400">M. F**** N*** I****</p>
-                </div>
-                <div className="text-green-400 opacity-50 group-hover:opacity-100 transition-opacity duration-300">
-                  <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
-                  </svg>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        {/* Footer */}
-        <div className="relative group mt-12">
-          <div className="absolute -inset-4 bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 rounded-xl blur opacity-30 group-hover:opacity-50 transition duration-500"></div>
-          <div className="relative bg-gray-900/80 backdrop-blur-md border border-purple-500/50 rounded-xl p-6 text-center hover:border-purple-400 transition-all duration-500">
-            <p className="text-lg font-semibold bg-gradient-to-r from-purple-400 via-pink-400 to-red-400 bg-clip-text text-transparent">
+          {/* Footer */}
+          <div 
+            style={footerStyle}
+            onMouseEnter={(e) => {
+              e.target.style.borderColor = '#9333ea';
+              e.target.style.boxShadow = '0 0 30px rgba(147, 51, 234, 0.3)';
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.borderColor = 'rgba(147, 51, 234, 0.5)';
+              e.target.style.boxShadow = 'none';
+            }}
+          >
+            <p style={{
+              fontSize: '18px',
+              fontWeight: '600',
+              background: 'linear-gradient(to right, #9333ea, #ec4899, #ef4444)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text'
+            }}>
               Thanks yang sudah Donasi!
             </p>
-            <p className="text-cyan-300 mt-2">Semoga rezekinya dilancarkan</p>
-            <div className="mt-3 flex justify-center space-x-2">
+            <p style={{ color: '#00ffff', marginTop: '8px' }}>Semoga rezekinya dilancarkan</p>
+            <div style={{ marginTop: '12px', display: 'flex', justifyContent: 'center', gap: '8px' }}>
               {[...Array(3)].map((_, i) => (
                 <div
                   key={i}
-                  className="w-2 h-2 bg-purple-400 rounded-full animate-pulse"
-                  style={{ animationDelay: `${i * 0.2}s` }}
-                ></div>
+                  style={{
+                    width: '8px',
+                    height: '8px',
+                    backgroundColor: '#9333ea',
+                    borderRadius: '50%',
+                    animation: `pulse ${2}s ease-in-out infinite ${i * 0.2}s`
+                  }}
+                />
               ))}
             </div>
           </div>
-        </div>
-      </main>
-      
-      <style jsx>{`
-        @keyframes grid-move {
-          0% { transform: translate(0, 0); }
-          100% { transform: translate(50px, 50px); }
-        }
-        
-        @keyframes float {
-          0%, 100% { transform: translateY(0px) rotate(0deg); }
-          50% { transform: translateY(-20px) rotate(180deg); }
-        }
-      `}</style>
-    </div>
+        </main>
+      </div>
+    </>
   );
 }
