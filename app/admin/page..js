@@ -10,6 +10,7 @@ export default function AdminPage() {
   const [password, setPassword] = useState('')
   const [showAddForm, setShowAddForm] = useState(false)
   const [editingId, setEditingId] = useState(null)
+  const [isLoading, setIsLoading] = useState(true)
   const [formData, setFormData] = useState({
     title: "",
     image1: "",
@@ -22,11 +23,70 @@ export default function AdminPage() {
 
   // Load testimonials from localStorage
   useEffect(() => {
-    const savedTestimonials = localStorage.getItem('ryven-testimonials')
-    if (savedTestimonials) {
-      setTestimonials(JSON.parse(savedTestimonials))
-    } else {
-      // Default testimonials
+    try {
+      const savedTestimonials = localStorage.getItem('ryven-testimonials')
+      if (savedTestimonials) {
+        setTestimonials(JSON.parse(savedTestimonials))
+      } else {
+        // Default testimonials
+        const defaultTestimonials = [
+          {
+            id: 1,
+            title: "Jasa Claim Nitro Trial",
+            image1: "https://c.top4top.io/p_3506prg6k1.jpg",
+            image2: "https://d.top4top.io/p_3506c5zjg2.jpg",
+            status: "DONE",
+            nominal: "50K",
+            service: "Nitro Discord Trial",
+            description: "Claim Nitro Discord berhasil"
+          },
+          {
+            id: 2,
+            title: "Joki Quest Discord",
+            image1: "https://e.top4top.io/p_3506l56gw3.jpg",
+            image2: "https://g.top4top.io/p_35067ihh65.jpg",
+            status: "DONE",
+            nominal: "25K",
+            service: "Quest Discord Server",
+            description: "Joki quest berhasil selesai"
+          },
+          {
+            id: 3,
+            title: "Akun Telegram Old",
+            image1: "https://f.top4top.io/p_3506vcfop4.jpg",
+            image2: "",
+            status: "DONE",
+            nominal: "100K",
+            service: "Telegram Account",
+            description: "Akun telegram old berkualitas"
+          },
+          {
+            id: 4,
+            title: "Xbox Gamepass 1 Month",
+            image1: "https://h.top4top.io/p_350653ezy6.jpg",
+            image2: "",
+            status: "DONE",
+            nominal: "75K",
+            service: "Xbox Game Pass",
+            description: "Gamepass 1 bulan aktif"
+          },
+          {
+            id: 5,
+            title: "YT Premium 1 Month Invite",
+            image1: "https://i.top4top.io/p_350631men7.jpg",
+            image2: "",
+            status: "DONE",
+            nominal: "30K",
+            service: "YouTube Premium",
+            description: "YT Premium 1 bulan invite"
+          }
+        ]
+        setTestimonials(defaultTestimonials)
+        localStorage.setItem('ryven-testimonials', JSON.stringify(defaultTestimonials))
+      }
+    } catch (error) {
+      console.error('Error loading testimonials:', error)
+      // Fallback to default testimonials
       const defaultTestimonials = [
         {
           id: 1,
@@ -80,14 +140,19 @@ export default function AdminPage() {
         }
       ]
       setTestimonials(defaultTestimonials)
-      localStorage.setItem('ryven-testimonials', JSON.stringify(defaultTestimonials))
+    } finally {
+      setIsLoading(false)
     }
   }, [])
 
   // Save testimonials to localStorage whenever it changes
   useEffect(() => {
     if (testimonials.length > 0) {
-      localStorage.setItem('ryven-testimonials', JSON.stringify(testimonials))
+      try {
+        localStorage.setItem('ryven-testimonials', JSON.stringify(testimonials))
+      } catch (error) {
+        console.error('Error saving testimonials:', error)
+      }
     }
   }, [testimonials])
 
@@ -95,7 +160,11 @@ export default function AdminPage() {
     e.preventDefault()
     if (password === 'ryven2024') {
       setIsAuthenticated(true)
-      localStorage.setItem('ryven-admin', 'ryven2024')
+      try {
+        localStorage.setItem('ryven-admin', 'ryven2024')
+      } catch (error) {
+        console.error('Error saving admin status:', error)
+      }
     } else {
       alert('Password salah!')
     }
@@ -103,7 +172,11 @@ export default function AdminPage() {
 
   const handleLogout = () => {
     setIsAuthenticated(false)
-    localStorage.removeItem('ryven-admin')
+    try {
+      localStorage.removeItem('ryven-admin')
+    } catch (error) {
+      console.error('Error removing admin status:', error)
+    }
   }
 
   const handleAddTestimonial = () => {
@@ -135,9 +208,10 @@ export default function AdminPage() {
   }
 
   const handleUpdateTestimonial = () => {
-    setTestimonials(testimonials.map(t => 
+    const updatedTestimonials = testimonials.map(t => 
       t.id === editingId ? { ...formData, id: editingId } : t
-    ))
+    )
+    setTestimonials(updatedTestimonials)
     setFormData({
       title: "",
       image1: "",
@@ -167,13 +241,18 @@ export default function AdminPage() {
   }
 
   const exportData = () => {
-    const dataStr = JSON.stringify(testimonials, null, 2)
-    const dataBlob = new Blob([dataStr], {type: 'application/json'})
-    const url = URL.createObjectURL(dataBlob)
-    const link = document.createElement('a')
-    link.href = url
-    link.download = 'ryven-testimonials.json'
-    link.click()
+    try {
+      const dataStr = JSON.stringify(testimonials, null, 2)
+      const dataBlob = new Blob([dataStr], {type: 'application/json'})
+      const url = URL.createObjectURL(dataBlob)
+      const link = document.createElement('a')
+      link.href = url
+      link.download = 'ryven-testimonials.json'
+      link.click()
+    } catch (error) {
+      console.error('Error exporting data:', error)
+      alert('Error saat export data')
+    }
   }
 
   const importData = (e) => {
@@ -186,11 +265,23 @@ export default function AdminPage() {
           setTestimonials(data)
           alert('Data berhasil diimpor!')
         } catch (error) {
+          console.error('Error importing data:', error)
           alert('Format file tidak valid!')
         }
       }
       reader.readAsText(file)
     }
+  }
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-cyan-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-cyan-300">Loading...</p>
+        </div>
+      </div>
+    )
   }
 
   if (!isAuthenticated) {
@@ -441,6 +532,9 @@ export default function AdminPage() {
                       src={testimonial.image1}
                       alt="Preview 1"
                       className="w-16 h-16 object-cover rounded border border-cyan-500/30"
+                      onError={(e) => {
+                        e.target.style.display = 'none'
+                      }}
                     />
                   )}
                   {testimonial.image2 && (
@@ -448,6 +542,9 @@ export default function AdminPage() {
                       src={testimonial.image2}
                       alt="Preview 2"
                       className="w-16 h-16 object-cover rounded border border-cyan-500/30"
+                      onError={(e) => {
+                        e.target.style.display = 'none'
+                      }}
                     />
                   )}
                 </div>
