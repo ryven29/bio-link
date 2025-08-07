@@ -6,14 +6,86 @@ import { Plus, Edit, Trash2, Save, X } from 'lucide-react'
 
 export default function TestimonialPage() {
   const [testimonials, setTestimonials] = useState([])
+  const [isAdmin, setIsAdmin] = useState(false)
+  const [showAddForm, setShowAddForm] = useState(false)
+  const [editingId, setEditingId] = useState(null)
+  const [isLoading, setIsLoading] = useState(true)
+  const [formData, setFormData] = useState({
+    title: "",
+    image1: "",
+    image2: "",
+    status: "DONE",
+    nominal: "",
+    service: "",
+    description: ""
+  })
 
   // Load testimonials from localStorage
   useEffect(() => {
-    const savedTestimonials = localStorage.getItem('ryven-testimonials')
-    if (savedTestimonials) {
-      setTestimonials(JSON.parse(savedTestimonials))
-    } else {
-      // Default testimonials
+    try {
+      const savedTestimonials = localStorage.getItem('ryven-testimonials')
+      if (savedTestimonials) {
+        setTestimonials(JSON.parse(savedTestimonials))
+      } else {
+        // Default testimonials
+        const defaultTestimonials = [
+          {
+            id: 1,
+            title: "Jasa Claim Nitro Trial",
+            image1: "https://c.top4top.io/p_3506prg6k1.jpg",
+            image2: "https://d.top4top.io/p_3506c5zjg2.jpg",
+            status: "DONE",
+            nominal: "50K",
+            service: "Nitro Discord Trial",
+            description: "Claim Nitro Discord berhasil"
+          },
+          {
+            id: 2,
+            title: "Joki Quest Discord",
+            image1: "https://e.top4top.io/p_3506l56gw3.jpg",
+            image2: "https://g.top4top.io/p_35067ihh65.jpg",
+            status: "DONE",
+            nominal: "25K",
+            service: "Quest Discord Server",
+            description: "Joki quest berhasil selesai"
+          },
+          {
+            id: 3,
+            title: "Akun Telegram Old",
+            image1: "https://f.top4top.io/p_3506vcfop4.jpg",
+            image2: "",
+            status: "DONE",
+            nominal: "100K",
+            service: "Telegram Account",
+            description: "Akun telegram old berkualitas"
+          },
+          {
+            id: 4,
+            title: "Xbox Gamepass 1 Month",
+            image1: "https://h.top4top.io/p_350653ezy6.jpg",
+            image2: "",
+            status: "DONE",
+            nominal: "75K",
+            service: "Xbox Game Pass",
+            description: "Gamepass 1 bulan aktif"
+          },
+          {
+            id: 5,
+            title: "YT Premium 1 Month Invite",
+            image1: "https://i.top4top.io/p_350631men7.jpg",
+            image2: "",
+            status: "DONE",
+            nominal: "30K",
+            service: "YouTube Premium",
+            description: "YT Premium 1 bulan invite"
+          }
+        ]
+        setTestimonials(defaultTestimonials)
+        localStorage.setItem('ryven-testimonials', JSON.stringify(defaultTestimonials))
+      }
+    } catch (error) {
+      console.error('Error loading testimonials:', error)
+      // Fallback to default testimonials
       const defaultTestimonials = [
         {
           id: 1,
@@ -67,28 +139,20 @@ export default function TestimonialPage() {
         }
       ]
       setTestimonials(defaultTestimonials)
-      localStorage.setItem('ryven-testimonials', JSON.stringify(defaultTestimonials))
+    } finally {
+      setIsLoading(false)
     }
   }, [])
 
-  const [isAdmin, setIsAdmin] = useState(false)
-  const [showAddForm, setShowAddForm] = useState(false)
-  const [editingId, setEditingId] = useState(null)
-  const [formData, setFormData] = useState({
-    title: "",
-    image1: "",
-    image2: "",
-    status: "DONE",
-    nominal: "",
-    service: "",
-    description: ""
-  })
-
   // Check if user is admin (you can modify this logic)
   useEffect(() => {
-    const adminKey = localStorage.getItem('ryven-admin')
-    if (adminKey === 'ryven2024') {
-      setIsAdmin(true)
+    try {
+      const adminKey = localStorage.getItem('ryven-admin')
+      if (adminKey === 'ryven2024') {
+        setIsAdmin(true)
+      }
+    } catch (error) {
+      console.error('Error checking admin status:', error)
     }
   }, [])
 
@@ -101,6 +165,11 @@ export default function TestimonialPage() {
     }
     
     setTestimonials([...testimonials, newTestimonial])
+    try {
+      localStorage.setItem('ryven-testimonials', JSON.stringify([...testimonials, newTestimonial]))
+    } catch (error) {
+      console.error('Error saving testimonial:', error)
+    }
     setFormData({
       title: "",
       image1: "",
@@ -121,9 +190,15 @@ export default function TestimonialPage() {
   }
 
   const handleUpdateTestimonial = () => {
-    setTestimonials(testimonials.map(t => 
+    const updatedTestimonials = testimonials.map(t => 
       t.id === editingId ? { ...formData, id: editingId } : t
-    ))
+    )
+    setTestimonials(updatedTestimonials)
+    try {
+      localStorage.setItem('ryven-testimonials', JSON.stringify(updatedTestimonials))
+    } catch (error) {
+      console.error('Error updating testimonial:', error)
+    }
     setFormData({
       title: "",
       image1: "",
@@ -138,7 +213,13 @@ export default function TestimonialPage() {
   }
 
   const handleDeleteTestimonial = (id) => {
-    setTestimonials(testimonials.filter(t => t.id !== id))
+    const filteredTestimonials = testimonials.filter(t => t.id !== id)
+    setTestimonials(filteredTestimonials)
+    try {
+      localStorage.setItem('ryven-testimonials', JSON.stringify(filteredTestimonials))
+    } catch (error) {
+      console.error('Error deleting testimonial:', error)
+    }
   }
 
   const handleSubmit = (e) => {
@@ -148,6 +229,17 @@ export default function TestimonialPage() {
     } else {
       handleAddTestimonial()
     }
+  }
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-cyan-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-cyan-300">Loading...</p>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -335,6 +427,9 @@ export default function TestimonialPage() {
                       src={testimonial.image1}
                       alt="Testimoni 1"
                       className="w-full h-32 object-cover rounded-lg border border-cyan-500/30"
+                      onError={(e) => {
+                        e.target.style.display = 'none'
+                      }}
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent rounded-lg"></div>
                   </div>
@@ -344,13 +439,16 @@ export default function TestimonialPage() {
                         src={testimonial.image2}
                         alt="Testimoni 2"
                         className="w-full h-32 object-cover rounded-lg border border-cyan-500/30"
+                        onError={(e) => {
+                          e.target.style.display = 'none'
+                        }}
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent rounded-lg"></div>
                     </div>
                   )}
                 </div>
                 
-                {/* Overlay D logo */}
+                {/* Overlay R logo */}
                 <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
                   <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-lg">
                     <span className="text-2xl font-bold text-slate-800">R</span>
