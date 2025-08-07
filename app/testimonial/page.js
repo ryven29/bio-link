@@ -1,4 +1,3 @@
-'use client'
 import { useState, useEffect } from 'react'
 import { Plus, Edit, Trash2, X, Star, CheckCircle } from 'lucide-react'
 
@@ -17,6 +16,7 @@ export default function TestimonialPage() {
     service: "",
     description: ""
   })
+  const [previewImage, setPreviewImage] = useState(null)
 
   // Load testimonials from memory (replacing localStorage)
   useEffect(() => {
@@ -200,10 +200,10 @@ export default function TestimonialPage() {
             </div>
             
             <div className="relative">
-              <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-cyan-400 rounded-full flex items-center justify-center ml-6 animate-pulse">
+              <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-cyan-400 rounded-full flex items-center justify-center ml-6 animate-pulse" style={{animationDelay: '0.5s'}}>
                 <span className="text-3xl font-bold text-white">S</span>
               </div>
-              <div className="absolute -inset-2 bg-gradient-to-r from-purple-500 to-cyan-400 rounded-full opacity-30 blur animate-pulse"></div>
+              <div className="absolute -inset-2 bg-gradient-to-r from-purple-500 to-cyan-400 rounded-full opacity-30 blur animate-pulse" style={{animationDelay: '0.5s'}}></div>
             </div>
           </div>
           
@@ -232,6 +232,31 @@ export default function TestimonialPage() {
               <Plus size={24} className="group-hover:rotate-90 transition-transform duration-300" />
               Tambah Testimoni Baru
             </button>
+          </div>
+        </div>
+      )}
+
+      {/* Image Preview Modal */}
+      {previewImage && (
+        <div className="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="relative max-w-4xl max-h-full">
+            <button
+              onClick={() => setPreviewImage(null)}
+              className="absolute -top-12 right-0 w-10 h-10 bg-red-500/80 hover:bg-red-500 backdrop-blur-sm rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 z-10"
+            >
+              <X size={20} className="text-white" />
+            </button>
+            <img
+              src={previewImage}
+              alt="Preview"
+              className="max-w-full max-h-full object-contain rounded-xl border-2 border-cyan-400/50 shadow-2xl"
+              onClick={() => setPreviewImage(null)}
+            />
+            <div className="absolute inset-0 pointer-events-none">
+              <div className="absolute top-4 left-4 w-12 h-12 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center">
+                <span className="text-xl font-bold text-slate-800">R</span>
+              </div>
+            </div>
           </div>
         </div>
       )}
