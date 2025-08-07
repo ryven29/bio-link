@@ -19,9 +19,21 @@
   transition: all 0.3s ease;
 }
 
-.cyber-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 5px 15px var(--cyber-accent);
+.login-container {
+  max-width: 400px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: var(--cyber-dark);
+  border: 2px solid var(--cyber-accent);
+  border-radius: 8px;
+  box-shadow: 0 0 20px var(--cyber-accent);
+}
+
+.cyber-title {
+  color: var(--cyber-accent);
+  text-shadow: 0 0 10px var(--cyber-accent);
+  text-transform: uppercase;
+  letter-spacing: 2px;
 }
 
 .cyber-input {
@@ -57,38 +69,6 @@
   box-shadow: 0 0 15px var(--cyber-accent);
 }
 
-.login-container {
-  max-width: 400px;
-  margin: 2rem auto;
-  padding: 2rem;
-  background: var(--cyber-dark);
-  border: 2px solid var(--cyber-accent);
-  border-radius: 8px;
-  box-shadow: 0 0 20px var(--cyber-accent);
-}
-
-.cyber-title {
-  color: var(--cyber-accent);
-  text-shadow: 0 0 10px var(--cyber-accent);
-  text-transform: uppercase;
-  letter-spacing: 2px;
-}
-
-.delete-btn {
-  background: #ff0044;
-  color: white;
-  border: none;
-  padding: 0.25rem 0.5rem;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.delete-btn:hover {
-  background: #ff2266;
-  box-shadow: 0 0 10px #ff2266;
-}
-
 .cyber-btn-sm {
   background: var(--cyber-secondary);
   color: #fff;
@@ -105,4 +85,19 @@
 .cyber-btn-sm:hover {
   background: var(--cyber-accent);
   box-shadow: 0 0 10px var(--cyber-accent);
+}
+
+.delete-btn {
+  background: #ff0044;
+  color: white;
+  border: none;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.delete-btn:hover {
+  background: #ff2266;
+  box-shadow: 0 0 10px #ff2266;
 }
