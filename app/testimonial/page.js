@@ -1,6 +1,7 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
+import "./styles.css";
 
 const initialTestimonials = [
   {
@@ -64,6 +65,8 @@ const initialTestimonials = [
 export default function Testimoni() {
   const [testimonials, setTestimonials] = useState(initialTestimonials);
   const [modal, setModal] = useState({ open: false, img: "" });
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [loginForm, setLoginForm] = useState({ username: "", password: "" });
   const [form, setForm] = useState({
     img: "",
     produk: "",
@@ -77,6 +80,25 @@ export default function Testimoni() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+  const handleLoginForm = (e) => {
+    setLoginForm({ ...loginForm, [e.target.name]: e.target.value });
+  };
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    // Replace with your desired admin credentials
+    if (loginForm.username === "admin" && loginForm.password === "admin123") {
+      setIsAdmin(true);
+      setLoginForm({ username: "", password: "" });
+    } else {
+      alert("Invalid credentials!");
+    }
+  };
+
+  const handleLogout = () => {
+    setIsAdmin(false);
+  };
+
   const addTestimoni = (e) => {
     e.preventDefault();
     if (!form.img || !form.produk || !form.customer || !form.harga || !form.respon) return;
@@ -84,14 +106,50 @@ export default function Testimoni() {
     setForm({ img: "", produk: "", customer: "", harga: "", respon: "", bintang: 5 });
   };
 
+  const deleteTestimoni = (index) => {
+    const newTestimonials = testimonials.filter((_, i) => i !== index);
+    setTestimonials(newTestimonials);
+  };
+
   return (
     <div className="cyberpunk-bg min-h-screen flex flex-col justify-between">
       <main className="max-w-3xl mx-auto w-full py-8 px-4">
-        <h1 className="cyberpunk-title text-4xl md:text-5xl font-bold text-center mb-2">Ryven Store</h1>
+        <h1 className="cyber-title text-4xl md:text-5xl font-bold text-center mb-2">Ryven Store</h1>
         <p className="text-cyber-accent text-center mb-8 text-lg">Testimoni Customer</p>
-        <div className="mb-10 p-4 rounded-xl border-2 border-cyber-accent bg-cyber-panel shadow-cyber">
-          <h2 className="text-xl font-bold mb-2 text-cyber-accent">Tambah Testimoni (Owner Only)</h2>
-          <form className="grid grid-cols-1 md:grid-cols-2 gap-4" onSubmit={addTestimoni}>
+
+        {!isAdmin ? (
+          <div className="login-container">
+            <h2 className="text-xl font-bold mb-4 text-cyber-accent">Admin Login</h2>
+            <form onSubmit={handleLogin} className="space-y-4">
+              <input
+                type="text"
+                className="cyber-input w-full"
+                placeholder="Username"
+                name="username"
+                value={loginForm.username}
+                onChange={handleLoginForm}
+                required
+              />
+              <input
+                type="password"
+                className="cyber-input w-full"
+                placeholder="Password"
+                name="password"
+                value={loginForm.password}
+                onChange={handleLoginForm}
+                required
+              />
+              <button type="submit" className="cyber-btn w-full">Login</button>
+            </form>
+          </div>
+        ) : (
+          <>
+            <div className="mb-10 p-4 rounded-xl border-2 border-cyber-accent bg-cyber-dark shadow-cyber">
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="text-xl font-bold text-cyber-accent">Admin Panel</h2>
+                <button onClick={handleLogout} className="cyber-btn">Logout</button>
+              </div>
+              <form className="grid grid-cols-1 md:grid-cols-2 gap-4" onSubmit={addTestimoni}>
             <input className="cyber-input" name="img" value={form.img} onChange={handleForm} placeholder="Link Foto Testimoni" required />
             <input className="cyber-input" name="produk" value={form.produk} onChange={handleForm} placeholder="Nama Produk" required />
             <input className="cyber-input" name="customer" value={form.customer} onChange={handleForm} placeholder="Nama Customer" required />
@@ -105,9 +163,12 @@ export default function Testimoni() {
             <button className="cyber-btn col-span-1 md:col-span-2 mt-2" type="submit">Tambah Testimoni</button>
           </form>
         </div>
+          </>
+        )}
+        
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {testimonials.map((t, i) => (
-            <div key={i} className="cyber-card p-4 rounded-xl border-2 border-cyber-accent bg-cyber-panel shadow-cyber relative">
+            <div key={i} className="cyber-card p-4 rounded-xl relative">
               <div className="cursor-pointer group" onClick={() => setModal({ open: true, img: t.img })}>
                 <img src={t.img} alt={t.produk} className="rounded-lg w-full h-48 object-cover cyber-img group-hover:scale-105 transition-transform duration-300" />
                 <span className="absolute top-2 right-2 bg-cyber-accent text-black text-xs px-2 py-1 rounded shadow">Preview</span>
@@ -117,33 +178,41 @@ export default function Testimoni() {
                   <span className="text-cyber-accent font-bold">{t.produk}</span>
                   <span className="text-cyber-price font-bold">{t.harga}</span>
                 </div>
-                <div className="text-cyber-customer text-sm">{t.customer}</div>
-                <div className="text-cyber-respon text-xs mt-1">{t.respon}</div>
-                <div className="mt-2 flex gap-1">
-                  {Array.from({ length: t.bintang }).map((_, idx) => (
-                    <span key={idx} className="text-yellow-400">★</span>
-                  ))}
-                  {Array.from({ length: 5 - t.bintang }).map((_, idx) => (
-                    <span key={idx} className="text-gray-600">★</span>
-                  ))}
+                <div className="text-white text-sm">{t.customer}</div>
+                <div className="text-gray-300 text-xs mt-1">{t.respon}</div>
+                <div className="mt-2 flex items-center justify-between">
+                  <div className="flex gap-1">
+                    {Array.from({ length: t.bintang }).map((_, idx) => (
+                      <span key={idx} className="text-yellow-400">★</span>
+                    ))}
+                    {Array.from({ length: 5 - t.bintang }).map((_, idx) => (
+                      <span key={idx} className="text-gray-600">★</span>
+                    ))}
+                  </div>
+                  {isAdmin && (
+                    <button onClick={() => deleteTestimoni(i)} className="delete-btn">
+                      Hapus
+                    </button>
+                  )}
                 </div>
               </div>
             </div>
           ))}
         </div>
+
         {modal.open && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80" onClick={() => setModal({ open: false, img: "" })}>
             <img src={modal.img} alt="Preview" className="max-w-full max-h-[80vh] rounded-xl border-4 border-cyber-accent shadow-cyber-lg animate__animated animate__zoomIn" />
           </div>
         )}
       </main>
-      <footer className="cyberpunk-footer w-full py-6 px-4 text-center border-t-2 border-cyber-accent bg-cyber-panel shadow-cyber mt-10">
+      <footer className="w-full py-6 px-4 text-center border-t-2 border-cyber-accent bg-cyber-dark shadow-cyber mt-10">
         <div className="text-cyber-accent text-lg font-bold mb-2">Ikuti Kami</div>
         <div className="flex flex-col md:flex-row items-center justify-center gap-4">
-          <a href="https://wa.me/628991103457" target="_blank" rel="noopener noreferrer" className="cyber-link"><i className="fab fa-whatsapp"></i> Whatsapp</a>
-          <a href="https://instagram.com/fikrinrirham" target="_blank" rel="noopener noreferrer" className="cyber-link"><i className="fab fa-instagram"></i> Instagram</a>
+          <a href="https://wa.me/628991103457" target="_blank" rel="noopener noreferrer" className="cyber-link hover:text-cyber-accent transition-colors"><i className="fab fa-whatsapp"></i> Whatsapp</a>
+          <a href="https://instagram.com/fikrinrirham" target="_blank" rel="noopener noreferrer" className="cyber-link hover:text-cyber-accent transition-colors"><i className="fab fa-instagram"></i> Instagram</a>
         </div>
-        <div className="mt-2 text-xs text-cyber-copyright">&copy; {new Date().getFullYear()} Ryven Store. All rights reserved.</div>
+        <div className="mt-2 text-xs text-gray-400">&copy; {new Date().getFullYear()} Ryven Store. All rights reserved.</div>
       </footer>
     </div>
   );
