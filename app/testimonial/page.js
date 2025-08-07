@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import "./styles.css";
 
 const initialTestimonials = [
@@ -66,7 +67,6 @@ export default function Testimoni() {
   const [testimonials, setTestimonials] = useState(initialTestimonials);
   const [modal, setModal] = useState({ open: false, img: "" });
   const [isAdmin, setIsAdmin] = useState(false);
-  const [loginForm, setLoginForm] = useState({ username: "", password: "" });
   const [form, setForm] = useState({
     img: "",
     produk: "",
@@ -76,27 +76,20 @@ export default function Testimoni() {
     bintang: 5,
   });
 
+  useEffect(() => {
+    const adminStatus = localStorage.getItem('isAdmin');
+    if (adminStatus === 'true') {
+      setIsAdmin(true);
+    }
+  }, []);
+
   const handleForm = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleLoginForm = (e) => {
-    setLoginForm({ ...loginForm, [e.target.name]: e.target.value });
-  };
-
-  const handleLogin = (e) => {
-    e.preventDefault();
-    // Replace with your desired admin credentials
-    if (loginForm.username === "admin" && loginForm.password === "admin123") {
-      setIsAdmin(true);
-      setLoginForm({ username: "", password: "" });
-    } else {
-      alert("Invalid credentials!");
-    }
-  };
-
   const handleLogout = () => {
     setIsAdmin(false);
+    localStorage.removeItem('isAdmin');
   };
 
   const addTestimoni = (e) => {
@@ -114,35 +107,21 @@ export default function Testimoni() {
   return (
     <div className="cyberpunk-bg min-h-screen flex flex-col justify-between">
       <main className="max-w-3xl mx-auto w-full py-8 px-4">
-        <h1 className="cyber-title text-4xl md:text-5xl font-bold text-center mb-2">Ryven Store</h1>
+        <div className="flex justify-between items-center mb-8">
+          <h1 className="cyber-title text-4xl md:text-5xl font-bold">Ryven Store</h1>
+          {isAdmin ? (
+            <button onClick={handleLogout} className="cyber-btn-sm">Logout</button>
+          ) : (
+            <Link href="/testi/admin" className="text-cyber-accent hover:text-cyber-secondary transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+              </svg>
+            </Link>
+          )}
+        </div>
         <p className="text-cyber-accent text-center mb-8 text-lg">Testimoni Customer</p>
 
-        {!isAdmin ? (
-          <div className="login-container">
-            <h2 className="text-xl font-bold mb-4 text-cyber-accent">Admin Login</h2>
-            <form onSubmit={handleLogin} className="space-y-4">
-              <input
-                type="text"
-                className="cyber-input w-full"
-                placeholder="Username"
-                name="username"
-                value={loginForm.username}
-                onChange={handleLoginForm}
-                required
-              />
-              <input
-                type="password"
-                className="cyber-input w-full"
-                placeholder="Password"
-                name="password"
-                value={loginForm.password}
-                onChange={handleLoginForm}
-                required
-              />
-              <button type="submit" className="cyber-btn w-full">Login</button>
-            </form>
-          </div>
-        ) : (
+        {isAdmin && (
           <>
             <div className="mb-10 p-4 rounded-xl border-2 border-cyber-accent bg-cyber-dark shadow-cyber">
               <div className="flex justify-between items-center mb-4">

@@ -88,3 +88,21 @@
   background: #ff2266;
   box-shadow: 0 0 10px #ff2266;
 }
+
+.cyber-btn-sm {
+  background: var(--cyber-secondary);
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.cyber-btn-sm:hover {
+  background: var(--cyber-accent);
+  box-shadow: 0 0 10px var(--cyber-accent);
+}
