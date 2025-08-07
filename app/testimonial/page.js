@@ -26,8 +26,8 @@ export default function TestimonialPage() {
         {
           id: 1,
           title: "Jasa Claim Nitro Trial",
-          image1: "https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=400&h=300&fit=crop",
-          image2: "https://images.unsplash.com/photo-1614680376593-902f74cf0d41?w=400&h=300&fit=crop",
+          image1: "https://c.top4top.io/p_3506prg6k1.jpg",
+          image2: "https://d.top4top.io/p_3506c5zjg2.jpg",
           status: "DONE",
           nominal: "50K",
           service: "Nitro Discord Trial",
@@ -36,8 +36,8 @@ export default function TestimonialPage() {
         {
           id: 2,
           title: "Joki Quest Discord",
-          image1: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&h=300&fit=crop",
-          image2: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=400&h=300&fit=crop",
+          image1: "https://e.top4top.io/p_3506l56gw3.jpg",
+          image2: "https://g.top4top.io/p_35067ihh65.jpg",
           status: "DONE",
           nominal: "25K",
           service: "Quest Discord Server",
@@ -46,7 +46,7 @@ export default function TestimonialPage() {
         {
           id: 3,
           title: "Akun Telegram Old",
-          image1: "https://images.unsplash.com/photo-1611605698335-8b1569810432?w=400&h=300&fit=crop",
+          image1: "https://f.top4top.io/p_3506vcfop4.jpg",
           image2: "",
           status: "DONE",
           nominal: "100K",
@@ -56,7 +56,7 @@ export default function TestimonialPage() {
         {
           id: 4,
           title: "Xbox Gamepass 1 Month",
-          image1: "https://images.unsplash.com/photo-1606144042614-b2417e99c4e3?w=400&h=300&fit=crop",
+          image1: "https://h.top4top.io/p_350653ezy6.jpg",
           image2: "",
           status: "DONE",
           nominal: "75K",
@@ -66,7 +66,7 @@ export default function TestimonialPage() {
         {
           id: 5,
           title: "YT Premium 1 Month Invite",
-          image1: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=400&h=300&fit=crop",
+          image1: "https://i.top4top.io/p_350631men7.jpg",
           image2: "",
           status: "DONE",
           nominal: "30K",
@@ -187,7 +187,13 @@ export default function TestimonialPage() {
             </div>
             
             <div className="text-center">
-              <h1 className="text-5xl md:text-7xl font-bold bg-gradient-to-r from-cyan-400 via-purple-500 to-cyan-400 bg-clip-text text-transparent animate-pulse">
+              <h1 className="text-5xl md:text-7xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-500 to-cyan-400" 
+                  style={{
+                    background: 'linear-gradient(45deg, #06b6d4, #a855f7, #06b6d4)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text'
+                  }}>
                 RYVEN STORE
               </h1>
               <div className="h-1 w-full bg-gradient-to-r from-transparent via-cyan-500 to-transparent mt-2"></div>
@@ -391,7 +397,7 @@ export default function TestimonialPage() {
                       alt="Testimoni 1"
                       className="w-full h-36 object-cover rounded-xl border border-cyan-500/20 transition-all duration-300 group-hover/img:border-cyan-400/50"
                       onError={(e) => {
-                        e.target.src = 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=400&h=300&fit=crop'
+                        e.target.src = 'https://c.top4top.io/p_3506prg6k1.jpg'
                       }}
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent rounded-xl"></div>
@@ -403,7 +409,7 @@ export default function TestimonialPage() {
                         alt="Testimoni 2"
                         className="w-full h-36 object-cover rounded-xl border border-cyan-500/20 transition-all duration-300 group-hover/img:border-cyan-400/50"
                         onError={(e) => {
-                          e.target.src = 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=400&h=300&fit=crop'
+                          e.target.src = 'https://d.top4top.io/p_3506c5zjg2.jpg'
                         }}
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent rounded-xl"></div>
