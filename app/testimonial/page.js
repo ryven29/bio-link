@@ -1,3 +1,5 @@
+'use client'
+
 import { useState, useEffect } from 'react'
 import { Plus, Edit, Trash2, X, Star, CheckCircle } from 'lucide-react'
 
