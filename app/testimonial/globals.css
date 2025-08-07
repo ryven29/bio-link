@@ -1,0 +1,158 @@
+@import url("https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css");
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css");
+@import url("https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css");
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600&display=swap');
+@import url("https://fonts.googleapis.com/css?family=Baloo+Paaji|Open+Sans:300,300i,400,400i,600,600i,700,700i");
+
+* {
+    -webkit-tap-highlight-color: transparent;
+}
+body {
+    background-color: #0f172a;
+}
+@keyframes spin-slow {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.animate-spin-slow {
+    animation: spin-slow 20s linear infinite;
+}
+.loading-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 4px;
+    background: linear-gradient(to right, #3b82f6, #9333ea);
+    transition: width 0.1s linear;
+}
+.spinner {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    width: 20px;
+    height: 20px;
+    border: 3px solid transparent;
+    border-top: 3px solid #3b82f6;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+.hidden {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+.grid-bg {
+  background-image: radial-gradient(#90909024 1px, transparent 1px);
+  background-size: 30px 30px;
+}
+
+/* Cyberpunk Theme Enhancements */
+@keyframes glow {
+  0%, 100% {
+    box-shadow: 0 0 5px #06b6d4, 0 0 10px #06b6d4, 0 0 15px #06b6d4;
+  }
+  50% {
+    box-shadow: 0 0 10px #06b6d4, 0 0 20px #06b6d4, 0 0 30px #06b6d4;
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 5px #a855f7, 0 0 10px #a855f7, 0 0 15px #a855f7;
+  }
+  50% {
+    box-shadow: 0 0 10px #a855f7, 0 0 20px #a855f7, 0 0 30px #a855f7;
+  }
+}
+
+@keyframes scanline {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100vh);
+  }
+}
+
+.cyber-glow {
+  animation: glow 2s ease-in-out infinite alternate;
+}
+
+.cyber-pulse {
+  animation: pulse-glow 2s ease-in-out infinite alternate;
+}
+
+.scanline {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(to right, transparent, #06b6d4, transparent);
+  animation: scanline 3s linear infinite;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1e293b;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, #06b6d4, #a855f7);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(to bottom, #0891b2, #9333ea);
+}
+
+/* Text selection */
+::selection {
+  background: #06b6d4;
+  color: white;
+}
+
+/* Focus styles */
+.focus-cyan:focus {
+  outline: 2px solid #06b6d4;
+  outline-offset: 2px;
+}
+
+/* Hover effects */
+.hover-lift:hover {
+  transform: translateY(-2px);
+  transition: transform 0.2s ease-in-out;
+}
+
+/* Gradient text */
+.gradient-text {
+  background: linear-gradient(45deg, #06b6d4, #a855f7, #06b6d4);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradient-shift 3s ease infinite;
+}
+
+@keyframes gradient-shift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
