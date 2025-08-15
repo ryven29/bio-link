@@ -1,5 +1,6 @@
 "use client"
 import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Instagram, 
   Github, 
@@ -58,7 +59,12 @@ const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50">
+    <motion.header
+      className="fixed top-0 left-0 right-0 z-50"
+      initial={{ y: -20, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.4, ease: 'easeOut' }}
+    >
       <nav className="p-3 bg-black border-b border-gray-800 backdrop-blur-md bg-black/90">
         <div className="container mx-auto flex justify-between items-center">
           <div className="text-lg font-bold bg-gradient-to-r from-yellow-400 via-orange-400 to-pink-500 bg-clip-text text-transparent">
@@ -100,7 +106,7 @@ const Header = () => {
           </div>
         )}
       </nav>
-    </header>
+    </motion.header>
   );
 };
 
@@ -239,10 +245,10 @@ const ImagePreviewModal = ({ isOpen, src, alt, onClose }) => {
     return () => window.removeEventListener('keydown', onKey);
   }, [isOpen, onClose]);
 
-  if (!isOpen) return null;
-
   return (
-    <div
+    <AnimatePresence>
+      {isOpen && (
+        <motion.div
       className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4"
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
@@ -250,10 +256,13 @@ const ImagePreviewModal = ({ isOpen, src, alt, onClose }) => {
       role="dialog"
       aria-modal="true"
       aria-label="Image preview"
-    >
-      <div className="max-w-3xl w-full">
-        <div className="relative">
-          <button
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+        >
+          <motion.div className="max-w-3xl w-full" initial={{ scale: 0.96, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.96, opacity: 0 }} transition={{ duration: 0.2 }}>
+            <div className="relative">
+              <button
             onClick={onClose}
             className="absolute -top-3 -right-3 bg-white text-black rounded-full w-8 h-8 flex items-center justify-center shadow hover:scale-105 transition"
             aria-label="Close preview"
@@ -266,9 +275,11 @@ const ImagePreviewModal = ({ isOpen, src, alt, onClose }) => {
             className="w-full max-h-[80vh] object-contain rounded-lg border border-gray-700 bg-black"
           />
           <div className="text-center text-sm text-gray-300 mt-2">{alt}</div>
-        </div>
-      </div>
-    </div>
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 };
 
@@ -284,11 +295,19 @@ const StatsSection = () => {
   return (
     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
       {stats.map((stat, index) => (
-        <div key={index} className="bg-black border border-gray-500 rounded-lg p-4 text-center hover:border-gray-400 transition-all">
+        <motion.div
+          key={index}
+          className="bg-black border border-gray-500 rounded-lg p-4 text-center hover:border-gray-400 transition-all"
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.4, delay: index * 0.05 }}
+          whileHover={{ y: -4 }}
+        >
           <div className="text-2xl mb-2">{stat.icon}</div>
           <div className="text-white font-bold text-lg">{stat.value}</div>
           <div className="text-gray-400 text-xs">{stat.label}</div>
-        </div>
+        </motion.div>
       ))}
     </div>
   );
@@ -305,12 +324,26 @@ const ServicesSection = () => {
 
   return (
     <div className="mb-8">
-      <h2 className="text-white text-xl font-bold text-center mb-6 bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent">
+      <motion.h2
+        className="text-white text-xl font-bold text-center mb-6 bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent"
+        initial={{ opacity: 0, y: 12 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.4 }}
+      >
         Our Services
-      </h2>
+      </motion.h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {services.map((service, index) => (
-          <div key={index} className="bg-black border border-gray-500 rounded-lg p-4 hover:border-gray-400 transition-all cursor-pointer group">
+          <motion.div
+            key={index}
+            className="bg-black border border-gray-500 rounded-lg p-4 hover:border-gray-400 transition-all cursor-pointer group"
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.4, delay: index * 0.06 }}
+            whileHover={{ y: -4 }}
+          >
             <div className="flex items-center gap-3">
               <div className="text-2xl">{service.icon}</div>
               <div>
@@ -319,7 +352,7 @@ const ServicesSection = () => {
               </div>
               <ArrowRight className="ml-auto text-gray-400 group-hover:text-white group-hover:translate-x-1 transition-all w-4 h-4" />
             </div>
-          </div>
+          </motion.div>
         ))}
       </div>
     </div>
@@ -406,9 +439,14 @@ const RyvenStoreTestimonials = () => {
       <main className="container mx-auto px-4 pt-20 pb-8">
         {/* Hero Section */}
         <section id="home" className="text-center mb-12">
-          <h1 className="text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-yellow-400 via-orange-500 to-pink-500 bg-clip-text text-transparent">
+          <motion.h1
+            className="text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-yellow-400 via-orange-500 to-pink-500 bg-clip-text text-transparent"
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: 'easeOut' }}
+          >
             Welcome to Ryven Store
-          </h1>
+          </motion.h1>
           
           <p className="text-gray-400 text-lg mb-8 max-w-2xl mx-auto">
             Your trusted digital services provider with 99.9% success rate and thousands of satisfied customers
@@ -425,28 +463,45 @@ const RyvenStoreTestimonials = () => {
         {/* Testimonials Section */}
         <section id="testimonials">
           <div className="text-center mb-8">
-            <h2 className="text-2xl md:text-3xl font-bold mb-4 bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent">
+            <motion.h2
+              className="text-2xl md:text-3xl font-bold mb-4 bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent"
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4 }}
+            >
               Customer Testimonials
-            </h2>
+            </motion.h2>
             <p className="text-gray-400">
               Real feedback from our satisfied customers
             </p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-            {testimonials.map((testimonial) => (
-              <TestimonialCard
+            {testimonials.map((testimonial, index) => (
+              <motion.div
                 key={testimonial.id}
-                testimonial={testimonial}
-                onPreview={openPreview}
-              />
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.4, delay: index * 0.07 }}
+              >
+                <TestimonialCard
+                  testimonial={testimonial}
+                  onPreview={openPreview}
+                />
+              </motion.div>
             ))}
           </div>
           
           <div className="text-center">
-            <button className="bg-gradient-to-r from-yellow-400 to-orange-500 text-black px-8 py-3 rounded-lg font-semibold hover:scale-105 transition-all duration-300 shadow-lg">
+            <motion.button
+              className="bg-gradient-to-r from-yellow-400 to-orange-500 text-black px-8 py-3 rounded-lg font-semibold hover:scale-105 transition-all duration-300 shadow-lg"
+              whileHover={{ scale: 1.04 }}
+              whileTap={{ scale: 0.98 }}
+            >
               View More Testimonials
-            </button>
+            </motion.button>
           </div>
         </section>
 
