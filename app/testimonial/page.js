@@ -402,7 +402,7 @@ const RyvenStoreTestimonials = () => {
       customer: "Customer #001",
       date: "2 days ago",
       review: "Service sangat memuaskan! Proses claim nitro trial berjalan lancar dan cepat. Highly recommended!",
-      image: "https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=400&h=300&fit=crop&crop=center",
+      image: "https://c.top4top.io/p_3506prg6k1.jpg",
       rating: 5
     },
     {
@@ -411,7 +411,7 @@ const RyvenStoreTestimonials = () => {
       customer: "Customer #002", 
       date: "3 days ago",
       review: "Pelayanan ramah dan profesional. Nitro trial berhasil diklaim tanpa masalah. Terima kasih!",
-      image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=400&h=300&fit=crop&crop=center",
+      image: "https://d.top4top.io/p_3506c5zjg2.jpg",
       rating: 5
     },
     {
@@ -420,7 +420,7 @@ const RyvenStoreTestimonials = () => {
       customer: "Gamer Pro",
       date: "1 week ago", 
       review: "Quest Discord selesai dengan sempurna! Sangat puas dengan hasilnya. Will order again!",
-      image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&h=300&fit=crop&crop=center",
+      image: "https://e.top4top.io/p_3506l56gw3.jpg",
       rating: 5
     },
     {
@@ -429,7 +429,7 @@ const RyvenStoreTestimonials = () => {
       customer: "Business Owner",
       date: "5 days ago",
       review: "Akun telegram old berkualitas tinggi. Sesuai dengan deskripsi dan berfungsi dengan baik.",
-      image: "https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=400&h=300&fit=crop&crop=center", 
+      image: "https://f.top4top.io/p_3506vcfop4.jpg", 
       rating: 5
     },
     {
@@ -438,7 +438,7 @@ const RyvenStoreTestimonials = () => {
       customer: "Discord User",
       date: "1 week ago",
       review: "Service joki quest discord sangat memuaskan. Dikerjakan dengan cepat dan hasil sempurna!",
-      image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=400&h=300&fit=crop&crop=center",
+      image: "https://g.top4top.io/p_35067ihh65.jpg",
       rating: 5
     },
     {
@@ -447,7 +447,7 @@ const RyvenStoreTestimonials = () => {
       customer: "Xbox Gamer",
       date: "4 days ago",
       review: "Xbox Gamepass berfungsi dengan baik selama 1 bulan penuh. Harga terjangkau dan pelayanan excellent!",
-      image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&h=300&fit=crop&crop=center",
+      image: "https://h.top4top.io/p_350653ezy6.jpg",
       rating: 5
     },
     {
@@ -456,7 +456,7 @@ const RyvenStoreTestimonials = () => {
       customer: "Content Creator",
       date: "6 days ago", 
       review: "YouTube Premium invite works perfectly! No ads and background play working great. Thank you!",
-      image: "https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=400&h=300&fit=crop&crop=center",
+      image: "https://i.top4top.io/p_350631men7.jpg",
       rating: 5
     }
   ];
