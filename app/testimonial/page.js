@@ -157,7 +157,7 @@ const Profile = () => {
 };
 
 // Testimonial Card Component
-const TestimonialCard = ({ testimonial }) => {
+const TestimonialCard = ({ testimonial, onPreview }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
 
   return (
@@ -181,7 +181,18 @@ const TestimonialCard = ({ testimonial }) => {
         </div>
       </div>
       
-      <div className="relative mb-3">
+      <div
+        className="relative mb-3 cursor-zoom-in"
+        onClick={() => onPreview && onPreview(testimonial.image, testimonial.service)}
+        role="button"
+        tabIndex={0}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            onPreview && onPreview(testimonial.image, testimonial.service);
+          }
+        }}
+        aria-label={`Preview ${testimonial.service}`}
+      >
         {!imageLoaded && (
           <div className="w-full h-48 bg-gray-800 rounded-lg flex items-center justify-center">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
@@ -211,6 +222,50 @@ const TestimonialCard = ({ testimonial }) => {
         <div className="flex items-center gap-1 text-green-500">
           <span className="text-xs font-medium">Verified</span>
           <Shield className="text-xs w-3 h-3" fill="currentColor" />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Image Preview Modal
+const ImagePreviewModal = ({ isOpen, src, alt, onClose }) => {
+  useEffect(() => {
+    if (!isOpen) return;
+    const onKey = (e) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [isOpen, onClose]);
+
+  if (!isOpen) return null;
+
+  return (
+    <div
+      className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
+      role="dialog"
+      aria-modal="true"
+      aria-label="Image preview"
+    >
+      <div className="max-w-3xl w-full">
+        <div className="relative">
+          <button
+            onClick={onClose}
+            className="absolute -top-3 -right-3 bg-white text-black rounded-full w-8 h-8 flex items-center justify-center shadow hover:scale-105 transition"
+            aria-label="Close preview"
+          >
+            ×
+          </button>
+          <img
+            src={src}
+            alt={alt || 'Preview'}
+            className="w-full max-h-[80vh] object-contain rounded-lg border border-gray-700 bg-black"
+          />
+          <div className="text-center text-sm text-gray-300 mt-2">{alt}</div>
         </div>
       </div>
     </div>
@@ -339,6 +394,11 @@ const RyvenStoreTestimonials = () => {
     }
   ];
 
+  const [preview, setPreview] = useState({ open: false, src: '', alt: '' });
+
+  const openPreview = (src, alt) => setPreview({ open: true, src, alt });
+  const closePreview = () => setPreview((p) => ({ ...p, open: false }));
+
   return (
     <div className="min-h-screen bg-gray-900 text-white">
       <Header />
@@ -375,7 +435,11 @@ const RyvenStoreTestimonials = () => {
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
             {testimonials.map((testimonial) => (
-              <TestimonialCard key={testimonial.id} testimonial={testimonial} />
+              <TestimonialCard
+                key={testimonial.id}
+                testimonial={testimonial}
+                onPreview={openPreview}
+              />
             ))}
           </div>
           
@@ -420,6 +484,14 @@ const RyvenStoreTestimonials = () => {
           <p>Ryven Store • © 2025 • Trusted Digital Services</p>
         </div>
       </footer>
+
+      {/* Image Preview Modal */}
+      <ImagePreviewModal
+        isOpen={preview.open}
+        src={preview.src}
+        alt={preview.alt}
+        onClose={closePreview}
+      />
     </div>
   );
 };
