@@ -166,30 +166,21 @@ const Profile = () => {
 const TestimonialCard = ({ testimonial, onPreview }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
-  const [currentImageSrc, setCurrentImageSrc] = useState(testimonial.image);
 
   // Reset state when testimonial changes
   useEffect(() => {
     setImageLoaded(false);
     setImageError(false);
-    setCurrentImageSrc(testimonial.image);
-    
-    // Add timeout to prevent infinite loading
-    const timeoutId = setTimeout(() => {
-      if (!imageLoaded) {
-        setImageError(true);
-      }
-    }, 8000); // 8 seconds timeout
-
-    return () => clearTimeout(timeoutId);
-  }, [testimonial.image, imageLoaded]);
+  }, [testimonial.image]);
 
   const handleImageError = () => {
+    console.log('❌ Image failed to load:', testimonial.image);
     setImageError(true);
     setImageLoaded(false);
   };
 
   const handleImageLoad = () => {
+    console.log('✅ Image loaded successfully:', testimonial.image);
     setImageLoaded(true);
     setImageError(false);
   };
@@ -217,12 +208,12 @@ const TestimonialCard = ({ testimonial, onPreview }) => {
       
       <div
         className="relative mb-3 cursor-zoom-in"
-        onClick={() => !imageError && onPreview && onPreview(testimonial.image, testimonial.service)}
+        onClick={() => onPreview && onPreview(testimonial.image, testimonial.service)}
         role="button"
         tabIndex={0}
         onKeyDown={(e) => {
           if (e.key === 'Enter' || e.key === ' ') {
-            !imageError && onPreview && onPreview(testimonial.image, testimonial.service);
+            onPreview && onPreview(testimonial.image, testimonial.service);
           }
         }}
         aria-label={`Preview ${testimonial.service}`}
@@ -241,12 +232,14 @@ const TestimonialCard = ({ testimonial, onPreview }) => {
           </div>
         )}
         <img
-          src={currentImageSrc}
+          key={testimonial.id}
+          src={testimonial.image}
           alt={testimonial.service}
           className={`w-full h-48 object-cover rounded-lg transition-all duration-300 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
           style={{ display: imageError ? 'none' : 'block' }}
           onLoad={handleImageLoad}
           onError={handleImageError}
+          loading="lazy"
         />
       </div>
       
