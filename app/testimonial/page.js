@@ -128,7 +128,7 @@ const Profile = () => {
         </div>
         
         <h1 className="text-lg font-bold mt-2 flex items-center justify-center">
-          ð…ð¢ð¤ð«ð¢
+          𝖗𝖆𝖉𝖎𝖆
           <Shield className="inline text-blue-500 ml-1 text-sm" fill="currentColor" />
         </h1>
 
@@ -164,26 +164,21 @@ const Profile = () => {
 
 // Testimonial Card Component
 const TestimonialCard = ({ testimonial, onPreview }) => {
-  const [imageLoaded, setImageLoaded] = useState(false);
-  const [imageError, setImageError] = useState(false);
+  const [imageState, setImageState] = useState('loading'); // 'loading', 'loaded', 'error'
 
-  // Reset state when testimonial changes
-  useEffect(() => {
-    setImageLoaded(false);
-    setImageError(false);
-  }, [testimonial.image]);
+  // Function to handle image loading
+  const handleImageLoad = () => {
+    setImageState('loaded');
+  };
 
   const handleImageError = () => {
-    console.log('❌ Image failed to load:', testimonial.image);
-    setImageError(true);
-    setImageLoaded(false);
+    setImageState('error');
   };
 
-  const handleImageLoad = () => {
-    console.log('✅ Image loaded successfully:', testimonial.image);
-    setImageLoaded(true);
-    setImageError(false);
-  };
+  // Reset image state when testimonial changes
+  useEffect(() => {
+    setImageState('loading');
+  }, [testimonial.image]);
 
   return (
     <div className="bg-black border border-gray-500 rounded-lg p-4 hover:border-gray-400 transition-all duration-300 transform hover:scale-105 hover:shadow-xl">
@@ -208,22 +203,25 @@ const TestimonialCard = ({ testimonial, onPreview }) => {
       
       <div
         className="relative mb-3 cursor-zoom-in"
-        onClick={() => onPreview && onPreview(testimonial.image, testimonial.service)}
+        onClick={() => imageState === 'loaded' && onPreview && onPreview(testimonial.image, testimonial.service)}
         role="button"
         tabIndex={0}
         onKeyDown={(e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
+          if ((e.key === 'Enter' || e.key === ' ') && imageState === 'loaded') {
             onPreview && onPreview(testimonial.image, testimonial.service);
           }
         }}
         aria-label={`Preview ${testimonial.service}`}
       >
-        {!imageLoaded && !imageError && (
+        {/* Loading State */}
+        {imageState === 'loading' && (
           <div className="w-full h-48 bg-gray-800 rounded-lg flex items-center justify-center">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
           </div>
         )}
-        {imageError && (
+
+        {/* Error State */}
+        {imageState === 'error' && (
           <div className="w-full h-48 bg-gray-800 rounded-lg flex items-center justify-center">
             <div className="text-center">
               <div className="text-gray-400 text-2xl mb-2">📷</div>
@@ -231,15 +229,21 @@ const TestimonialCard = ({ testimonial, onPreview }) => {
             </div>
           </div>
         )}
+
+        {/* Actual Image */}
         <img
-          key={testimonial.id}
           src={testimonial.image}
           alt={testimonial.service}
-          className={`w-full h-48 object-cover rounded-lg transition-all duration-300 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
-          style={{ display: imageError ? 'none' : 'block' }}
+          className={`w-full h-48 object-cover rounded-lg transition-opacity duration-300 ${
+            imageState === 'loaded' ? 'opacity-100' : 'opacity-0 absolute'
+          }`}
           onLoad={handleImageLoad}
           onError={handleImageError}
           loading="lazy"
+          style={{ 
+            display: imageState === 'error' ? 'none' : 'block',
+            position: imageState === 'loaded' ? 'static' : 'absolute'
+          }}
         />
       </div>
       
@@ -263,8 +267,14 @@ const TestimonialCard = ({ testimonial, onPreview }) => {
 
 // Image Preview Modal
 const ImagePreviewModal = ({ isOpen, src, alt, onClose }) => {
+  const [previewImageState, setPreviewImageState] = useState('loading');
+
   useEffect(() => {
     if (!isOpen) return;
+    
+    // Reset image state when modal opens
+    setPreviewImageState('loading');
+    
     const onKey = (e) => {
       if (e.key === 'Escape') onClose();
     };
@@ -272,36 +282,81 @@ const ImagePreviewModal = ({ isOpen, src, alt, onClose }) => {
     return () => window.removeEventListener('keydown', onKey);
   }, [isOpen, onClose]);
 
+  const handlePreviewImageLoad = () => {
+    setPreviewImageState('loaded');
+  };
+
+  const handlePreviewImageError = () => {
+    setPreviewImageState('error');
+  };
+
   return (
     <AnimatePresence>
       {isOpen && (
         <motion.div
-      className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4"
-      onClick={(e) => {
-        if (e.target === e.currentTarget) onClose();
-      }}
-      role="dialog"
-      aria-modal="true"
-      aria-label="Image preview"
+          className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) onClose();
+          }}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Image preview"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
         >
-          <motion.div className="max-w-3xl w-full" initial={{ scale: 0.96, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.96, opacity: 0 }} transition={{ duration: 0.2 }}>
+          <motion.div 
+            className="max-w-3xl w-full" 
+            initial={{ scale: 0.96, opacity: 0 }} 
+            animate={{ scale: 1, opacity: 1 }} 
+            exit={{ scale: 0.96, opacity: 0 }} 
+            transition={{ duration: 0.2 }}
+          >
             <div className="relative">
               <button
-            onClick={onClose}
-            className="absolute -top-3 -right-3 bg-white text-black rounded-full w-8 h-8 flex items-center justify-center shadow hover:scale-105 transition"
-            aria-label="Close preview"
-          >
-            ×
-          </button>
-          <img
-            src={src}
-            alt={alt || 'Preview'}
-            className="w-full max-h-[80vh] object-contain rounded-lg border border-gray-700 bg-black"
-          />
-          <div className="text-center text-sm text-gray-300 mt-2">{alt}</div>
+                onClick={onClose}
+                className="absolute -top-3 -right-3 bg-white text-black rounded-full w-8 h-8 flex items-center justify-center shadow hover:scale-105 transition z-10"
+                aria-label="Close preview"
+              >
+                ×
+              </button>
+              
+              <div className="relative">
+                {/* Loading state for preview */}
+                {previewImageState === 'loading' && (
+                  <div className="w-full h-96 bg-gray-800 rounded-lg flex items-center justify-center border border-gray-700">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white"></div>
+                  </div>
+                )}
+
+                {/* Error state for preview */}
+                {previewImageState === 'error' && (
+                  <div className="w-full h-96 bg-gray-800 rounded-lg flex items-center justify-center border border-gray-700">
+                    <div className="text-center">
+                      <div className="text-gray-400 text-4xl mb-4">📷</div>
+                      <div className="text-gray-300 text-lg">Failed to load image</div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Actual preview image */}
+                <img
+                  src={src}
+                  alt={alt || 'Preview'}
+                  className={`w-full max-h-[80vh] object-contain rounded-lg border border-gray-700 bg-black transition-opacity duration-300 ${
+                    previewImageState === 'loaded' ? 'opacity-100' : 'opacity-0'
+                  }`}
+                  onLoad={handlePreviewImageLoad}
+                  onError={handlePreviewImageError}
+                  style={{ 
+                    display: previewImageState === 'error' ? 'none' : 'block'
+                  }}
+                />
+              </div>
+              
+              {previewImageState === 'loaded' && (
+                <div className="text-center text-sm text-gray-300 mt-2">{alt}</div>
+              )}
             </div>
           </motion.div>
         </motion.div>
