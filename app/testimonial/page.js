@@ -165,6 +165,34 @@ const Profile = () => {
 // Testimonial Card Component
 const TestimonialCard = ({ testimonial, onPreview }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
+  const [imageError, setImageError] = useState(false);
+  const [currentImageSrc, setCurrentImageSrc] = useState(testimonial.image);
+
+  // Reset state when testimonial changes
+  useEffect(() => {
+    setImageLoaded(false);
+    setImageError(false);
+    setCurrentImageSrc(testimonial.image);
+    
+    // Add timeout to prevent infinite loading
+    const timeoutId = setTimeout(() => {
+      if (!imageLoaded) {
+        setImageError(true);
+      }
+    }, 8000); // 8 seconds timeout
+
+    return () => clearTimeout(timeoutId);
+  }, [testimonial.image, imageLoaded]);
+
+  const handleImageError = () => {
+    setImageError(true);
+    setImageLoaded(false);
+  };
+
+  const handleImageLoad = () => {
+    setImageLoaded(true);
+    setImageError(false);
+  };
 
   return (
     <div className="bg-black border border-gray-500 rounded-lg p-4 hover:border-gray-400 transition-all duration-300 transform hover:scale-105 hover:shadow-xl">
@@ -189,30 +217,36 @@ const TestimonialCard = ({ testimonial, onPreview }) => {
       
       <div
         className="relative mb-3 cursor-zoom-in"
-        onClick={() => onPreview && onPreview(testimonial.image, testimonial.service)}
+        onClick={() => !imageError && onPreview && onPreview(testimonial.image, testimonial.service)}
         role="button"
         tabIndex={0}
         onKeyDown={(e) => {
           if (e.key === 'Enter' || e.key === ' ') {
-            onPreview && onPreview(testimonial.image, testimonial.service);
+            !imageError && onPreview && onPreview(testimonial.image, testimonial.service);
           }
         }}
         aria-label={`Preview ${testimonial.service}`}
       >
-        {!imageLoaded && (
+        {!imageLoaded && !imageError && (
           <div className="w-full h-48 bg-gray-800 rounded-lg flex items-center justify-center">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
           </div>
         )}
+        {imageError && (
+          <div className="w-full h-48 bg-gray-800 rounded-lg flex items-center justify-center">
+            <div className="text-center">
+              <div className="text-gray-400 text-2xl mb-2">📷</div>
+              <div className="text-gray-500 text-xs">Image not available</div>
+            </div>
+          </div>
+        )}
         <img
-          src={testimonial.image}
+          src={currentImageSrc}
           alt={testimonial.service}
           className={`w-full h-48 object-cover rounded-lg transition-all duration-300 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
-          onLoad={() => setImageLoaded(true)}
-          onError={(e) => {
-            e.target.style.display = 'none';
-            setImageLoaded(false);
-          }}
+          style={{ display: imageError ? 'none' : 'block' }}
+          onLoad={handleImageLoad}
+          onError={handleImageError}
         />
       </div>
       
@@ -368,7 +402,7 @@ const RyvenStoreTestimonials = () => {
       customer: "Customer #001",
       date: "2 days ago",
       review: "Service sangat memuaskan! Proses claim nitro trial berjalan lancar dan cepat. Highly recommended!",
-      image: "https://c.top4top.io/p_3506prg6k1.jpg",
+      image: "https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=400&h=300&fit=crop&crop=center",
       rating: 5
     },
     {
@@ -377,7 +411,7 @@ const RyvenStoreTestimonials = () => {
       customer: "Customer #002", 
       date: "3 days ago",
       review: "Pelayanan ramah dan profesional. Nitro trial berhasil diklaim tanpa masalah. Terima kasih!",
-      image: "https://d.top4top.io/p_3506c5zjg2.jpg",
+      image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=400&h=300&fit=crop&crop=center",
       rating: 5
     },
     {
@@ -386,7 +420,7 @@ const RyvenStoreTestimonials = () => {
       customer: "Gamer Pro",
       date: "1 week ago", 
       review: "Quest Discord selesai dengan sempurna! Sangat puas dengan hasilnya. Will order again!",
-      image: "https://e.top4top.io/p_3506l56gw3.jpg",
+      image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&h=300&fit=crop&crop=center",
       rating: 5
     },
     {
@@ -395,7 +429,7 @@ const RyvenStoreTestimonials = () => {
       customer: "Business Owner",
       date: "5 days ago",
       review: "Akun telegram old berkualitas tinggi. Sesuai dengan deskripsi dan berfungsi dengan baik.",
-      image: "https://f.top4top.io/p_3506vcfop4.jpg", 
+      image: "https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=400&h=300&fit=crop&crop=center", 
       rating: 5
     },
     {
@@ -404,7 +438,7 @@ const RyvenStoreTestimonials = () => {
       customer: "Discord User",
       date: "1 week ago",
       review: "Service joki quest discord sangat memuaskan. Dikerjakan dengan cepat dan hasil sempurna!",
-      image: "https://g.top4top.io/p_35067ihh65.jpg",
+      image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=400&h=300&fit=crop&crop=center",
       rating: 5
     },
     {
@@ -413,7 +447,7 @@ const RyvenStoreTestimonials = () => {
       customer: "Xbox Gamer",
       date: "4 days ago",
       review: "Xbox Gamepass berfungsi dengan baik selama 1 bulan penuh. Harga terjangkau dan pelayanan excellent!",
-      image: "https://h.top4top.io/p_350653ezy6.jpg",
+      image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&h=300&fit=crop&crop=center",
       rating: 5
     },
     {
@@ -422,7 +456,7 @@ const RyvenStoreTestimonials = () => {
       customer: "Content Creator",
       date: "6 days ago", 
       review: "YouTube Premium invite works perfectly! No ads and background play working great. Thank you!",
-      image: "https://i.top4top.io/p_350631men7.jpg",
+      image: "https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=400&h=300&fit=crop&crop=center",
       rating: 5
     }
   ];
