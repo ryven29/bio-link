@@ -11,32 +11,46 @@ import {
   Shield
 } from 'lucide-react';
 
-// Typing Component
+// Typing Component (tanpa dependensi eksternal)
 const Typing = () => {
-  useEffect(() => {
-    let typed;
-    const loadTyped = async () => {
-      if (typeof window !== 'undefined') {
-        const { default: Typed } = await import('typed.js');
-        typed = new Typed('.typing', {
-          strings: ['𝗥𝘆𝘃𝗲𝗻 𝗦𝘁𝗼𝗿𝗲.', '𝗧𝗿𝘂𝘀𝘁𝗲𝗱 𝗦𝗲𝗿𝘃𝗶𝗰𝗲.'],
-          typeSpeed: 50,
-          backSpeed: 30,
-          loop: true,
-        });
-      }
-    };
-    
-    loadTyped();
-    
-    return () => {
-      if (typed) {
-        typed.destroy();
-      }
-    };
-  }, []);
+  const texts = ['𝗥𝘆𝘃𝗲𝗻 𝗦𝘁𝗼𝗿𝗲.', '𝗧𝗿𝘂𝘀𝘁𝗲𝗱 𝗦𝗲𝗿𝘃𝗶𝗰𝗲.'];
+  const [textIndex, setTextIndex] = useState(0);
+  const [charIndex, setCharIndex] = useState(0);
+  const [displayed, setDisplayed] = useState('');
+  const [isDeleting, setIsDeleting] = useState(false);
 
-  return <span className="typing"></span>;
+  useEffect(() => {
+    const currentText = texts[textIndex];
+    const typingSpeed = isDeleting ? 40 : 80;
+    const pauseAtEnd = 1000;
+
+    let timeoutId;
+
+    if (!isDeleting && charIndex <= currentText.length) {
+      timeoutId = setTimeout(() => {
+        setDisplayed(currentText.slice(0, charIndex));
+        setCharIndex(charIndex + 1);
+      }, typingSpeed);
+    } else if (!isDeleting && charIndex > currentText.length) {
+      timeoutId = setTimeout(() => {
+        setIsDeleting(true);
+        setCharIndex(charIndex - 1);
+      }, pauseAtEnd);
+    } else if (isDeleting && charIndex >= 0) {
+      timeoutId = setTimeout(() => {
+        setDisplayed(currentText.slice(0, charIndex));
+        setCharIndex(charIndex - 1);
+      }, typingSpeed);
+    } else {
+      setIsDeleting(false);
+      setTextIndex((textIndex + 1) % texts.length);
+      setCharIndex(0);
+    }
+
+    return () => clearTimeout(timeoutId);
+  }, [charIndex, isDeleting, textIndex]);
+
+  return <span className="typing">{displayed}</span>;
 };
 
 // Header Component
