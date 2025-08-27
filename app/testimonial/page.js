@@ -32,7 +32,7 @@ const ImagePreviewModal = ({ isOpen, src, alt, onClose }) => {
 
   return (
     <div
-      className="fixed inset-0 z-[9999] bg-black/95 backdrop-blur-sm flex items-center justify-center p-4 animate-fadeIn"
+      className="fixed inset-0 z-[9999] bg-black/95 backdrop-blur-sm flex items-center justify-center p-6 md:p-8 pt-24 md:pt-20 animate-fadeIn"
       onClick={(e) => {
         if (e.target === e.currentTarget) {
           onClose();
@@ -44,17 +44,17 @@ const ImagePreviewModal = ({ isOpen, src, alt, onClose }) => {
       style={{ animation: 'fadeIn 0.3s ease-out' }}
     >
       <div 
-        className="relative w-full max-w-sm md:max-w-2xl lg:max-w-3xl max-h-[85vh] md:max-h-[80vh]"
+        className="relative w-full max-w-sm md:max-w-lg lg:max-w-xl xl:max-w-2xl max-h-[85vh] md:max-h-[70vh] lg:max-h-[65vh]"
         onClick={(e) => e.stopPropagation()}
         style={{ animation: 'scaleIn 0.3s ease-out' }}
       >
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute -top-4 -right-4 md:-top-6 md:-right-6 bg-white text-black rounded-full w-10 h-10 md:w-12 md:h-12 flex items-center justify-center shadow-xl hover:scale-110 transition-all z-10 hover:bg-gray-100"
+          className="absolute -top-3 -right-3 md:-top-4 md:-right-4 bg-white text-black rounded-full w-8 h-8 md:w-10 md:h-10 flex items-center justify-center shadow-xl hover:scale-110 transition-all z-10 hover:bg-gray-100"
           aria-label="Close preview"
         >
-          <span className="text-lg md:text-2xl font-bold">×</span>
+          <span className="text-lg md:text-xl font-bold">×</span>
         </button>
         
         {/* Image Container */}
@@ -62,23 +62,23 @@ const ImagePreviewModal = ({ isOpen, src, alt, onClose }) => {
           <img
             src={src}
             alt={alt || 'Preview'}
-            className="w-full h-auto max-h-[70vh] md:max-h-[75vh] object-contain rounded-lg"
+            className="w-full h-auto max-h-[75vh] md:max-h-[60vh] lg:max-h-[55vh] object-contain rounded-lg"
             loading="eager"
             draggable="false"
           />
           
           {/* Image Info Overlay */}
-          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent p-3 md:p-6">
+          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent p-3 md:p-4">
             <div className="text-white text-center">
-              <h3 className="text-sm md:text-xl font-bold mb-1 md:mb-2 text-yellow-400">{alt}</h3>
-              <p className="text-xs md:text-sm text-gray-300 mb-1 md:mb-2">🔍 Testimoni RYVEN STORE</p>
+              <h3 className="text-sm md:text-lg font-bold mb-1 md:mb-2 text-yellow-400">{alt}</h3>
+              <p className="text-xs md:text-sm text-gray-300 mb-1">🔍 Testimoni RYVEN STORE</p>
               <p className="text-xs text-gray-400">Ketuk di luar atau tekan ESC untuk menutup</p>
             </div>
           </div>
         </div>
         
         {/* Zoom Indicator */}
-        <div className="absolute top-2 left-2 md:top-4 md:left-4 bg-black/70 text-white px-2 py-1 md:px-4 md:py-2 rounded-full text-xs md:text-sm font-medium backdrop-blur-sm">
+        <div className="absolute top-2 left-2 md:top-3 md:left-3 bg-black/70 text-white px-2 py-1 md:px-3 md:py-1 rounded-full text-xs md:text-sm font-medium backdrop-blur-sm">
           🔍 Preview
         </div>
       </div>
