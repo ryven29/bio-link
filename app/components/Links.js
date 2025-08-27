@@ -15,11 +15,11 @@ const links = [
     {
         title: "WhatsApp Channels",
         description: "Follow untuk seputar info/kode",
-        url: "https://whatsapp.com/channel/0029VaSY7Lp8F2pCmQLKNn0g",
+        url: "https://whatsapp.com/channel/0029VbAtTEMFnSzFIGcT0y2O",
         icon: "/planet-1301-svgrepo-com.svg",
     },
     {
-        title: "Owner Ryven",
+        title: "Owner",
         description: "Contact me if needed",
         url: "https://wa.me/628991103457",
         icon: "/stars-svgrepo-com.svg",
