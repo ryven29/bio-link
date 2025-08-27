@@ -8,13 +8,14 @@ import Header from "../components/Header"
 import Footer from "../components/Footer"
 import { AnimatePresence } from "framer-motion"
 
-// Image Preview Modal
+// Image Preview Modal - Simplified version without AnimatePresence issues
 const ImagePreviewModal = ({ isOpen, src, alt, onClose }) => {
   useEffect(() => {
     if (!isOpen) return;
     
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') {
+        console.log('ESC pressed - closing modal');
         onClose();
       }
     };
@@ -32,70 +33,91 @@ const ImagePreviewModal = ({ isOpen, src, alt, onClose }) => {
     };
   }, [isOpen, onClose]);
 
-  if (!isOpen) return null;
+  console.log('🎭 Modal render check:', { isOpen, src, alt });
+
+  if (!isOpen || !src) {
+    console.log('❌ Modal not rendering - isOpen:', isOpen, 'src:', src);
+    return null;
+  }
+
+  console.log('✅ Modal is rendering');
 
   return (
-    <AnimatePresence>
-      <motion.div
-        className="fixed inset-0 z-[9999] bg-black/95 backdrop-blur-sm flex items-center justify-center p-4"
-        onClick={(e) => {
-          // Only close if clicking the backdrop, not the image
-          if (e.target === e.currentTarget) {
-            onClose();
-          }
-        }}
-        role="dialog"
-        aria-modal="true"
-        aria-label="Image preview"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.3 }}
+    <div
+      className="fixed inset-0 z-[9999] bg-black/95 backdrop-blur-sm flex items-center justify-center p-4 animate-fadeIn"
+      onClick={(e) => {
+        console.log('🎯 Backdrop clicked');
+        if (e.target === e.currentTarget) {
+          onClose();
+        }
+      }}
+      role="dialog"
+      aria-modal="true"
+      aria-label="Image preview"
+      style={{ animation: 'fadeIn 0.3s ease-out' }}
+    >
+      <div 
+        className="max-w-5xl w-full max-h-[95vh] relative transform transition-all duration-300 scale-100"
+        onClick={(e) => e.stopPropagation()}
+        style={{ animation: 'scaleIn 0.3s ease-out' }}
       >
-        <motion.div 
-          className="max-w-5xl w-full max-h-[95vh] relative"
-          initial={{ scale: 0.8, opacity: 0 }} 
-          animate={{ scale: 1, opacity: 1 }} 
-          exit={{ scale: 0.8, opacity: 0 }} 
-          transition={{ duration: 0.3, ease: "easeOut" }}
-          onClick={(e) => e.stopPropagation()} // Prevent closing when clicking the image
+        {/* Close Button */}
+        <button
+          onClick={() => {
+            console.log('❌ Close button clicked');
+            onClose();
+          }}
+          className="absolute -top-6 -right-6 bg-white text-black rounded-full w-12 h-12 flex items-center justify-center shadow-xl hover:scale-110 transition-all z-10 hover:bg-gray-100"
+          aria-label="Close preview"
         >
-          {/* Close Button */}
-          <button
-            onClick={onClose}
-            className="absolute -top-6 -right-6 bg-white text-black rounded-full w-12 h-12 flex items-center justify-center shadow-xl hover:scale-110 transition-all z-10 hover:bg-gray-100"
-            aria-label="Close preview"
-          >
-            <span className="text-2xl font-bold">×</span>
-          </button>
+          <span className="text-2xl font-bold">×</span>
+        </button>
+        
+        {/* Image Container */}
+        <div className="relative bg-black rounded-xl overflow-hidden shadow-2xl border border-gray-700">
+          <img
+            src={src}
+            alt={alt || 'Preview'}
+            className="w-full h-auto max-h-[85vh] object-contain"
+            loading="eager"
+            draggable="false"
+            onLoad={() => console.log('🖼️ Preview image loaded successfully')}
+            onError={() => console.log('❌ Preview image failed to load')}
+          />
           
-          {/* Image Container */}
-          <div className="relative bg-black rounded-xl overflow-hidden shadow-2xl border border-gray-700">
-            <img
-              src={src}
-              alt={alt || 'Preview'}
-              className="w-full h-auto max-h-[85vh] object-contain"
-              loading="eager"
-              draggable="false"
-            />
-            
-            {/* Image Info Overlay */}
-            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent p-6">
-              <div className="text-white text-center">
-                <h3 className="text-xl font-bold mb-2 text-yellow-400">{alt}</h3>
-                <p className="text-sm text-gray-300 mb-2">🔍 Full Size Preview</p>
-                <p className="text-xs text-gray-400">Click outside or press ESC to close</p>
-              </div>
+          {/* Image Info Overlay */}
+          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent p-6">
+            <div className="text-white text-center">
+              <h3 className="text-xl font-bold mb-2 text-yellow-400">{alt}</h3>
+              <p className="text-sm text-gray-300 mb-2">🔍 Full Size Preview</p>
+              <p className="text-xs text-gray-400">Click outside or press ESC to close</p>
             </div>
           </div>
-          
-          {/* Zoom Indicator */}
-          <div className="absolute top-4 left-4 bg-black/70 text-white px-4 py-2 rounded-full text-sm font-medium backdrop-blur-sm">
-            🔍 Full Preview
-          </div>
-        </motion.div>
-      </motion.div>
-    </AnimatePresence>
+        </div>
+        
+        {/* Zoom Indicator */}
+        <div className="absolute top-4 left-4 bg-black/70 text-white px-4 py-2 rounded-full text-sm font-medium backdrop-blur-sm">
+          🔍 Full Preview
+        </div>
+      </div>
+      
+      <style jsx>{`
+        @keyframes fadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+        @keyframes scaleIn {
+          from { 
+            transform: scale(0.8); 
+            opacity: 0; 
+          }
+          to { 
+            transform: scale(1); 
+            opacity: 1; 
+          }
+        }
+      `}</style>
+    </div>
   );
 };
 
@@ -287,6 +309,23 @@ const TestimonialPage = () => {
                         </div>
                     </motion.div>
 
+                    {/* Debug Info - akan dihapus setelah modal bekerja */}
+                    <div className="mb-6 p-4 bg-gray-800 rounded-lg border border-gray-600">
+                        <h4 className="text-yellow-400 font-bold mb-2">🔧 Debug Info:</h4>
+                        <p className="text-sm text-gray-300">Modal Open: {isImageModalOpen ? '✅ YES' : '❌ NO'}</p>
+                        <p className="text-sm text-gray-300">Current Image: {currentImageSrc || '❌ None'}</p>
+                        <p className="text-sm text-gray-300">Current Alt: {currentImageAlt || '❌ None'}</p>
+                        <button 
+                            onClick={() => {
+                                console.log('🧪 Manual test button clicked');
+                                handleImageClick('https://c.top4top.io/p_3506prg6k1.jpg', 'Test Image');
+                            }}
+                            className="mt-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm"
+                        >
+                            🧪 Test Modal Manual
+                        </button>
+                    </div>
+
                     {/* Testimonials Grid */}
                     <motion.div
                         variants={containerVariants}
@@ -313,17 +352,17 @@ const TestimonialPage = () => {
                                             </div>
                                         </div>
                                     ) : (
-                                        <div className="relative group">
+                                        <div 
+                                            className="relative group cursor-pointer"
+                                            onClick={() => {
+                                                console.log('🖱️ Image container clicked:', testimonial.image, testimonial.productName);
+                                                handleImageClick(testimonial.image, testimonial.productName);
+                                            }}
+                                        >
                                             <img
                                                 src={testimonial.image}
                                                 alt={testimonial.productName}
-                                                className="w-full h-48 object-cover cursor-pointer transition-all duration-300 group-hover:scale-105"
-                                                onClick={(e) => {
-                                                    e.preventDefault();
-                                                    e.stopPropagation();
-                                                    console.log('🖱️ Image clicked:', testimonial.image, testimonial.productName);
-                                                    handleImageClick(testimonial.image, testimonial.productName);
-                                                }}
+                                                className="w-full h-48 object-cover transition-all duration-300 group-hover:scale-105"
                                                 onError={(e) => {
                                                     console.log('❌ Image failed to load:', testimonial.image);
                                                     setImageErrors(prev => ({
@@ -337,9 +376,9 @@ const TestimonialPage = () => {
                                             />
                                             {/* Click Indicator Overlay */}
                                             <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
-                                                <div className="bg-white/90 text-black px-3 py-1 rounded-full text-sm font-medium flex items-center gap-2 pointer-events-none">
+                                                <div className="bg-white/90 text-black px-3 py-1 rounded-full text-sm font-medium flex items-center gap-2">
                                                     <span>🔍</span>
-                                                    <span>Preview</span>
+                                                    <span>Klik untuk Preview</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -350,6 +389,17 @@ const TestimonialPage = () => {
                                 </div>
                                 
                                 <div className="p-6">
+                                    {/* Debug Test Button */}
+                                    <button 
+                                        onClick={() => {
+                                            console.log('🔥 DEBUG: Test button clicked for testimonial:', testimonial.id);
+                                            handleImageClick(testimonial.image, testimonial.productName);
+                                        }}
+                                        className="mb-3 bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-xs transition-colors"
+                                    >
+                                        🔍 Test Preview (Debug)
+                                    </button>
+                                    
                                     <h3 className="text-lg font-semibold text-white mb-2">
                                         {testimonial.productName}
                                     </h3>
