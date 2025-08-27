@@ -11,13 +11,16 @@ import { AnimatePresence } from "framer-motion"
 // Image Preview Modal
 const ImagePreviewModal = ({ isOpen, src, alt, onClose }) => {
   useEffect(() => {
+    console.log('🔍 Modal state changed:', { isOpen, src, alt });
     if (!isOpen) return;
     const onKey = (e) => {
       if (e.key === 'Escape') onClose();
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [isOpen, onClose]);
+  }, [isOpen, onClose, src, alt]);
+
+  console.log('🎭 Rendering modal:', { isOpen, src, alt });
 
   return (
     <AnimatePresence>
@@ -25,6 +28,7 @@ const ImagePreviewModal = ({ isOpen, src, alt, onClose }) => {
         <motion.div
           className="fixed inset-0 z-50 bg-black/95 backdrop-blur-sm flex items-center justify-center p-4"
           onClick={(e) => {
+            console.log('🎯 Modal backdrop clicked');
             if (e.target === e.currentTarget) onClose();
           }}
           role="dialog"
@@ -43,7 +47,10 @@ const ImagePreviewModal = ({ isOpen, src, alt, onClose }) => {
           >
             {/* Close Button */}
             <button
-              onClick={onClose}
+              onClick={() => {
+                console.log('❌ Close button clicked');
+                onClose();
+              }}
               className="absolute -top-6 -right-6 bg-white text-black rounded-full w-12 h-12 flex items-center justify-center shadow-xl hover:scale-110 transition-all z-10 hover:bg-gray-100"
               aria-label="Close preview"
             >
@@ -58,6 +65,8 @@ const ImagePreviewModal = ({ isOpen, src, alt, onClose }) => {
                 className="w-full h-auto max-h-[85vh] object-contain"
                 loading="eager"
                 draggable="false"
+                onLoad={() => console.log('🖼️ Preview image loaded:', src)}
+                onError={() => console.log('❌ Preview image failed to load:', src)}
               />
               
               {/* Image Info Overlay */}
@@ -87,6 +96,25 @@ const TestimonialPage = () => {
     const [currentImageSrc, setCurrentImageSrc] = useState('')
     const [currentImageAlt, setCurrentImageAlt] = useState('')
     
+    // Debug function to check if modal state is working
+    const handleImageClick = (imageSrc, imageAlt) => {
+        console.log('🖱️ Image clicked:', imageSrc, imageAlt);
+        setCurrentImageSrc(imageSrc);
+        setCurrentImageAlt(imageAlt);
+        setIsImageModalOpen(true);
+        console.log('📱 Modal should open now');
+    };
+
+    const handleCloseModal = () => {
+        console.log('❌ Closing modal');
+        setIsImageModalOpen(false);
+    };
+
+    // Debug modal state changes
+    useEffect(() => {
+        console.log('🔄 Modal state updated:', { isImageModalOpen, currentImageSrc, currentImageAlt });
+    }, [isImageModalOpen, currentImageSrc, currentImageAlt]);
+
     // Data testimoni yang bisa ditambahkan manual
     const testimonials = [
         {
@@ -284,11 +312,7 @@ const TestimonialPage = () => {
                                                 src={testimonial.image}
                                                 alt={testimonial.productName}
                                                 className="w-full h-48 object-cover cursor-pointer transition-all duration-300 group-hover:scale-105"
-                                                onClick={() => {
-                                                    setCurrentImageSrc(testimonial.image)
-                                                    setCurrentImageAlt(testimonial.productName)
-                                                    setIsImageModalOpen(true)
-                                                }}
+                                                onClick={() => handleImageClick(testimonial.image, testimonial.productName)}
                                                 onError={() => {
                                                     setImageErrors(prev => ({
                                                         ...prev,
@@ -400,7 +424,7 @@ const TestimonialPage = () => {
                 isOpen={isImageModalOpen}
                 src={currentImageSrc}
                 alt={currentImageAlt}
-                onClose={() => setIsImageModalOpen(false)}
+                onClose={handleCloseModal}
             />
         </div>
     )
