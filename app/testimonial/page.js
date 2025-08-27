@@ -1,14 +1,91 @@
 "use client"
 
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { motion } from "framer-motion"
 import { FaStar, FaStarHalfAlt } from "react-icons/fa"
 import Image from "next/image"
 import Header from "../components/Header"
 import Footer from "../components/Footer"
+import { AnimatePresence } from "framer-motion"
+
+// Image Preview Modal
+const ImagePreviewModal = ({ isOpen, src, alt, onClose }) => {
+  useEffect(() => {
+    if (!isOpen) return;
+    const onKey = (e) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [isOpen, onClose]);
+
+  return (
+    <AnimatePresence>
+      {isOpen && (
+        <motion.div
+          className="fixed inset-0 z-50 bg-black/95 backdrop-blur-sm flex items-center justify-center p-4"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) onClose();
+          }}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Image preview"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+        >
+          <motion.div 
+            className="max-w-5xl w-full max-h-[95vh] relative"
+            initial={{ scale: 0.8, opacity: 0 }} 
+            animate={{ scale: 1, opacity: 1 }} 
+            exit={{ scale: 0.8, opacity: 0 }} 
+            transition={{ duration: 0.3, ease: "easeOut" }}
+          >
+            {/* Close Button */}
+            <button
+              onClick={onClose}
+              className="absolute -top-6 -right-6 bg-white text-black rounded-full w-12 h-12 flex items-center justify-center shadow-xl hover:scale-110 transition-all z-10 hover:bg-gray-100"
+              aria-label="Close preview"
+            >
+              <span className="text-2xl font-bold">×</span>
+            </button>
+            
+            {/* Image Container */}
+            <div className="relative bg-black rounded-xl overflow-hidden shadow-2xl border border-gray-700">
+              <img
+                src={src}
+                alt={alt || 'Preview'}
+                className="w-full h-auto max-h-[85vh] object-contain"
+                loading="eager"
+                draggable="false"
+              />
+              
+              {/* Image Info Overlay */}
+              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent p-6">
+                <div className="text-white text-center">
+                  <h3 className="text-xl font-bold mb-2 text-yellow-400">{alt}</h3>
+                  <p className="text-sm text-gray-300 mb-2">🔍 Full Size Preview</p>
+                  <p className="text-xs text-gray-400">Click outside or press ESC to close</p>
+                </div>
+              </div>
+            </div>
+            
+            {/* Zoom Indicator */}
+            <div className="absolute top-4 left-4 bg-black/70 text-white px-4 py-2 rounded-full text-sm font-medium backdrop-blur-sm">
+              🔍 Full Preview
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+};
 
 const TestimonialPage = () => {
     const [imageErrors, setImageErrors] = useState({})
+    const [isImageModalOpen, setIsImageModalOpen] = useState(false)
+    const [currentImageSrc, setCurrentImageSrc] = useState('')
+    const [currentImageAlt, setCurrentImageAlt] = useState('')
     
     // Data testimoni yang bisa ditambahkan manual
     const testimonials = [
@@ -202,17 +279,31 @@ const TestimonialPage = () => {
                                             </div>
                                         </div>
                                     ) : (
-                                        <img
-                                            src={testimonial.image}
-                                            alt={testimonial.productName}
-                                            className="w-full h-48 object-cover"
-                                            onError={() => {
-                                                setImageErrors(prev => ({
-                                                    ...prev,
-                                                    [testimonial.id]: true
-                                                }))
-                                            }}
-                                        />
+                                        <div className="relative group">
+                                            <img
+                                                src={testimonial.image}
+                                                alt={testimonial.productName}
+                                                className="w-full h-48 object-cover cursor-pointer transition-all duration-300 group-hover:scale-105"
+                                                onClick={() => {
+                                                    setCurrentImageSrc(testimonial.image)
+                                                    setCurrentImageAlt(testimonial.productName)
+                                                    setIsImageModalOpen(true)
+                                                }}
+                                                onError={() => {
+                                                    setImageErrors(prev => ({
+                                                        ...prev,
+                                                        [testimonial.id]: true
+                                                    }))
+                                                }}
+                                            />
+                                            {/* Click Indicator Overlay */}
+                                            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
+                                                <div className="bg-white/90 text-black px-3 py-1 rounded-full text-sm font-medium flex items-center gap-2">
+                                                    <span>🔍</span>
+                                                    <span>Preview</span>
+                                                </div>
+                                            </div>
+                                        </div>
                                     )}
                                     <div className="absolute top-2 right-2 bg-black/70 px-2 py-1 rounded text-xs">
                                         {testimonial.price}
@@ -304,6 +395,13 @@ const TestimonialPage = () => {
             </main>
 
             <Footer />
+
+            <ImagePreviewModal
+                isOpen={isImageModalOpen}
+                src={currentImageSrc}
+                alt={currentImageAlt}
+                onClose={() => setIsImageModalOpen(false)}
+            />
         </div>
     )
 }
