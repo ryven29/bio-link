@@ -58,11 +58,17 @@ const ImagePreviewModal = ({ isOpen, src, alt, onClose }) => {
         </button>
         
         {/* Image Container */}
-        <div className="relative bg-black rounded-xl overflow-hidden shadow-2xl border border-gray-700">
+        <div className="relative bg-black rounded-xl overflow-hidden shadow-2xl border border-gray-700 flex items-center justify-center min-h-[200px] md:min-h-[300px]">
           <img
             src={src}
             alt={alt || 'Preview'}
-            className="w-full h-auto max-h-[75vh] md:max-h-[60vh] lg:max-h-[55vh] object-contain rounded-lg"
+            className="modal-image object-contain rounded-lg"
+            style={{
+              width: 'auto',
+              height: 'auto',
+              display: 'block',
+              margin: '0 auto'
+            }}
             loading="eager"
             draggable="false"
           />
@@ -96,6 +102,28 @@ const ImagePreviewModal = ({ isOpen, src, alt, onClose }) => {
           to { 
             transform: scale(1); 
             opacity: 1; 
+          }
+        }
+        
+        /* Responsive image sizing */
+        @media (max-width: 768px) {
+          .modal-image {
+            max-width: 95vw !important;
+            max-height: 70vh !important;
+          }
+        }
+        
+        @media (min-width: 768px) {
+          .modal-image {
+            max-width: min(80vw, 600px) !important;
+            max-height: min(70vh, 500px) !important;
+          }
+        }
+        
+        @media (min-width: 1024px) {
+          .modal-image {
+            max-width: min(70vw, 650px) !important;
+            max-height: min(65vh, 550px) !important;
           }
         }
       `}</style>
@@ -327,6 +355,10 @@ const TestimonialPage = () => {
                                                 src={testimonial.image}
                                                 alt={testimonial.productName}
                                                 className="w-full h-48 object-cover transition-all duration-300 group-hover:scale-105"
+                                                style={{
+                                                    objectFit: 'cover',
+                                                    objectPosition: 'center'
+                                                }}
                                                 onError={(e) => {
                                                     setImageErrors(prev => ({
                                                         ...prev,
