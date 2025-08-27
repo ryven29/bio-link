@@ -160,28 +160,28 @@ const TestimonialPage = () => {
             id: 1,
             image: "https://c.top4top.io/p_3506prg6k1.jpg",
             productName: "Jasa Claim Nitro Trial",
-            price: "Rp 25.000",
+            price: "Rp 5.000",
             rating: 5,
             description: "Claim Nitro Trial berhasil! Proses cepat dan aman. Recommended banget buat yang mau claim Nitro.",
-            customerName: "Ahmad Rizki"
+            customerName: "Daztan"
         },
         {
             id: 2,
             image: "https://d.top4top.io/p_3506c5zjg2.jpg",
             productName: "Jasa Claim Nitro Trial",
-            price: "Rp 25.000",
+            price: "Rp 5.000",
             rating: 5,
             description: "Claim Nitro Trial berhasil dengan cepat. Admin ramah dan responsive. Terima kasih RYVEN STORE!",
-            customerName: "Sarah Putri"
+            customerName: "Sentod"
         },
         {
             id: 3,
             image: "https://e.top4top.io/p_3506l56gw3.jpg",
             productName: "Joki Quest Discord",
-            price: "Rp 50.000",
-            rating: 4.5,
+            price: "Rp 5.000",
+            rating: 5,
             description: "Joki Quest Discord berhasil dikirim. Proses joki lancar dan harga bersaing.",
-            customerName: "Budi Santoso"
+            customerName: "Galih"
         },
         {
             id: 4,
@@ -190,34 +190,34 @@ const TestimonialPage = () => {
             price: "Rp 100.000",
             rating: 5,
             description: "Akun Telegram Old berhasil! Admin sangat membantu dan prosesnya cepat sekali.",
-            customerName: "Dewi Anggraini"
+            customerName: "Fawaz"
         },
         {
             id: 5,
             image: "https://g.top4top.io/p_35067ihh65.jpg",
             productName: "Joki Quest Discord",
-            price: "Rp 50.000",
+            price: "Rp 5.000",
             rating: 5,
             description: "Joki Quest Discord berhasil dikirim dengan cepat. Harga murah dan terpercaya!",
-            customerName: "Rendi Pratama"
+            customerName: "Vinzz"
         },
         {
             id: 6,
             image: "https://h.top4top.io/p_350653ezy6.jpg",
             productName: "Xbox Gamepass 1 Month",
-            price: "Rp 150.000",
-            rating: 4.5,
+            price: "Rp 10.000",
+            rating: 5,
             description: "Xbox Gamepass berhasil. Admin ramah dan prosesnya tidak ribet.",
-            customerName: "Nina Safitri"
+            customerName: "Gamero"
         },
         {
             id: 7,
             image: "https://i.top4top.io/p_350631men7.jpg",
             productName: "YT Premium 1 Month Invite",
-            price: "Rp 75.000",
+            price: "Rp 2.000",
             rating: 5,
             description: "YT Premium Invite berhasil dikirim. Proses invite sangat cepat dan aman.",
-            customerName: "Agus Setiawan"
+            customerName: "Fawaz"
         }
     ]
 
@@ -479,3 +479,4 @@ const TestimonialPage = () => {
 }
 
 export default TestimonialPage
+
