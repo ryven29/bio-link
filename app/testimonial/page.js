@@ -11,7 +11,7 @@ const TestimonialPage = () => {
     const testimonials = [
         {
             id: 1,
-            image: "/testimonial/image/image.jpg",
+            image: "/testimonial/image1.jpg",
             productName: "Diamond Mobile Legends",
             price: "Rp 50.000",
             rating: 5,
@@ -20,7 +20,7 @@ const TestimonialPage = () => {
         },
         {
             id: 2,
-            image: "/testimonial/image/IMG_20240906_140823.jpg",
+            image: "/testimonial/IMG_20240906_140823.jpg",
             productName: "UC PUBG Mobile",
             price: "Rp 100.000",
             rating: 5,
@@ -29,7 +29,7 @@ const TestimonialPage = () => {
         },
         {
             id: 3,
-            image: "/testimonial/image/IMG_20240906_140839.jpg",
+            image: "/testimonial/IMG_20240906_140839.jpg",
             productName: "Voucher Garena Shell",
             price: "Rp 25.000",
             rating: 4.5,
@@ -38,7 +38,7 @@ const TestimonialPage = () => {
         },
         {
             id: 4,
-            image: "/testimonial/image/IMG_20240906_140902.jpg",
+            image: "/testimonial/IMG_20240906_140902.jpg",
             productName: "Steam Wallet",
             price: "Rp 200.000",
             rating: 5,
@@ -47,7 +47,7 @@ const TestimonialPage = () => {
         },
         {
             id: 5,
-            image: "/testimonial/image/IMG_20240906_140915.jpg",
+            image: "/testimonial/IMG_20240906_140915.jpg",
             productName: "Google Play Gift Card",
             price: "Rp 150.000",
             rating: 5,
@@ -56,7 +56,7 @@ const TestimonialPage = () => {
         },
         {
             id: 6,
-            image: "/testimonial/image/IMG_20240906_140950.jpg",
+            image: "/testimonial/IMG_20240906_140950.jpg",
             productName: "Voucher Free Fire",
             price: "Rp 75.000",
             rating: 4.5,
@@ -65,7 +65,7 @@ const TestimonialPage = () => {
         },
         {
             id: 7,
-            image: "/testimonial/image/IMG_20240906_143031.jpg",
+            image: "/testimonial/IMG_20240906_143031.jpg",
             productName: "Nintendo eShop Card",
             price: "Rp 300.000",
             rating: 5,
@@ -192,6 +192,9 @@ const TestimonialPage = () => {
                                         src={testimonial.image}
                                         alt={testimonial.productName}
                                         className="w-full h-48 object-cover"
+                                        onError={(e) => {
+                                            e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='200' viewBox='0 0 400 200'%3E%3Crect width='400' height='200' fill='%23374151'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%239CA3AF' font-family='Arial, sans-serif' font-size='16'%3EGambar tidak tersedia%3C/text%3E%3C/svg%3E"
+                                        }}
                                     />
                                     <div className="absolute top-2 right-2 bg-black/70 px-2 py-1 rounded text-xs">
                                         {testimonial.price}
@@ -243,16 +246,16 @@ const TestimonialPage = () => {
                             </p>
                             <div className="bg-gray-800 p-4 rounded-lg text-left">
                                 <p className="text-sm text-gray-300 mb-2">Format data testimoni:</p>
-                                <pre className="text-xs text-green-400 overflow-x-auto">
-{`{
-    id: 8,
-    image: "/testimonial/image/nama-gambar.jpg",
-    productName: "Nama Produk",
-    price: "Rp 50.000",
-    rating: 5,
-    description: "Deskripsi testimoni...",
-    customerName: "Nama Pelanggan"
-}`}
+                                                                 <pre className="text-xs text-green-400 overflow-x-auto">
+ {`{
+     id: 8,
+     image: "/testimonial/nama-gambar.jpg",
+     productName: "Nama Produk",
+     price: "Rp 50.000",
+     rating: 5,
+     description: "Deskripsi testimoni...",
+     customerName: "Nama Pelanggan"
+ }`}
                                 </pre>
                             </div>
                         </div>
