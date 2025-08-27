@@ -1,588 +1,268 @@
 "use client"
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Instagram, 
-  Github, 
-  Quote, 
-  Star, 
-  CheckCircle, 
-  ArrowRight, 
-  Sparkles,
-  Shield
-} from 'lucide-react';
 
-// Typing Component
-const Typing = () => {
-  const texts = ['𝗥𝘆𝘃𝗲𝗻 𝗦𝘁𝗼𝗿𝗲.', '𝗧𝗿𝘂𝘀𝘁𝗲𝗱 𝗦𝗲𝗿𝘃𝗶𝗰𝗲.'];
-  const [textIndex, setTextIndex] = useState(0);
-  const [charIndex, setCharIndex] = useState(0);
-  const [displayed, setDisplayed] = useState('');
-  const [isDeleting, setIsDeleting] = useState(false);
+import React from "react"
+import { motion } from "framer-motion"
+import { FaStar, FaStarHalfAlt } from "react-icons/fa"
+import Header from "../components/Header"
+import Footer from "../components/Footer"
 
-  useEffect(() => {
-    const currentText = texts[textIndex];
-    const typingSpeed = isDeleting ? 40 : 80;
-    const pauseAtEnd = 1000;
+const TestimonialPage = () => {
+    // Data testimoni yang bisa ditambahkan manual
+    const testimonials = [
+        {
+            id: 1,
+            image: "/testimonial/image/image.jpg",
+            productName: "Diamond Mobile Legends",
+            price: "Rp 50.000",
+            rating: 5,
+            description: "Top up diamond ML berhasil! Proses cepat dan aman. Recommended banget buat yang mau top up game.",
+            customerName: "Ahmad Rizki"
+        },
+        {
+            id: 2,
+            image: "/testimonial/image/IMG_20240906_140823.jpg",
+            productName: "UC PUBG Mobile",
+            price: "Rp 100.000",
+            rating: 5,
+            description: "Top up UC PUBG berhasil dengan cepat. Admin ramah dan responsive. Terima kasih RYVEN STORE!",
+            customerName: "Sarah Putri"
+        },
+        {
+            id: 3,
+            image: "/testimonial/image/IMG_20240906_140839.jpg",
+            productName: "Voucher Garena Shell",
+            price: "Rp 25.000",
+            rating: 4.5,
+            description: "Voucher Garena Shell berhasil dikirim. Proses top up lancar dan harga bersaing.",
+            customerName: "Budi Santoso"
+        },
+        {
+            id: 4,
+            image: "/testimonial/image/IMG_20240906_140902.jpg",
+            productName: "Steam Wallet",
+            price: "Rp 200.000",
+            rating: 5,
+            description: "Top up Steam Wallet berhasil! Admin sangat membantu dan prosesnya cepat sekali.",
+            customerName: "Dewi Anggraini"
+        },
+        {
+            id: 5,
+            image: "/testimonial/image/IMG_20240906_140915.jpg",
+            productName: "Google Play Gift Card",
+            price: "Rp 150.000",
+            rating: 5,
+            description: "Gift card Google Play berhasil dikirim dengan cepat. Harga murah dan terpercaya!",
+            customerName: "Rendi Pratama"
+        },
+        {
+            id: 6,
+            image: "/testimonial/image/IMG_20240906_140950.jpg",
+            productName: "Voucher Free Fire",
+            price: "Rp 75.000",
+            rating: 4.5,
+            description: "Top up voucher Free Fire berhasil. Admin ramah dan prosesnya tidak ribet.",
+            customerName: "Nina Safitri"
+        },
+        {
+            id: 7,
+            image: "/testimonial/image/IMG_20240906_143031.jpg",
+            productName: "Nintendo eShop Card",
+            price: "Rp 300.000",
+            rating: 5,
+            description: "eShop card Nintendo berhasil dikirim. Proses top up sangat cepat dan aman.",
+            customerName: "Agus Setiawan"
+        }
+    ]
 
-    let timeoutId;
+    const renderStars = (rating) => {
+        const stars = []
+        const fullStars = Math.floor(rating)
+        const hasHalfStar = rating % 1 !== 0
 
-    if (!isDeleting && charIndex <= currentText.length) {
-      timeoutId = setTimeout(() => {
-        setDisplayed(currentText.slice(0, charIndex));
-        setCharIndex(charIndex + 1);
-      }, typingSpeed);
-    } else if (!isDeleting && charIndex > currentText.length) {
-      timeoutId = setTimeout(() => {
-        setIsDeleting(true);
-        setCharIndex(charIndex - 1);
-      }, pauseAtEnd);
-    } else if (isDeleting && charIndex >= 0) {
-      timeoutId = setTimeout(() => {
-        setDisplayed(currentText.slice(0, charIndex));
-        setCharIndex(charIndex - 1);
-      }, typingSpeed);
-    } else {
-      setIsDeleting(false);
-      setTextIndex((textIndex + 1) % texts.length);
-      setCharIndex(0);
+        for (let i = 0; i < fullStars; i++) {
+            stars.push(
+                <FaStar key={i} className="text-yellow-400 text-sm" />
+            )
+        }
+
+        if (hasHalfStar) {
+            stars.push(
+                <FaStarHalfAlt key="half" className="text-yellow-400 text-sm" />
+            )
+        }
+
+        const remainingStars = 5 - Math.ceil(rating)
+        for (let i = 0; i < remainingStars; i++) {
+            stars.push(
+                <FaStar key={`empty-${i}`} className="text-gray-400 text-sm" />
+            )
+        }
+
+        return stars
     }
 
-    return () => clearTimeout(timeoutId);
-  }, [charIndex, isDeleting, textIndex]);
-
-  return <span className="typing">{displayed}</span>;
-};
-
-// Header Component
-const Header = () => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  return (
-    <motion.header
-      className="fixed top-0 left-0 right-0 z-50"
-      initial={{ y: -20, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.4, ease: 'easeOut' }}
-    >
-      <nav className="p-3 bg-black border-b border-gray-800 backdrop-blur-md bg-black/90">
-        <div className="container mx-auto flex justify-between items-center">
-          <div className="text-lg font-bold bg-gradient-to-r from-yellow-400 via-orange-400 to-pink-500 bg-clip-text text-transparent">
-            <Typing />
-          </div>
-          
-          <div className="flex items-center gap-4">
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="p-2 rounded-lg hover:bg-gray-700 transition-all"
-            >
-              <div className="flex flex-col gap-1.5 w-6">
-                <span className={`block h-0.5 bg-white transition-all ${isOpen ? 'rotate-45 translate-y-2' : ''}`} />
-                <span className={`block h-0.5 bg-white transition-all ${isOpen ? 'opacity-0' : ''}`} />
-                <span className={`block h-0.5 bg-white transition-all ${isOpen ? '-rotate-45 -translate-y-2' : ''}`} />
-              </div>
-            </button>
-          </div>
-        </div>
-        
-        {isOpen && (
-          <div className="absolute top-full left-0 right-0 bg-black border-b border-gray-800 backdrop-blur-md">
-            <nav className="max-w-7xl mx-auto p-4">
-              <div className="space-y-2">
-                <a href="#home" className="block px-4 py-2 rounded-lg text-white hover:bg-gray-700 transition-all">
-                  Home
-                </a>
-                <a href="#testimonials" className="block px-4 py-2 rounded-lg text-white hover:bg-gray-700 transition-all">
-                  Testimonials
-                </a>
-                <a href="#services" className="block px-4 py-2 rounded-lg text-white hover:bg-gray-700 transition-all">
-                  Services
-                </a>
-                <a href="#contact" className="block px-4 py-2 rounded-lg text-white hover:bg-gray-700 transition-all">
-                  Contact
-                </a>
-              </div>
-            </nav>
-          </div>
-        )}
-      </nav>
-    </motion.header>
-  );
-};
-
-// Testimonial Card Component
-const TestimonialCard = ({ testimonial, onPreview }) => {
-  const [imageLoaded, setImageLoaded] = useState(false);
-  const [imageError, setImageError] = useState(false);
-
-  // Reset state when testimonial changes
-  useEffect(() => {
-    setImageLoaded(false);
-    setImageError(false);
-  }, [testimonial.id, testimonial.image]);
-
-  const handleImageLoad = () => {
-    setImageLoaded(true);
-    setImageError(false);
-  };
-
-  const handleImageError = () => {
-    setImageError(true);
-    setImageLoaded(false);
-  };
-
-  return (
-    <div className="bg-black border border-gray-500 rounded-lg p-4 hover:border-gray-400 transition-all duration-300 transform hover:scale-105 hover:shadow-xl">
-      <div className="flex items-start gap-3 mb-3">
-        <div className="flex-shrink-0">
-          <div className="w-8 h-8 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full flex items-center justify-center">
-            <Quote className="text-black text-xs w-3 h-3" />
-          </div>
-        </div>
-        <div>
-          <h3 className="text-white font-semibold text-sm">{testimonial.service}</h3>
-          <div className="flex items-center gap-1 mt-1">
-            {[...Array(5)].map((_, i) => (
-              <Star key={i} className="text-yellow-400 text-xs w-3 h-3 fill-current" />
-            ))}
-          </div>
-        </div>
-        <div className="ml-auto">
-          <CheckCircle className="text-green-500 text-sm w-4 h-4" />
-        </div>
-      </div>
-      
-      <div
-        className="relative mb-3 cursor-zoom-in"
-        onClick={() => imageLoaded && !imageError && onPreview && onPreview(testimonial.image, testimonial.service)}
-        role="button"
-        tabIndex={0}
-        onKeyDown={(e) => {
-          if ((e.key === 'Enter' || e.key === ' ') && imageLoaded && !imageError) {
-            onPreview && onPreview(testimonial.image, testimonial.service);
-          }
-        }}
-        aria-label={`Preview ${testimonial.service}`}
-      >
-        {/* Loading State */}
-        {!imageLoaded && !imageError && (
-          <div className="w-full h-48 bg-gray-800 rounded-lg flex items-center justify-center">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
-          </div>
-        )}
-
-        {/* Error State */}
-        {imageError && (
-          <div className="w-full h-48 bg-gray-800 rounded-lg flex items-center justify-center">
-            <div className="text-center">
-              <div className="text-gray-400 text-2xl mb-2">📷</div>
-              <div className="text-gray-500 text-xs">Image not available</div>
-            </div>
-          </div>
-        )}
-
-        {/* Actual Image */}
-        {!imageError && (
-          <img
-            src={testimonial.image}
-            alt={testimonial.service}
-            className={`w-full h-48 object-cover rounded-lg transition-opacity duration-300 ${
-              imageLoaded ? 'opacity-100' : 'opacity-0'
-            }`}
-            onLoad={handleImageLoad}
-            onError={handleImageError}
-            loading="lazy"
-          />
-        )}
-      </div>
-      
-      <p className="text-gray-300 text-xs leading-relaxed mb-3">
-        {testimonial.review}
-      </p>
-      
-      <div className="flex items-center justify-between">
-        <div>
-          <p className="text-white font-medium text-xs">{testimonial.customer}</p>
-          <p className="text-gray-500 text-xs">{testimonial.date}</p>
-        </div>
-        <div className="flex items-center gap-1 text-green-500">
-          <span className="text-xs font-medium">Verified</span>
-          <Shield className="text-xs w-3 h-3" fill="currentColor" />
-        </div>
-      </div>
-    </div>
-  );
-};
-
-// Image Preview Modal
-const ImagePreviewModal = ({ isOpen, src, alt, onClose }) => {
-  const [previewLoaded, setPreviewLoaded] = useState(false);
-  const [previewError, setPreviewError] = useState(false);
-
-  useEffect(() => {
-    if (!isOpen) return;
-    
-    // Reset states when modal opens
-    setPreviewLoaded(false);
-    setPreviewError(false);
-    
-    const onKey = (e) => {
-      if (e.key === 'Escape') onClose();
-    };
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
-  }, [isOpen, onClose, src]);
-
-  const handlePreviewLoad = () => {
-    setPreviewLoaded(true);
-    setPreviewError(false);
-  };
-
-  const handlePreviewError = () => {
-    setPreviewError(true);
-    setPreviewLoaded(false);
-  };
-
-  return (
-    <AnimatePresence>
-      {isOpen && (
-        <motion.div
-          className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4"
-          onClick={(e) => {
-            if (e.target === e.currentTarget) onClose();
-          }}
-          role="dialog"
-          aria-modal="true"
-          aria-label="Image preview"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-        >
-          <motion.div 
-            className="max-w-3xl w-full" 
-            initial={{ scale: 0.96, opacity: 0 }} 
-            animate={{ scale: 1, opacity: 1 }} 
-            exit={{ scale: 0.96, opacity: 0 }} 
-            transition={{ duration: 0.2 }}
-          >
-            <div className="relative">
-              <button
-                onClick={onClose}
-                className="absolute -top-3 -right-3 bg-white text-black rounded-full w-8 h-8 flex items-center justify-center shadow hover:scale-105 transition z-10"
-                aria-label="Close preview"
-              >
-                ×
-              </button>
-              
-              <div className="relative">
-                {/* Loading state for preview */}
-                {!previewLoaded && !previewError && (
-                  <div className="w-full h-96 bg-gray-800 rounded-lg flex items-center justify-center border border-gray-700">
-                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white"></div>
-                  </div>
-                )}
-
-                {/* Error state for preview */}
-                {previewError && (
-                  <div className="w-full h-96 bg-gray-800 rounded-lg flex items-center justify-center border border-gray-700">
-                    <div className="text-center">
-                      <div className="text-gray-400 text-4xl mb-4">📷</div>
-                      <div className="text-gray-300 text-lg">Failed to load image</div>
-                    </div>
-                  </div>
-                )}
-
-                {/* Actual preview image */}
-                {!previewError && (
-                  <img
-                    src={src}
-                    alt={alt || 'Preview'}
-                    className={`w-full max-h-[80vh] object-contain rounded-lg border border-gray-700 bg-black transition-opacity duration-300 ${
-                      previewLoaded ? 'opacity-100' : 'opacity-0'
-                    }`}
-                    onLoad={handlePreviewLoad}
-                    onError={handlePreviewError}
-                  />
-                )}
-              </div>
-              
-              {previewLoaded && (
-                <div className="text-center text-sm text-gray-300 mt-2">{alt}</div>
-              )}
-            </div>
-          </motion.div>
-        </motion.div>
-      )}
-    </AnimatePresence>
-  );
-};
-
-// Stats Component
-const StatsSection = () => {
-  const stats = [
-    { label: "Happy Customers", value: "500+", icon: "👥" },
-    { label: "Services Completed", value: "1000+", icon: "✅" },
-    { label: "Success Rate", value: "99.9%", icon: "📈" },
-    { label: "Response Time", value: "< 1 Hour", icon: "⚡" }
-  ];
-
-  return (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-      {stats.map((stat, index) => (
-        <motion.div
-          key={index}
-          className="bg-black border border-gray-500 rounded-lg p-4 text-center hover:border-gray-400 transition-all"
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.4, delay: index * 0.05 }}
-          whileHover={{ y: -4 }}
-        >
-          <div className="text-2xl mb-2">{stat.icon}</div>
-          <div className="text-white font-bold text-lg">{stat.value}</div>
-          <div className="text-gray-400 text-xs">{stat.label}</div>
-        </motion.div>
-      ))}
-    </div>
-  );
-};
-
-// Services Section
-const ServicesSection = () => {
-  const services = [
-    { name: "Nitro Discord", icon: "🎮", description: "Premium Discord Nitro services" },
-    { name: "Gaming Services", icon: "🎯", description: "Quest completion & boosting" },
-    { name: "Social Media", icon: "📱", description: "Account management services" },
-    { name: "Streaming", icon: "📺", description: "Premium streaming subscriptions" }
-  ];
-
-  return (
-    <div className="mb-8">
-      <motion.h2
-        className="text-white text-xl font-bold text-center mb-6 bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent"
-        initial={{ opacity: 0, y: 12 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.4 }}
-      >
-        Our Services
-      </motion.h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {services.map((service, index) => (
-          <motion.div
-            key={index}
-            className="bg-black border border-gray-500 rounded-lg p-4 hover:border-gray-400 transition-all cursor-pointer group"
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.4, delay: index * 0.06 }}
-            whileHover={{ y: -4 }}
-          >
-            <div className="flex items-center gap-3">
-              <div className="text-2xl">{service.icon}</div>
-              <div>
-                <h3 className="text-white font-semibold text-sm group-hover:text-yellow-400 transition-colors">{service.name}</h3>
-                <p className="text-gray-400 text-xs">{service.description}</p>
-              </div>
-              <ArrowRight className="ml-auto text-gray-400 group-hover:text-white group-hover:translate-x-1 transition-all w-4 h-4" />
-            </div>
-          </motion.div>
-        ))}
-      </div>
-    </div>
-  );
-};
-
-// Main Component
-const RyvenStoreTestimonials = () => {
-  const testimonials = [
-    {
-      id: 1,
-      service: "Jasa Claim Nitro Trial",
-      customer: "Customer #001",
-      date: "2 days ago",
-      review: "Service sangat memuaskan! Proses claim nitro trial berjalan lancar dan cepat. Highly recommended!",
-      image: "https://c.top4top.io/p_3506prg6k1.jpg",
-      rating: 5
-    },
-    {
-      id: 2,
-      service: "Jasa Claim Nitro Trial",
-      customer: "Customer #002", 
-      date: "3 days ago",
-      review: "Pelayanan ramah dan profesional. Nitro trial berhasil diklaim tanpa masalah. Terima kasih!",
-      image: "https://d.top4top.io/p_3506c5zjg2.jpg",
-      rating: 5
-    },
-    {
-      id: 3,
-      service: "Joki Quest Discord",
-      customer: "Gamer Pro",
-      date: "1 week ago", 
-      review: "Quest Discord selesai dengan sempurna! Sangat puas dengan hasilnya. Will order again!",
-      image: "https://e.top4top.io/p_3506l56gw3.jpg",
-      rating: 5
-    },
-    {
-      id: 4,
-      service: "Akun Telegram Old",
-      customer: "Business Owner",
-      date: "5 days ago",
-      review: "Akun telegram old berkualitas tinggi. Sesuai dengan deskripsi dan berfungsi dengan baik.",
-      image: "https://f.top4top.io/p_3506vcfop4.jpg", 
-      rating: 5
-    },
-    {
-      id: 5,
-      service: "Joki Quest Discord",
-      customer: "Discord User",
-      date: "1 week ago",
-      review: "Service joki quest discord sangat memuaskan. Dikerjakan dengan cepat dan hasil sempurna!",
-      image: "https://g.top4top.io/p_35067ihh65.jpg",
-      rating: 5
-    },
-    {
-      id: 6,
-      service: "Xbox Gamepass 1 Month", 
-      customer: "Xbox Gamer",
-      date: "4 days ago",
-      review: "Xbox Gamepass berfungsi dengan baik selama 1 bulan penuh. Harga terjangkau dan pelayanan excellent!",
-      image: "https://h.top4top.io/p_350653ezy6.jpg",
-      rating: 5
-    },
-    {
-      id: 7,
-      service: "YT Premium 1 Month Invite",
-      customer: "Content Creator",
-      date: "6 days ago", 
-      review: "YouTube Premium invite works perfectly! No ads and background play working great. Thank you!",
-      image: "https://i.top4top.io/p_350631men7.jpg",
-      rating: 5
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.1
+            }
+        }
     }
-  ];
 
-  const [preview, setPreview] = useState({ open: false, src: '', alt: '' });
+    const itemVariants = {
+        hidden: { y: 20, opacity: 0 },
+        visible: {
+            y: 0,
+            opacity: 1,
+            transition: {
+                duration: 0.5
+            }
+        }
+    }
 
-  const openPreview = (src, alt) => setPreview({ open: true, src, alt });
-  const closePreview = () => setPreview({ open: false, src: '', alt: '' });
+    return (
+        <div className="min-h-screen bg-black text-white">
+            <Header />
+            
+            <main className="pt-20 pb-8 px-4">
+                <div className="max-w-7xl mx-auto">
+                    {/* Header Section */}
+                    <motion.div
+                        initial={{ opacity: 0, y: -20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6 }}
+                        className="text-center mb-12"
+                    >
+                        <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-yellow-400 via-orange-400 to-pink-500 bg-clip-text text-transparent mb-4">
+                            RYVEN STORE
+                        </h1>
+                        <p className="text-xl text-gray-300 mb-2">
+                            Testimoni & Reputasi
+                        </p>
+                        <p className="text-gray-400 max-w-2xl mx-auto">
+                            Lihat testimoni dari pelanggan kami yang telah menggunakan layanan top up game dan voucher digital kami
+                        </p>
+                    </motion.div>
 
-  return (
-    <div className="min-h-screen bg-gray-900 text-white">
-      <Header />
-      
-      <main className="container mx-auto px-4 pt-20 pb-8">
-        {/* Hero Section */}
-        <section id="home" className="text-center mb-12">
-          <motion.h1
-            className="text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-yellow-400 via-orange-500 to-pink-500 bg-clip-text text-transparent"
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, ease: 'easeOut' }}
-          >
-            Welcome to Ryven Store
-          </motion.h1>
-          
-          <p className="text-gray-400 text-lg mb-8 max-w-2xl mx-auto">
-            Your trusted digital services provider with 99.9% success rate and thousands of satisfied customers
-          </p>
-          
-          <StatsSection />
-        </section>
+                    {/* Stats Section */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6, delay: 0.2 }}
+                        className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12"
+                    >
+                        <div className="bg-gray-900 p-6 rounded-lg border border-gray-700 text-center">
+                            <div className="text-3xl font-bold text-yellow-400 mb-2">
+                                {testimonials.length}+
+                            </div>
+                            <div className="text-gray-300">Testimoni Positif</div>
+                        </div>
+                        <div className="bg-gray-900 p-6 rounded-lg border border-gray-700 text-center">
+                            <div className="text-3xl font-bold text-green-400 mb-2">
+                                4.8
+                            </div>
+                            <div className="text-gray-300">Rating Rata-rata</div>
+                        </div>
+                        <div className="bg-gray-900 p-6 rounded-lg border border-gray-700 text-center">
+                            <div className="text-3xl font-bold text-blue-400 mb-2">
+                                100%
+                            </div>
+                            <div className="text-gray-300">Kepuasan Pelanggan</div>
+                        </div>
+                    </motion.div>
 
-        {/* Services Section */}
-        <section id="services" className="mb-12">
-          <ServicesSection />
-        </section>
+                    {/* Testimonials Grid */}
+                    <motion.div
+                        variants={containerVariants}
+                        initial="hidden"
+                        animate="visible"
+                        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+                    >
+                        {testimonials.map((testimonial) => (
+                            <motion.div
+                                key={testimonial.id}
+                                variants={itemVariants}
+                                whileHover={{ scale: 1.02 }}
+                                className="bg-gray-900 rounded-lg border border-gray-700 overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300"
+                            >
+                                <div className="relative">
+                                    <img
+                                        src={testimonial.image}
+                                        alt={testimonial.productName}
+                                        className="w-full h-48 object-cover"
+                                    />
+                                    <div className="absolute top-2 right-2 bg-black/70 px-2 py-1 rounded text-xs">
+                                        {testimonial.price}
+                                    </div>
+                                </div>
+                                
+                                <div className="p-6">
+                                    <h3 className="text-lg font-semibold text-white mb-2">
+                                        {testimonial.productName}
+                                    </h3>
+                                    
+                                    <div className="flex items-center mb-3">
+                                        {renderStars(testimonial.rating)}
+                                        <span className="ml-2 text-sm text-gray-400">
+                                            ({testimonial.rating})
+                                        </span>
+                                    </div>
+                                    
+                                    <p className="text-gray-300 text-sm mb-4 leading-relaxed">
+                                        "{testimonial.description}"
+                                    </p>
+                                    
+                                    <div className="flex items-center justify-between">
+                                        <span className="text-yellow-400 font-medium text-sm">
+                                            {testimonial.customerName}
+                                        </span>
+                                        <span className="text-gray-500 text-xs">
+                                            Pelanggan Terpercaya
+                                        </span>
+                                    </div>
+                                </div>
+                            </motion.div>
+                        ))}
+                    </motion.div>
 
-        {/* Testimonials Section */}
-        <section id="testimonials">
-          <div className="text-center mb-8">
-            <motion.h2
-              className="text-2xl md:text-3xl font-bold mb-4 bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent"
-              initial={{ opacity: 0, y: 12 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4 }}
-            >
-              Customer Testimonials
-            </motion.h2>
-            <p className="text-gray-400">
-              Real feedback from our satisfied customers
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-            {testimonials.map((testimonial, index) => (
-              <motion.div
-                key={testimonial.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.2 }}
-                transition={{ duration: 0.4, delay: index * 0.07 }}
-              >
-                <TestimonialCard
-                  testimonial={testimonial}
-                  onPreview={openPreview}
-                />
-              </motion.div>
-            ))}
-          </div>
-          
-          <div className="text-center">
-            <motion.button
-              className="bg-gradient-to-r from-yellow-400 to-orange-500 text-black px-8 py-3 rounded-lg font-semibold hover:scale-105 transition-all duration-300 shadow-lg"
-              whileHover={{ scale: 1.04 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              View More Testimonials
-            </motion.button>
-          </div>
-        </section>
+                    {/* Add Testimonial Info */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6, delay: 0.4 }}
+                        className="mt-12 text-center"
+                    >
+                        <div className="bg-gray-900 p-8 rounded-lg border border-gray-700 max-w-2xl mx-auto">
+                            <h3 className="text-2xl font-bold text-white mb-4">
+                                Ingin Menambah Testimoni?
+                            </h3>
+                            <p className="text-gray-300 mb-6">
+                                Untuk menambah testimoni baru, Anda dapat mengedit file <code className="bg-gray-800 px-2 py-1 rounded text-yellow-400">testimonial/page.js</code> dan menambahkan data testimoni ke dalam array <code className="bg-gray-800 px-2 py-1 rounded text-yellow-400">testimonials</code>.
+                            </p>
+                            <div className="bg-gray-800 p-4 rounded-lg text-left">
+                                <p className="text-sm text-gray-300 mb-2">Format data testimoni:</p>
+                                <pre className="text-xs text-green-400 overflow-x-auto">
+{`{
+    id: 8,
+    image: "/testimonial/image/nama-gambar.jpg",
+    productName: "Nama Produk",
+    price: "Rp 50.000",
+    rating: 5,
+    description: "Deskripsi testimoni...",
+    customerName: "Nama Pelanggan"
+}`}
+                                </pre>
+                            </div>
+                        </div>
+                    </motion.div>
+                </div>
+            </main>
 
-        {/* Contact Section */}
-        <section id="contact" className="mt-16 text-center">
-          <div className="bg-black border border-gray-500 rounded-lg p-8 max-w-md mx-auto">
-            <h3 className="text-xl font-bold mb-4 text-white">Ready to Order?</h3>
-            <p className="text-gray-400 text-sm mb-6">
-              Contact us now for fast and reliable service
-            </p>
-            <div className="space-y-3">
-              <a
-                href="https://wa.me/628991103457"
-                className="flex items-center justify-center gap-2 w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg transition-all duration-300 hover:scale-105"
-              >
-                <span>💬</span>
-                WhatsApp
-              </a>
-              <a
-                href="https://t.me/ryven29"
-                className="flex items-center justify-center gap-2 w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg transition-all duration-300 hover:scale-105"
-              >
-                <span>📱</span>
-                Telegram
-              </a>
-            </div>
-          </div>
-        </section>
-      </main>
-
-      {/* Footer */}
-      <footer className="text-center mt-12 text-sm text-gray-400 border-t border-gray-800 pt-8">
-        <div className="flex justify-center items-center gap-2 mt-1">
-          <Sparkles className="text-gray-500 w-4 h-4" />
-          <p>Ryven Store • © 2025 • Trusted Digital Services</p>
+            <Footer />
         </div>
-      </footer>
+    )
+}
 
-      {/* Image Preview Modal */}
-      <ImagePreviewModal
-        isOpen={preview.open}
-        src={preview.src}
-        alt={preview.alt}
-        onClose={closePreview}
-      />
-    </div>
-  );
-};
-
-export default RyvenStoreTestimonials;
+export default TestimonialPage
