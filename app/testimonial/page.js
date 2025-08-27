@@ -1,75 +1,78 @@
 "use client"
 
-import React from "react"
+import React, { useState } from "react"
 import { motion } from "framer-motion"
 import { FaStar, FaStarHalfAlt } from "react-icons/fa"
+import Image from "next/image"
 import Header from "../components/Header"
 import Footer from "../components/Footer"
 
 const TestimonialPage = () => {
+    const [imageErrors, setImageErrors] = useState({})
+    
     // Data testimoni yang bisa ditambahkan manual
     const testimonials = [
         {
             id: 1,
-            image: "/testimonial/image1.jpg",
-            productName: "Diamond Mobile Legends",
-            price: "Rp 50.000",
+            image: "https://c.top4top.io/p_3506prg6k1.jpg",
+            productName: "Jasa Claim Nitro Trial",
+            price: "Rp 25.000",
             rating: 5,
-            description: "Top up diamond ML berhasil! Proses cepat dan aman. Recommended banget buat yang mau top up game.",
+            description: "Claim Nitro Trial berhasil! Proses cepat dan aman. Recommended banget buat yang mau claim Nitro.",
             customerName: "Ahmad Rizki"
         },
         {
             id: 2,
-            image: "/testimonial/IMG_20240906_140823.jpg",
-            productName: "UC PUBG Mobile",
-            price: "Rp 100.000",
+            image: "https://d.top4top.io/p_3506c5zjg2.jpg",
+            productName: "Jasa Claim Nitro Trial",
+            price: "Rp 25.000",
             rating: 5,
-            description: "Top up UC PUBG berhasil dengan cepat. Admin ramah dan responsive. Terima kasih RYVEN STORE!",
+            description: "Claim Nitro Trial berhasil dengan cepat. Admin ramah dan responsive. Terima kasih RYVEN STORE!",
             customerName: "Sarah Putri"
         },
         {
             id: 3,
-            image: "/testimonial/IMG_20240906_140839.jpg",
-            productName: "Voucher Garena Shell",
-            price: "Rp 25.000",
+            image: "https://e.top4top.io/p_3506l56gw3.jpg",
+            productName: "Joki Quest Discord",
+            price: "Rp 50.000",
             rating: 4.5,
-            description: "Voucher Garena Shell berhasil dikirim. Proses top up lancar dan harga bersaing.",
+            description: "Joki Quest Discord berhasil dikirim. Proses joki lancar dan harga bersaing.",
             customerName: "Budi Santoso"
         },
         {
             id: 4,
-            image: "/testimonial/IMG_20240906_140902.jpg",
-            productName: "Steam Wallet",
-            price: "Rp 200.000",
+            image: "https://f.top4top.io/p_3506vcfop4.jpg",
+            productName: "Akun Telegram Old",
+            price: "Rp 100.000",
             rating: 5,
-            description: "Top up Steam Wallet berhasil! Admin sangat membantu dan prosesnya cepat sekali.",
+            description: "Akun Telegram Old berhasil! Admin sangat membantu dan prosesnya cepat sekali.",
             customerName: "Dewi Anggraini"
         },
         {
             id: 5,
-            image: "/testimonial/IMG_20240906_140915.jpg",
-            productName: "Google Play Gift Card",
-            price: "Rp 150.000",
+            image: "https://g.top4top.io/p_35067ihh65.jpg",
+            productName: "Joki Quest Discord",
+            price: "Rp 50.000",
             rating: 5,
-            description: "Gift card Google Play berhasil dikirim dengan cepat. Harga murah dan terpercaya!",
+            description: "Joki Quest Discord berhasil dikirim dengan cepat. Harga murah dan terpercaya!",
             customerName: "Rendi Pratama"
         },
         {
             id: 6,
-            image: "/testimonial/IMG_20240906_140950.jpg",
-            productName: "Voucher Free Fire",
-            price: "Rp 75.000",
+            image: "https://h.top4top.io/p_350653ezy6.jpg",
+            productName: "Xbox Gamepass 1 Month",
+            price: "Rp 150.000",
             rating: 4.5,
-            description: "Top up voucher Free Fire berhasil. Admin ramah dan prosesnya tidak ribet.",
+            description: "Xbox Gamepass berhasil. Admin ramah dan prosesnya tidak ribet.",
             customerName: "Nina Safitri"
         },
         {
             id: 7,
-            image: "/testimonial/IMG_20240906_143031.jpg",
-            productName: "Nintendo eShop Card",
-            price: "Rp 300.000",
+            image: "https://i.top4top.io/p_350631men7.jpg",
+            productName: "YT Premium 1 Month Invite",
+            price: "Rp 75.000",
             rating: 5,
-            description: "eShop card Nintendo berhasil dikirim. Proses top up sangat cepat dan aman.",
+            description: "YT Premium Invite berhasil dikirim. Proses invite sangat cepat dan aman.",
             customerName: "Agus Setiawan"
         }
     ]
@@ -188,14 +191,29 @@ const TestimonialPage = () => {
                                 className="bg-gray-900 rounded-lg border border-gray-700 overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300"
                             >
                                 <div className="relative">
-                                    <img
-                                        src={testimonial.image}
-                                        alt={testimonial.productName}
-                                        className="w-full h-48 object-cover"
-                                        onError={(e) => {
-                                            e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='200' viewBox='0 0 400 200'%3E%3Crect width='400' height='200' fill='%23374151'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%239CA3AF' font-family='Arial, sans-serif' font-size='16'%3EGambar tidak tersedia%3C/text%3E%3C/svg%3E"
-                                        }}
-                                    />
+                                    {imageErrors[testimonial.id] ? (
+                                        <div className="w-full h-48 bg-gradient-to-br from-gray-700 via-gray-800 to-gray-900 flex items-center justify-center relative overflow-hidden">
+                                            <div className="absolute inset-0 bg-gradient-to-r from-yellow-400/10 via-orange-400/10 to-pink-500/10"></div>
+                                            <div className="text-center relative z-10">
+                                                <div className="text-gray-400 text-5xl mb-3 animate-pulse">🎮</div>
+                                                <div className="text-gray-300 text-sm font-semibold mb-1">{testimonial.productName}</div>
+                                                <div className="text-gray-500 text-xs">Gambar tidak tersedia</div>
+                                                <div className="text-yellow-400 text-xs mt-2">RYVEN STORE</div>
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <img
+                                            src={testimonial.image}
+                                            alt={testimonial.productName}
+                                            className="w-full h-48 object-cover"
+                                            onError={() => {
+                                                setImageErrors(prev => ({
+                                                    ...prev,
+                                                    [testimonial.id]: true
+                                                }))
+                                            }}
+                                        />
+                                    )}
                                     <div className="absolute top-2 right-2 bg-black/70 px-2 py-1 rounded text-xs">
                                         {testimonial.price}
                                     </div>
@@ -249,7 +267,7 @@ const TestimonialPage = () => {
                                                                  <pre className="text-xs text-green-400 overflow-x-auto">
  {`{
      id: 8,
-     image: "/testimonial/nama-gambar.jpg",
+     image: "https://example.com/gambar-testimoni.jpg",
      productName: "Nama Produk",
      price: "Rp 50.000",
      rating: 5,

@@ -8,26 +8,18 @@ Halaman testimoni untuk RYVEN STORE yang menampilkan testimoni pelanggan dengan 
 app/
 ├── testimonial/
 │   └── page.js          # Halaman testimoni utama
-├── public/
-│   └── testimonial/     # Folder gambar testimoni
-│       ├── image1.jpg
-│       ├── IMG_20240906_140823.jpg
-│       ├── IMG_20240906_140839.jpg
-│       ├── IMG_20240906_140902.jpg
-│       ├── IMG_20240906_140915.jpg
-│       ├── IMG_20240906_140950.jpg
-│       └── IMG_20240906_143031.jpg
-└── components/
-    ├── Header.js        # Header dengan navigasi
-    └── Footer.js        # Footer
+├── components/
+│   ├── Header.js        # Header dengan navigasi
+│   └── Footer.js        # Footer
+└── next.config.js       # Konfigurasi Next.js untuk gambar eksternal
 ```
 
 ## Cara Menambah Testimoni Baru
 
-### 1. Tambahkan Gambar
-- Simpan gambar testimoni di folder `public/testimonial/`
+### 1. Siapkan Gambar
+- Upload gambar testimoni ke hosting gambar (seperti top4top.io, imgur, dll)
+- Dapatkan URL gambar yang bisa diakses publik
 - Pastikan format gambar adalah JPG, PNG, atau WebP
-- Gunakan nama file yang deskriptif
 
 ### 2. Edit Data Testimoni
 Buka file `testimonial/page.js` dan tambahkan data testimoni baru ke dalam array `testimonials`:
@@ -35,7 +27,7 @@ Buka file `testimonial/page.js` dan tambahkan data testimoni baru ke dalam array
 ```javascript
 {
     id: 8, // ID unik (increment dari ID terakhir)
-    image: "/testimonial/nama-gambar.jpg", // Path relatif dari folder public
+    image: "https://example.com/gambar-testimoni.jpg", // URL gambar eksternal
     productName: "Nama Produk",
     price: "Rp 50.000",
     rating: 5, // Rating 1-5 (bisa desimal seperti 4.5)
@@ -50,11 +42,11 @@ const testimonials = [
     // Testimoni yang sudah ada...
     {
         id: 8,
-        image: "/testimonial/gambar-baru.jpg",
-        productName: "Diamond Mobile Legends",
-        price: "Rp 50.000",
+        image: "https://example.com/gambar-baru.jpg",
+        productName: "Jasa Claim Nitro Trial",
+        price: "Rp 25.000",
         rating: 5,
-        description: "Top up berhasil dengan cepat! Admin ramah dan responsive.",
+        description: "Claim Nitro berhasil dengan cepat! Admin ramah dan responsive.",
         customerName: "Nama Pelanggan"
     }
 ]
@@ -83,19 +75,25 @@ const testimonials = [
 - Optimized untuk web
 - Aspect ratio konsisten
 
+### 🎯 **Produk yang Ditampilkan**
+1. Jasa Claim Nitro Trial
+2. Jasa Claim Nitro Trial
+3. Joki Quest Discord
+4. Akun Telegram Old
+5. Joki Quest Discord
+6. Xbox Gamepass 1 Month
+7. YT Premium 1 Month Invite
+
 ## Deployment di Vercel
 
-### 1. Pastikan Struktur Folder Benar
-```
-public/
-└── testimonial/
-    └── [semua gambar testimoni]
-```
+### 1. Pastikan Konfigurasi Benar
+- File `next.config.js` sudah dikonfigurasi untuk domain gambar eksternal
+- Semua URL gambar bisa diakses dari internet
 
-### 2. Path Gambar
-- Gunakan path relatif dari folder `public`
-- Format: `/testimonial/nama-gambar.jpg`
-- Jangan gunakan `/testimonial/image/nama-gambar.jpg`
+### 2. URL Gambar
+- Gunakan URL lengkap dari hosting gambar
+- Format: `https://example.com/gambar.jpg`
+- Pastikan domain sudah ditambahkan di `next.config.js`
 
 ### 3. Deploy
 - Push ke repository GitHub
@@ -105,15 +103,15 @@ public/
 ## Troubleshooting
 
 ### Gambar Tidak Muncul
-1. Pastikan gambar ada di folder `public/testimonial/`
-2. Periksa nama file (case sensitive)
+1. Pastikan URL gambar bisa diakses dari internet
+2. Periksa apakah domain sudah ditambahkan di `next.config.js`
 3. Pastikan format file didukung (JPG, PNG, WebP)
 4. Cek console browser untuk error
 
 ### Error di Vercel
-1. Pastikan semua gambar sudah di-push ke repository
+1. Pastikan semua URL gambar valid dan bisa diakses
 2. Periksa build log di Vercel dashboard
-3. Pastikan path gambar benar
+3. Pastikan domain gambar sudah dikonfigurasi dengan benar
 
 ## Kontak
 Untuk bantuan lebih lanjut, hubungi developer RYVEN STORE.
