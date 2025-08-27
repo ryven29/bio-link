@@ -32,7 +32,7 @@ const ImagePreviewModal = ({ isOpen, src, alt, onClose }) => {
 
   return (
     <div
-      className="fixed inset-0 z-[9999] bg-black/95 backdrop-blur-sm flex items-center justify-center p-6 md:p-8 pt-24 md:pt-20 animate-fadeIn"
+      className="fixed inset-0 z-[9999] bg-black/95 backdrop-blur-sm flex items-center justify-center p-4 md:p-8 pt-20 md:pt-20 animate-fadeIn"
       onClick={(e) => {
         if (e.target === e.currentTarget) {
           onClose();
@@ -44,7 +44,7 @@ const ImagePreviewModal = ({ isOpen, src, alt, onClose }) => {
       style={{ animation: 'fadeIn 0.3s ease-out' }}
     >
       <div 
-        className="relative w-full max-w-sm md:max-w-lg lg:max-w-xl xl:max-w-2xl max-h-[85vh] md:max-h-[70vh] lg:max-h-[65vh]"
+        className="relative w-full max-w-[90vw] md:max-w-lg lg:max-w-xl xl:max-w-2xl max-h-[80vh] md:max-h-[70vh] lg:max-h-[65vh]"
         onClick={(e) => e.stopPropagation()}
         style={{ animation: 'scaleIn 0.3s ease-out' }}
       >
@@ -58,7 +58,7 @@ const ImagePreviewModal = ({ isOpen, src, alt, onClose }) => {
         </button>
         
         {/* Image Container */}
-        <div className="relative bg-black rounded-xl overflow-hidden shadow-2xl border border-gray-700 flex items-center justify-center min-h-[200px] md:min-h-[300px]">
+        <div className="relative bg-black rounded-xl overflow-hidden shadow-2xl border border-gray-700 flex items-center justify-center">
           <img
             src={src}
             alt={alt || 'Preview'}
@@ -108,22 +108,23 @@ const ImagePreviewModal = ({ isOpen, src, alt, onClose }) => {
         /* Responsive image sizing */
         @media (max-width: 768px) {
           .modal-image {
-            max-width: 95vw !important;
-            max-height: 70vh !important;
+            max-width: 90vw !important;
+            max-height: 65vh !important;
+            min-height: 200px !important;
           }
         }
         
         @media (min-width: 768px) {
           .modal-image {
-            max-width: min(80vw, 600px) !important;
-            max-height: min(70vh, 500px) !important;
+            max-width: min(75vw, 600px) !important;
+            max-height: min(65vh, 450px) !important;
           }
         }
         
         @media (min-width: 1024px) {
           .modal-image {
-            max-width: min(70vw, 650px) !important;
-            max-height: min(65vh, 550px) !important;
+            max-width: min(65vw, 650px) !important;
+            max-height: min(60vh, 500px) !important;
           }
         }
       `}</style>
