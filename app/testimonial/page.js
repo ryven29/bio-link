@@ -1,4 +1,3 @@
-"use client"
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
@@ -12,7 +11,7 @@ import {
   Shield
 } from 'lucide-react';
 
-// Typing Component (tanpa dependensi eksternal)
+// Typing Component
 const Typing = () => {
   const texts = ['𝗥𝘆𝘃𝗲𝗻 𝗦𝘁𝗼𝗿𝗲.', '𝗧𝗿𝘂𝘀𝘁𝗲𝗱 𝗦𝗲𝗿𝘃𝗶𝗰𝗲.'];
   const [textIndex, setTextIndex] = useState(0);
@@ -110,75 +109,26 @@ const Header = () => {
   );
 };
 
-// Profile Component
-const Profile = () => {
-  const [imgSrc, setImgSrc] = useState("https://files.catbox.moe/tmobkc.png");
-
-  return (
-    <div className="bg-black p-6 rounded-lg border border-gray-500 transition-all duration-300 shadow-lg">
-      <div className="text-center">
-        <div className="inline-block relative">
-          <img
-            src={imgSrc}
-            alt="Profile"
-            className="w-20 h-20 rounded-full border-2 border-gray-500 bg-gray-600 transition-transform hover:scale-105"
-            onError={() => setImgSrc("https://files.catbox.moe/tmobkc.png")}
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-full animate-pulse"></div>
-        </div>
-        
-        <h1 className="text-lg font-bold mt-2 flex items-center justify-center">
-          𝖗𝖆𝖉𝖎𝖆
-          <Shield className="inline text-blue-500 ml-1 text-sm" fill="currentColor" />
-        </h1>
-
-        <p className="text-gray-400 text-xs">Trusted Digital Services Provider</p>
-        
-        <div className="flex justify-center gap-2 mt-3 flex-wrap">
-          <span className="bg-white/5 px-3 py-1 rounded-full text-xs hover:bg-white/10 transition-all hover:scale-105 ring-1 ring-green-700 text-yellow-400">
-            #TrustedService
-          </span>
-          <span className="bg-white/5 px-3 py-1 rounded-full text-xs hover:bg-white/10 transition-all hover:scale-105 ring-1 ring-green-700 text-yellow-400">
-            #FastDelivery
-          </span>
-          <span className="bg-white/5 px-3 py-1 rounded-full text-xs hover:bg-white/10 transition-all hover:scale-105 ring-1 ring-green-700 text-yellow-400">
-            #Quality
-          </span>
-        </div>
-        
-        <div className="flex justify-center gap-4 mt-4 text-xl text-gray-400">
-          <a href="https://instagram.com/fikrinrirham" target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-zinc-100 transition-colors">
-            <Instagram className="h-5 w-5" />
-          </a>
-          <a href="https://github.com/ryven29" target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-zinc-100 transition-colors">
-            <Github className="h-5 w-5" />
-          </a>
-          <a href="https://www.tiktok.com/@ry_venz" target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-zinc-100 transition-colors">
-            <span className="h-5 w-5 flex items-center justify-center">📱</span>
-          </a>
-        </div>
-      </div>
-    </div>
-  );
-};
-
 // Testimonial Card Component
 const TestimonialCard = ({ testimonial, onPreview }) => {
-  const [imageState, setImageState] = useState('loading'); // 'loading', 'loaded', 'error'
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [imageError, setImageError] = useState(false);
 
-  // Function to handle image loading
+  // Reset state when testimonial changes
+  useEffect(() => {
+    setImageLoaded(false);
+    setImageError(false);
+  }, [testimonial.id, testimonial.image]);
+
   const handleImageLoad = () => {
-    setImageState('loaded');
+    setImageLoaded(true);
+    setImageError(false);
   };
 
   const handleImageError = () => {
-    setImageState('error');
+    setImageError(true);
+    setImageLoaded(false);
   };
-
-  // Reset image state when testimonial changes
-  useEffect(() => {
-    setImageState('loading');
-  }, [testimonial.image]);
 
   return (
     <div className="bg-black border border-gray-500 rounded-lg p-4 hover:border-gray-400 transition-all duration-300 transform hover:scale-105 hover:shadow-xl">
@@ -203,25 +153,25 @@ const TestimonialCard = ({ testimonial, onPreview }) => {
       
       <div
         className="relative mb-3 cursor-zoom-in"
-        onClick={() => imageState === 'loaded' && onPreview && onPreview(testimonial.image, testimonial.service)}
+        onClick={() => imageLoaded && !imageError && onPreview && onPreview(testimonial.image, testimonial.service)}
         role="button"
         tabIndex={0}
         onKeyDown={(e) => {
-          if ((e.key === 'Enter' || e.key === ' ') && imageState === 'loaded') {
+          if ((e.key === 'Enter' || e.key === ' ') && imageLoaded && !imageError) {
             onPreview && onPreview(testimonial.image, testimonial.service);
           }
         }}
         aria-label={`Preview ${testimonial.service}`}
       >
         {/* Loading State */}
-        {imageState === 'loading' && (
+        {!imageLoaded && !imageError && (
           <div className="w-full h-48 bg-gray-800 rounded-lg flex items-center justify-center">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
           </div>
         )}
 
         {/* Error State */}
-        {imageState === 'error' && (
+        {imageError && (
           <div className="w-full h-48 bg-gray-800 rounded-lg flex items-center justify-center">
             <div className="text-center">
               <div className="text-gray-400 text-2xl mb-2">📷</div>
@@ -231,20 +181,18 @@ const TestimonialCard = ({ testimonial, onPreview }) => {
         )}
 
         {/* Actual Image */}
-        <img
-          src={testimonial.image}
-          alt={testimonial.service}
-          className={`w-full h-48 object-cover rounded-lg transition-opacity duration-300 ${
-            imageState === 'loaded' ? 'opacity-100' : 'opacity-0 absolute'
-          }`}
-          onLoad={handleImageLoad}
-          onError={handleImageError}
-          loading="lazy"
-          style={{ 
-            display: imageState === 'error' ? 'none' : 'block',
-            position: imageState === 'loaded' ? 'static' : 'absolute'
-          }}
-        />
+        {!imageError && (
+          <img
+            src={testimonial.image}
+            alt={testimonial.service}
+            className={`w-full h-48 object-cover rounded-lg transition-opacity duration-300 ${
+              imageLoaded ? 'opacity-100' : 'opacity-0'
+            }`}
+            onLoad={handleImageLoad}
+            onError={handleImageError}
+            loading="lazy"
+          />
+        )}
       </div>
       
       <p className="text-gray-300 text-xs leading-relaxed mb-3">
@@ -267,27 +215,31 @@ const TestimonialCard = ({ testimonial, onPreview }) => {
 
 // Image Preview Modal
 const ImagePreviewModal = ({ isOpen, src, alt, onClose }) => {
-  const [previewImageState, setPreviewImageState] = useState('loading');
+  const [previewLoaded, setPreviewLoaded] = useState(false);
+  const [previewError, setPreviewError] = useState(false);
 
   useEffect(() => {
     if (!isOpen) return;
     
-    // Reset image state when modal opens
-    setPreviewImageState('loading');
+    // Reset states when modal opens
+    setPreviewLoaded(false);
+    setPreviewError(false);
     
     const onKey = (e) => {
       if (e.key === 'Escape') onClose();
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [isOpen, onClose]);
+  }, [isOpen, onClose, src]);
 
-  const handlePreviewImageLoad = () => {
-    setPreviewImageState('loaded');
+  const handlePreviewLoad = () => {
+    setPreviewLoaded(true);
+    setPreviewError(false);
   };
 
-  const handlePreviewImageError = () => {
-    setPreviewImageState('error');
+  const handlePreviewError = () => {
+    setPreviewError(true);
+    setPreviewLoaded(false);
   };
 
   return (
@@ -323,14 +275,14 @@ const ImagePreviewModal = ({ isOpen, src, alt, onClose }) => {
               
               <div className="relative">
                 {/* Loading state for preview */}
-                {previewImageState === 'loading' && (
+                {!previewLoaded && !previewError && (
                   <div className="w-full h-96 bg-gray-800 rounded-lg flex items-center justify-center border border-gray-700">
                     <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white"></div>
                   </div>
                 )}
 
                 {/* Error state for preview */}
-                {previewImageState === 'error' && (
+                {previewError && (
                   <div className="w-full h-96 bg-gray-800 rounded-lg flex items-center justify-center border border-gray-700">
                     <div className="text-center">
                       <div className="text-gray-400 text-4xl mb-4">📷</div>
@@ -340,21 +292,20 @@ const ImagePreviewModal = ({ isOpen, src, alt, onClose }) => {
                 )}
 
                 {/* Actual preview image */}
-                <img
-                  src={src}
-                  alt={alt || 'Preview'}
-                  className={`w-full max-h-[80vh] object-contain rounded-lg border border-gray-700 bg-black transition-opacity duration-300 ${
-                    previewImageState === 'loaded' ? 'opacity-100' : 'opacity-0'
-                  }`}
-                  onLoad={handlePreviewImageLoad}
-                  onError={handlePreviewImageError}
-                  style={{ 
-                    display: previewImageState === 'error' ? 'none' : 'block'
-                  }}
-                />
+                {!previewError && (
+                  <img
+                    src={src}
+                    alt={alt || 'Preview'}
+                    className={`w-full max-h-[80vh] object-contain rounded-lg border border-gray-700 bg-black transition-opacity duration-300 ${
+                      previewLoaded ? 'opacity-100' : 'opacity-0'
+                    }`}
+                    onLoad={handlePreviewLoad}
+                    onError={handlePreviewError}
+                  />
+                )}
               </div>
               
-              {previewImageState === 'loaded' && (
+              {previewLoaded && (
                 <div className="text-center text-sm text-gray-300 mt-2">{alt}</div>
               )}
             </div>
@@ -512,7 +463,7 @@ const RyvenStoreTestimonials = () => {
   const [preview, setPreview] = useState({ open: false, src: '', alt: '' });
 
   const openPreview = (src, alt) => setPreview({ open: true, src, alt });
-  const closePreview = () => setPreview((p) => ({ ...p, open: false }));
+  const closePreview = () => setPreview({ open: false, src: '', alt: '' });
 
   return (
     <div className="min-h-screen bg-gray-900 text-white">
