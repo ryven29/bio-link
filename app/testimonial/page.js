@@ -227,6 +227,24 @@ const TestimonialPage = () => {
             rating: 5,
             description: "Akun Discord berkualitas dan aman, sangat direkomendasikan",
             customerName: "Marcel"
+        },
+        {
+            id: 9,
+            image: "https://g.top4top.io/p_3526w28if1.png",
+            productName: "1x Akun Discord Old",
+            price: "Rp 3.000",
+            rating: 5,
+            description: "Akun Discord berkualitas dan aman, sangat direkomendasikan",
+            customerName: "Furukawa Yudi"
+        },
+           {
+            id: 10,
+            image: "https://e.top4top.io/p_3526x1cl31.png",
+            productName: "8x Akun Discord Old",
+            price: "Rp 28.000",
+            rating: 5,
+            description: "Akun Discord berkualitas dan aman, sangat direkomendasikan",
+            customerName: "Furukawa Yudi"
         }
     ]
 
@@ -325,7 +343,7 @@ const TestimonialPage = () => {
                             Testimoni & Reputasi
                         </p>
                         <p className="text-gray-400 max-w-2xl mx-auto">
-                            Lihat testimoni dari pelanggan kami yang telah menggunakan layanan top up game dan voucher digital kami
+                            Lihat testimoni dari pelanggan kami yang telah menggunakan layanan digital kami
                         </p>
                     </motion.div>
 
@@ -554,3 +572,4 @@ const TestimonialPage = () => {
 }
 
 export default TestimonialPage
+
