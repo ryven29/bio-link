@@ -343,7 +343,7 @@ const TestimonialPage = () => {
                             Testimoni & Reputasi
                         </p>
                         <p className="text-gray-400 max-w-2xl mx-auto">
-                            Lihat testimoni dari pelanggan kami yang telah menggunakan layanan top up game dan voucher digital kami
+                            Lihat testimoni dari pelanggan kami yang telah menggunakan layanan digital kami
                         </p>
                     </motion.div>
 
@@ -558,4 +558,5 @@ const TestimonialPage = () => {
 }
 
 export default TestimonialPage
+
 
