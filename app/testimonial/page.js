@@ -218,6 +218,15 @@ const TestimonialPage = () => {
             rating: 5,
             description: "YT Premium Invite berhasil dikirim. Proses invite sangat cepat dan aman.",
             customerName: "Fawaz"
+        },
+        {
+            id: 8,
+            image: "https://c.top4top.io/p_3526prweb1.png",
+            productName: "2x Akun Discord Old",
+            price: "Rp 8.000",
+            rating: 5,
+            description: "Akun Discord berkualitas dan aman, sangat direkomendasikan",
+            customerName: "Marcel"
         }
     ]
 
@@ -479,4 +488,5 @@ const TestimonialPage = () => {
 }
 
 export default TestimonialPage
+
 
