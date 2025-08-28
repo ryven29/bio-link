@@ -230,6 +230,28 @@ const TestimonialPage = () => {
         }
     ]
 
+    // Function to calculate average rating
+    const calculateAverageRating = () => {
+        if (testimonials.length === 0) return 0;
+        
+        const totalRating = testimonials.reduce((sum, testimonial) => sum + testimonial.rating, 0);
+        const averageRating = totalRating / testimonials.length;
+        
+        // Round to 1 decimal place
+        return Math.round(averageRating * 10) / 10;
+    };
+
+    // Function to calculate satisfaction percentage
+    const calculateSatisfactionPercentage = () => {
+        if (testimonials.length === 0) return 0;
+        
+        // Count testimonials with rating 4 or above as satisfied customers
+        const satisfiedCustomers = testimonials.filter(testimonial => testimonial.rating >= 4).length;
+        const percentage = (satisfiedCustomers / testimonials.length) * 100;
+        
+        return Math.round(percentage);
+    };
+
     const renderStars = (rating) => {
         const stars = []
         const fullStars = Math.floor(rating)
@@ -278,6 +300,11 @@ const TestimonialPage = () => {
         }
     }
 
+    // Calculate dynamic stats
+    const averageRating = calculateAverageRating();
+    const satisfactionPercentage = calculateSatisfactionPercentage();
+    const totalTestimonials = testimonials.length;
+
     return (
         <div className="min-h-screen bg-black text-white">
             <Header />
@@ -302,7 +329,7 @@ const TestimonialPage = () => {
                         </p>
                     </motion.div>
 
-                    {/* Stats Section */}
+                    {/* Stats Section - Now Dynamic */}
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -311,21 +338,46 @@ const TestimonialPage = () => {
                     >
                         <div className="bg-gray-900 p-6 rounded-lg border border-gray-700 text-center">
                             <div className="text-3xl font-bold text-yellow-400 mb-2">
-                                {testimonials.length}+
+                                {totalTestimonials}+
                             </div>
                             <div className="text-gray-300">Testimoni Positif</div>
+                            <div className="text-xs text-gray-500 mt-1">
+                                Total testimoni real
+                            </div>
                         </div>
                         <div className="bg-gray-900 p-6 rounded-lg border border-gray-700 text-center">
                             <div className="text-3xl font-bold text-green-400 mb-2">
-                                4.8
+                                {averageRating}
                             </div>
                             <div className="text-gray-300">Rating Rata-rata</div>
+                            <div className="flex justify-center mt-2">
+                                {renderStars(averageRating)}
+                            </div>
                         </div>
                         <div className="bg-gray-900 p-6 rounded-lg border border-gray-700 text-center">
                             <div className="text-3xl font-bold text-blue-400 mb-2">
-                                100%
+                                {satisfactionPercentage}%
                             </div>
                             <div className="text-gray-300">Kepuasan Pelanggan</div>
+                            <div className="text-xs text-gray-500 mt-1">
+                                Rating 4+ bintang
+                            </div>
+                        </div>
+                    </motion.div>
+
+                    {/* Summary Info */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6, delay: 0.3 }}
+                        className="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 p-4 rounded-lg border border-gray-700 mb-8"
+                    >
+                        <div className="text-center">
+                            <p className="text-gray-300 text-sm">
+                                📊 <span className="text-yellow-400 font-semibold">Statistik Real-time:</span> 
+                                {' '}{totalTestimonials} testimoni dengan rating rata-rata {averageRating}/5.0
+                                {' '}({satisfactionPercentage}% pelanggan sangat puas)
+                            </p>
                         </div>
                     </motion.div>
 
@@ -488,5 +540,3 @@ const TestimonialPage = () => {
 }
 
 export default TestimonialPage
-
-
