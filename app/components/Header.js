@@ -16,7 +16,6 @@ const Header = () => {
 
     const navLinks = [
         { href: "/", label: "Home" },
-        { href: "/topup", label: "Top Up Game (Testing)" },
         { href: "/testimonial", label: "Testimoni & Reputasi" }
     ]
 
