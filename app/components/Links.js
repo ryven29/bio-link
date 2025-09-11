@@ -4,31 +4,35 @@ import React, { useEffect, useRef, useState } from "react"
 import Link from "next/link"
 import { FaSpotify, FaPlay, FaPause, FaVolumeUp } from "react-icons/fa"
 import { HiArrowRight } from "react-icons/hi"
+import { HiOutlineChat } from "react-icons/hi"
+import { LuBotMessageSquare } from "react-icons/lu"
+import { BiSolidDonateHeart } from "react-icons/bi"
+import { IoLogoDiscord } from "react-icons/io5"
 
 const links = [
     {
         title: "Glyphic",
         description: "My First Projects Bot Glyphic",
         url: "https://wa.me/6283875901265",
-        icon: "/fire-svgrepo-com.svg",
+        icon: <LuBotMessageSquare className="w-6 h-6 text-gray-200" />,
     },
     {
         title: "WhatsApp Channels",
         description: "Follow untuk seputar info/kode",
         url: "https://whatsapp.com/channel/0029VaSY7Lp8F2pCmQLKNn0g",
-        icon: "/planet-1301-svgrepo-com.svg",
+        icon: <HiOutlineChat className="w-6 h-6 text-gray-200" />,
     },
     {
-        title: "Owner Ryven",
-        description: "Contact me if needed",
-        url: "https://wa.me/628991103457",
-        icon: "/stars-svgrepo-com.svg",
+        title: "Discord Server",
+        description: "Gabung untuk bertanya dan berdiskusi ",
+        url: "https://discord.gg/vUrwqNAzBd",
+        icon: <IoLogoDiscord className="w-6 h-6 text-gray-200" />,
     },
     {
         title: "Donate",
         description: "Jajanin aku please...",
         url: "/donate",
-        icon: "/donate-solid-svgrepo-com.svg",
+        icon: <BiSolidDonateHeart className="w-6 h-6 text-gray-200" />,
     },
     {
         title: "",
