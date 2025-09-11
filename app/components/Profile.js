@@ -45,11 +45,25 @@ const Profile = () => {
                 </div>
                 <div className="flex justify-center gap-4 mt-4 text-xl text-gray-400">
                     <a
+                        href="https://wa.me/628991103457"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-zinc-400 hover:text-zinc-100 transition-colors">
+                        <FaWhatsapp className="h-5 w-5 text-gray-200"/>
+                    </a>
+                    <a
                         href="https://instagram.com/fikrinrirham"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-zinc-400 hover:text-zinc-100 transition-colors">
                         <FaInstagram className="h-5 w-5 text-gray-200"/>
+                    </a>
+                    <a
+                        href="https://discord.com/users/755606790166675518"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-zinc-400 hover:text-zinc-100 transition-colors">
+                        <FaDiscord className="h-5 w-5 text-gray-200"/>
                     </a>
                     <a
                         href="https://github.com/ryven29"
@@ -64,20 +78,6 @@ const Profile = () => {
                         rel="noopener noreferrer"
                         className="text-zinc-400 hover:text-zinc-100 transition-colors">
                         <FaTiktok className="h-5 w-5 text-gray-200"/>
-                    </a>
-                    <a
-                        href="https://wa.me/628991103457"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-zinc-400 hover:text-zinc-100 transition-colors">
-                        <FaWhatsapp className="h-5 w-5 text-gray-200"/>
-                    </a>
-                    <a
-                        href="https://discord.com/users/755606790166675518"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-zinc-400 hover:text-zinc-100 transition-colors">
-                        <FaDiscord className="h-5 w-5 text-gray-200"/>
                     </a>
                 </div>
             </div>
