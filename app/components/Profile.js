@@ -2,6 +2,7 @@
 
 import React, { useState } from "react"
 import { FaInstagram, FaTiktok, FaGithub } from "react-icons/fa"
+import { FaWhatsapp, FaDiscord } from "react-icons/fa"
 import { RiVerifiedBadgeFill } from "react-icons/ri"
 
 const Profile = () => {
@@ -63,6 +64,20 @@ const Profile = () => {
                         rel="noopener noreferrer"
                         className="text-zinc-400 hover:text-zinc-100 transition-colors">
                         <FaTiktok className="h-5 w-5 text-gray-200"/>
+                    </a>
+                    <a
+                        href="https://wa.me/628991103457"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-zinc-400 hover:text-zinc-100 transition-colors">
+                        <FaWhatsapp className="h-5 w-5 text-gray-200"/>
+                    </a>
+                    <a
+                        href="https://discord.com/users/755606790166675518"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-zinc-400 hover:text-zinc-100 transition-colors">
+                        <FaDiscord className="h-5 w-5 text-gray-200"/>
                     </a>
                 </div>
             </div>
