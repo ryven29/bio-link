@@ -54,7 +54,7 @@ const SpotifyPlayer = ({ link }) => {
     
     const [isPlaying, setIsPlaying] = useState(false)
     const [isLoading, setIsLoading] = useState(true)
-    const [audioEnabled, setAudioEnabled] = useState(false)
+    const [audioEnabled, setAudioEnabled] = useState(true) // Auto enable audio
     const [error, setError] = useState(null)
     const [volume, setVolume] = useState(0.7)
 
@@ -89,7 +89,23 @@ const SpotifyPlayer = ({ link }) => {
         // Set volume
         audio.volume = volume
 
+        // Auto play when audio is ready
+        const autoPlay = async () => {
+            try {
+                await audio.play()
+                setIsPlaying(true)
+            } catch (err) {
+                console.log('Auto play failed (browser policy):', err)
+                // If auto play fails due to browser policy, show play button
+                setAudioEnabled(false)
+            }
+        }
+
+        // Try auto play after a short delay
+        const timer = setTimeout(autoPlay, 500)
+
         return () => {
+            clearTimeout(timer)
             audio.removeEventListener('loadstart', handleLoadStart)
             audio.removeEventListener('canplay', handleCanPlay)
             audio.removeEventListener('play', handlePlay)
@@ -194,16 +210,15 @@ const SpotifyPlayer = ({ link }) => {
             
 
             
-            {audioEnabled && (
-                <audio 
-                    ref={audioRef} 
-                    src={link.audioSrc} 
-                    loop
-                    preload="metadata"
-                    playsInline
-                    crossOrigin="anonymous"
-                />
-            )}
+            <audio 
+                ref={audioRef} 
+                src={link.audioSrc} 
+                loop
+                preload="auto"
+                playsInline
+                crossOrigin="anonymous"
+                autoPlay
+            />
         </div>
     )
 }
