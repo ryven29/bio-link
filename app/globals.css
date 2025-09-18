@@ -53,30 +53,3 @@ body {
   background-image: radial-gradient(#90909024 1px, transparent 1px);
   background-size: 30px 30px;
 }
-
-/* Global video overlay styles */
-.site-video-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.7s ease;
-}
-.site-video-overlay::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.4); /* redupkan video */
-}
-.site-video-overlay .site-video,
-.site-video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-/* When audio is playing, show overlay (fade in) */
-body.video-active .site-video-overlay {
-  opacity: 1;
-}
