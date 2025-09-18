@@ -51,7 +51,6 @@ const links = [
 const SpotifyPlayer = ({ link }) => {
     const audioRef = useRef(null)
     const audioContextRef = useRef(null)
-    const videoRef = useRef(null)
     
     const [isPlaying, setIsPlaying] = useState(false)
     const [isLoading, setIsLoading] = useState(true)
@@ -116,26 +115,16 @@ const SpotifyPlayer = ({ link }) => {
         }
     }, [audioEnabled, volume])
 
-    // Sync background video with audio play/pause
+    // Toggle body class to control global video overlay visibility
     useEffect(() => {
-        const video = videoRef.current
-        if (!video) return
-
-        const controlVideo = async () => {
-            try {
-                if (isPlaying) {
-                    // Ensure video starts when audio plays
-                    await video.play()
-                } else {
-                    // Pause video when audio paused or ended
-                    video.pause()
-                }
-            } catch (err) {
-                console.log('Video control error:', err)
-            }
+        if (typeof document === 'undefined') return
+        const body = document.body
+        if (isPlaying) {
+            body.classList.add('video-active')
+        } else {
+            body.classList.remove('video-active')
         }
-
-        controlVideo()
+        return () => body.classList.remove('video-active')
     }, [isPlaying])
 
     const enableAudio = async (e) => {
@@ -187,18 +176,6 @@ const SpotifyPlayer = ({ link }) => {
             className="flex items-center space-x-3 w-full relative cursor-pointer"
             onClick={togglePlay}
         >
-            {/* Background Video Overlay */}
-            <div className={`fixed inset-0 z-0 pointer-events-none transition-opacity duration-700 ${isPlaying ? 'opacity-100' : 'opacity-0'}`} aria-hidden="true">
-                <video
-                    ref={videoRef}
-                    src="https://i.top4top.io/m_35488slc91.mp4"
-                    muted
-                    loop
-                    playsInline
-                    className="w-full h-full object-cover"
-                />
-            </div>
-
             <div className="relative w-10 h-10 group">
                 <img
                     src={link.albumArt}
