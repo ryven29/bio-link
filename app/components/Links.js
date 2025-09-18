@@ -77,7 +77,7 @@ const links = [
         artist: "Asila Maisa",
         albumArt: "https://files.catbox.moe/tjkp83.jpg",
         url: "#",
-        audioSrc: "https://b.top4top.io/m_3548r4bo11.mp3",
+        audioSrc: "https://files.catbox.moe/e073yw.mp3",
         lyrics: lyricsWithTimestamps
     },
 ]
