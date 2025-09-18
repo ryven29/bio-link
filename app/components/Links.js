@@ -9,6 +9,42 @@ import { LuBotMessageSquare } from "react-icons/lu"
 import { BiSolidDonateHeart } from "react-icons/bi"
 import { IoLogoDiscord } from "react-icons/io5"
 
+// Lyrics with timestamps (in seconds)
+const lyricsWithTimestamps = [
+    { time: 0, text: "Ku mencinta kau tak pernah tahu" },
+    { time: 5, text: "Ku mendekat kau tak pernah sadar" },
+    { time: 10, text: "Haruskah ku diam" },
+    { time: 13, text: "Pendam semua rasa" },
+    { time: 16, text: "Biarkan ku sakit tanpa kau tahu" },
+    { time: 22, text: "Pada saatnya ku lelah berjuang" },
+    { time: 27, text: "Namun hati tetap tak mau kamu" },
+    { time: 32, text: "Tolong kamu sadar ada ku disini" },
+    { time: 37, text: "Yang tak bisa menghilangkan bayanganmu" },
+    { time: 43, text: "Jika harus sakit biarkan ku sakit" },
+    { time: 48, text: "Jika harus menangis biarkan ku menangis" },
+    { time: 53, text: "Jika harus jatuh untuk bisa bersamamu" },
+    { time: 58, text: "Biarkan ku jatuh sampai lebam" },
+    { time: 63, text: "Jika harus memohon aku siap memohon" },
+    { time: 68, text: "Namun ternyata hati kuat ada rapuhnya" },
+    { time: 73, text: "Sampai di titik ini aku angkat tangan" },
+    { time: 78, text: "Aku menyerah" },
+    { time: 82, text: "Ada saatnya ku lelah berjuang" },
+    { time: 87, text: "Namun hati tetap tak mau kamu" },
+    { time: 92, text: "Tolong kamu sadar ada ku di sini" },
+    { time: 97, text: "Yang tak bisa menghilangkan bayanganmu" },
+    { time: 103, text: "Jika harus sakit biarkan ku sakit" },
+    { time: 108, text: "Jika harus nangis biarkan ku menangis" },
+    { time: 113, text: "Jika harus jatuh untuk bisa bersamamu" },
+    { time: 118, text: "Biarkan ku jatuh sampai lebam" },
+    { time: 123, text: "Jika harus memohon aku siap memohon" },
+    { time: 128, text: "Namun ternyata hati kuat ada rapuhnya" },
+    { time: 133, text: "Sampai di titik ini aku angkat tangan" },
+    { time: 138, text: "Aku menyerah" },
+    { time: 142, text: "Semua ku lakukan agar kau datang ke hatiku" },
+    { time: 148, text: "Namun sulit bila kamu tak ingin" },
+    { time: 152, text: "Dan batas sabarku telah berakhir" },
+];
+
 const links = [
     {
         title: "Glyphic",
@@ -37,14 +73,12 @@ const links = [
     {
         title: "",
         isSpotify: true,
-        songTitle: "Motivational Quote",
-        artist: "Langkah kecil hari ini akan membawa kamu ke kemenangan besar.",
+        songTitle: "Angkat Tangan",
+        artist: "Asila Maisa",
         albumArt: "https://files.catbox.moe/tjkp83.jpg",
         url: "#",
-        audioSrc: "https://files.catbox.moe/e073yw.mp3",
-        // Alternative sources if catbox fails:
-        // audioSrc: "/audio/sample.mp3", // Put in public/audio/
-        // audioSrc: "https://www.soundjay.com/misc/sounds-of-speech.wav",
+        audioSrc: "https://b.top4top.io/m_3548r4bo11.mp3",
+        lyrics: lyricsWithTimestamps
     },
 ]
 
@@ -54,9 +88,46 @@ const SpotifyPlayer = ({ link }) => {
     
     const [isPlaying, setIsPlaying] = useState(false)
     const [isLoading, setIsLoading] = useState(true)
-    const [audioEnabled, setAudioEnabled] = useState(true) // Auto enable audio
+    const [audioEnabled, setAudioEnabled] = useState(true)
     const [error, setError] = useState(null)
     const [volume, setVolume] = useState(0.7)
+    const [currentTime, setCurrentTime] = useState(0)
+    const [currentLyric, setCurrentLyric] = useState("Langkah kecil hari ini akan membawa kamu ke kemenangan besar.")
+
+    // Function to get current lyric based on time
+    const getCurrentLyric = (time) => {
+        if (!link.lyrics) return link.artist || "Motivational Quote"
+        
+        let currentLyricText = link.artist || "Motivational Quote"
+        
+        for (let i = 0; i < link.lyrics.length; i++) {
+            if (time >= link.lyrics[i].time) {
+                currentLyricText = link.lyrics[i].text
+            } else {
+                break
+            }
+        }
+        
+        return currentLyricText
+    }
+
+    // Update current time and lyrics
+    useEffect(() => {
+        if (!audioRef.current || !isPlaying) return
+
+        const updateTime = () => {
+            const audio = audioRef.current
+            if (audio) {
+                const time = audio.currentTime
+                setCurrentTime(time)
+                setCurrentLyric(getCurrentLyric(time))
+            }
+        }
+
+        const interval = setInterval(updateTime, 100) // Update every 100ms for smooth lyric changes
+
+        return () => clearInterval(interval)
+    }, [isPlaying, link.lyrics])
 
     // Setup audio when enabled
     useEffect(() => {
@@ -72,11 +143,19 @@ const SpotifyPlayer = ({ link }) => {
         }
         const handlePlay = () => setIsPlaying(true)
         const handlePause = () => setIsPlaying(false)
-        const handleEnded = () => setIsPlaying(false)
+        const handleEnded = () => {
+            setIsPlaying(false)
+            setCurrentLyric(link.artist || "Motivational Quote") // Reset to default
+        }
         const handleError = (e) => {
             setError('Failed to load audio')
             setIsLoading(false)
             console.error('Audio error:', e)
+        }
+        const handleTimeUpdate = () => {
+            const time = audio.currentTime
+            setCurrentTime(time)
+            setCurrentLyric(getCurrentLyric(time))
         }
 
         audio.addEventListener('loadstart', handleLoadStart)
@@ -85,6 +164,7 @@ const SpotifyPlayer = ({ link }) => {
         audio.addEventListener('pause', handlePause)
         audio.addEventListener('ended', handleEnded)
         audio.addEventListener('error', handleError)
+        audio.addEventListener('timeupdate', handleTimeUpdate)
 
         // Set volume
         audio.volume = volume
@@ -96,7 +176,6 @@ const SpotifyPlayer = ({ link }) => {
                 setIsPlaying(true)
             } catch (err) {
                 console.log('Auto play failed (browser policy):', err)
-                // If auto play fails due to browser policy, show play button
                 setAudioEnabled(false)
             }
         }
@@ -112,6 +191,7 @@ const SpotifyPlayer = ({ link }) => {
             audio.removeEventListener('pause', handlePause)
             audio.removeEventListener('ended', handleEnded)
             audio.removeEventListener('error', handleError)
+            audio.removeEventListener('timeupdate', handleTimeUpdate)
         }
     }, [audioEnabled, volume])
 
@@ -121,7 +201,6 @@ const SpotifyPlayer = ({ link }) => {
         
         setAudioEnabled(true)
         
-        // Small delay to ensure state is updated
         setTimeout(async () => {
             try {
                 if (audioRef.current) {
@@ -203,21 +282,17 @@ const SpotifyPlayer = ({ link }) => {
                          isPlaying ? 'Now Playing' : 'Paused'}
                     </span>
                 </div>
-                <p className="text-xs text-gray-400 mt-1">
-                    <em>{link.artist}</em>
+                <p className="text-xs text-gray-400 mt-1 transition-all duration-500">
+                    <em>{currentLyric}</em>
                 </p>
             </div>
-            
-
             
             <audio 
                 ref={audioRef} 
                 src={link.audioSrc} 
-                loop
                 preload="auto"
                 playsInline
                 crossOrigin="anonymous"
-                autoPlay
             />
         </div>
     )
