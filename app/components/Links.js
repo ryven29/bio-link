@@ -115,18 +115,6 @@ const SpotifyPlayer = ({ link }) => {
         }
     }, [audioEnabled, volume])
 
-    // Toggle body class to control global video overlay visibility
-    useEffect(() => {
-        if (typeof document === 'undefined') return
-        const body = document.body
-        if (isPlaying) {
-            body.classList.add('video-active')
-        } else {
-            body.classList.remove('video-active')
-        }
-        return () => body.classList.remove('video-active')
-    }, [isPlaying])
-
     const enableAudio = async (e) => {
         e.preventDefault()
         e.stopPropagation()
