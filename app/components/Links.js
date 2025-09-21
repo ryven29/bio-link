@@ -286,13 +286,27 @@ const SpotifyPlayer = ({ link }) => {
                          isPlaying ? 'Now Playing' : 'Paused'}
                     </span>
                 </div>
-                <h3 className="text-sm font-medium text-white mt-1">
-                    {link.songTitle}
-                </h3>
                 <p className="text-xs text-gray-400 mt-1">
                     <em>{currentLyric}</em>
                 </p>
             </div>
+            
+            {/* Sound waves animation */}
+            {isPlaying && (
+                <div className="flex items-center space-x-0.5">
+                    {[...Array(4)].map((_, i) => (
+                        <div
+                            key={i}
+                            className="w-0.5 bg-gray-400 rounded-full animate-pulse"
+                            style={{
+                                height: `${Math.random() * 12 + 8}px`,
+                                animationDelay: `${i * 0.15}s`,
+                                animationDuration: '0.8s'
+                            }}
+                        ></div>
+                    ))}
+                </div>
+            )}
             
             <audio 
                 ref={audioRef} 
