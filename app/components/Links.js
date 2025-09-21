@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useState } from "react"
 import Link from "next/link"
-import { FaSpotify, FaPlay, FaPause, FaVolumeUp } from "react-icons/fa"
+import { FaPlay, FaPause, FaVolumeUp, FaMusic } from "react-icons/fa"
 import { HiArrowRight } from "react-icons/hi"
 import { HiOutlineChat } from "react-icons/hi"
 import { LuBotMessageSquare } from "react-icons/lu"
@@ -246,57 +246,89 @@ const SpotifyPlayer = ({ link }) => {
             }
         } catch (err) {
             console.error('Toggle play error:', err)
-            setError('Playback failed')
+            setError('Playbook failed')
         }
     }
 
     return (
-        <div 
-            className="flex items-center space-x-3 w-full relative cursor-pointer"
-            onClick={togglePlay}
-        >
-            <div className="relative w-10 h-10 group">
+        <div className="flex items-center space-x-4 w-full relative cursor-pointer bg-gradient-to-r from-purple-900/20 via-pink-900/20 to-blue-900/20 rounded-lg p-4 border border-gray-600 hover:border-purple-500 transition-all duration-300">
+            <div className="relative w-16 h-16 group">
                 <img
                     src={link.albumArt}
                     alt="Album Art"
-                    className={`rounded-full transition-all duration-300 ${
-                        isPlaying ? 'animate-spin' : ''
-                    }`}
-                    style={{ animationDuration: '4s' }}
+                    className="w-full h-full rounded-lg object-cover shadow-lg border-2 border-gray-600"
                 />
-                <div className={`absolute inset-0 bg-gradient-to-r from-green-500/30 to-blue-500/30 rounded-full ${
-                    isPlaying ? 'animate-pulse' : ''
-                }`}></div>
                 
-                {/* Control Button Overlay */}
-                <div className="absolute inset-0 flex items-center justify-center bg-black/60 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                    {!audioEnabled ? (
-                        <FaVolumeUp className="text-white text-xs" />
-                    ) : isLoading ? (
-                        <div className="w-3 h-3 border border-white border-t-transparent rounded-full animate-spin"></div>
-                    ) : isPlaying ? (
-                        <FaPause className="text-white text-xs" />
-                    ) : (
-                        <FaPlay className="text-white text-xs ml-0.5" />
-                    )}
+                {/* Gradient overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent rounded-lg"></div>
+                
+                {/* Play button overlay */}
+                <div 
+                    className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                    onClick={togglePlay}
+                >
+                    <div className="bg-white/20 backdrop-blur-sm rounded-full p-2">
+                        {!audioEnabled ? (
+                            <FaVolumeUp className="text-white text-lg" />
+                        ) : isLoading ? (
+                            <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                        ) : isPlaying ? (
+                            <FaPause className="text-white text-lg" />
+                        ) : (
+                            <FaPlay className="text-white text-lg ml-1" />
+                        )}
+                    </div>
                 </div>
             </div>
             
-            <div className="flex-1">
-                <div className="flex items-center space-x-2">
-                    <FaSpotify className={`text-green-500 text-sm ${
-                        isPlaying ? 'animate-pulse' : ''
+            <div className="flex-1 min-w-0">
+                <div className="flex items-center space-x-2 mb-1">
+                    <FaMusic className={`text-purple-400 text-sm ${
+                        isPlaying ? 'animate-bounce' : ''
                     }`} />
-                    <span className="text-xs text-green-500 font-medium">
-                        {!audioEnabled ? 'Click to Play' : 
+                    <span className="text-sm text-purple-400 font-semibold">
+                        {!audioEnabled ? 'Click to Play Music' : 
                          isLoading ? 'Loading...' : 
-                         error ? 'Error' :
-                         isPlaying ? 'Now Playing' : 'Paused'}
+                         error ? 'Error Loading' :
+                         isPlaying ? '♪ Now Playing' : '⏸ Paused'}
                     </span>
                 </div>
-                <p className="text-xs text-gray-400 mt-1 transition-all duration-500">
-                    <em>{currentLyric}</em>
+                
+                <h3 className="text-white font-bold text-base mb-1 truncate">
+                    {link.songTitle}
+                </h3>
+                
+                <p className="text-gray-300 text-sm mb-2">
+                    by {link.artist}
                 </p>
+                
+                <div className="bg-black/30 rounded-md p-2 border border-gray-700">
+                    <p className="text-xs text-gray-300 leading-relaxed italic">
+                        "{currentLyric}"
+                    </p>
+                </div>
+                
+                {/* Animated sound bars when playing */}
+                {isPlaying && (
+                    <div className="flex items-center space-x-1 mt-2">
+                        <div className="flex space-x-0.5">
+                            {[...Array(5)].map((_, i) => (
+                                <div
+                                    key={i}
+                                    className="w-1 bg-gradient-to-t from-purple-500 to-pink-500 rounded-full animate-pulse"
+                                    style={{
+                                        height: `${Math.random() * 10 + 5}px`,
+                                        animationDelay: `${i * 0.1}s`,
+                                        animationDuration: '0.6s'
+                                    }}
+                                ></div>
+                            ))}
+                        </div>
+                        <span className="text-xs text-gray-400 ml-2">
+                            Sound waves
+                        </span>
+                    </div>
+                )}
             </div>
             
             <audio 
@@ -316,7 +348,7 @@ const Links = () => {
             {links.map((link, index) => (
                 <div key={index}>
                     {link.isSpotify ? (
-                        <div className="flex items-center justify-between p-3 bg-black border border-gray-500 transition-all duration-300 group text-white rounded-lg hover:border-gray-400">
+                        <div className="transition-all duration-300 group">
                             <SpotifyPlayer link={link} />
                         </div>
                     ) : (
