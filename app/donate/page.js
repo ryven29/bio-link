@@ -1,181 +1,8 @@
 "use client"
 import React, { useState, useEffect } from 'react';
+import Header from '../components/Header';
 
-// Typing Component
-const Typing = () => {
-  const [currentText, setCurrentText] = useState('');
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isDeleting, setIsDeleting] = useState(false);
-  const texts = ['𝗥𝘆𝘃𝗲𝗻.', '𝗥𝘆𝘇𝗲𝗻.'];
-  
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      const current = texts[currentIndex];
-      
-      if (!isDeleting) {
-        setCurrentText(current.substring(0, currentText.length + 1));
-        
-        if (currentText === current) {
-          setTimeout(() => setIsDeleting(true), 2000);
-        }
-      } else {
-        setCurrentText(current.substring(0, currentText.length - 1));
-        
-        if (currentText === '') {
-          setIsDeleting(false);
-          setCurrentIndex((prev) => (prev + 1) % texts.length);
-        }
-      }
-    }, isDeleting ? 50 : 100);
-    
-    return () => clearTimeout(timeout);
-  }, [currentText, currentIndex, isDeleting, texts]);
-  
-  return (
-    <span style={{ 
-      position: 'relative',
-      background: 'linear-gradient(45deg, #00ffff, #9333ea, #ec4899, #00ffff)',
-      WebkitBackgroundClip: 'text',
-      WebkitTextFillColor: 'transparent',
-      backgroundClip: 'text',
-      backgroundSize: '200% 200%',
-      animation: 'gradientShift 3s ease infinite'
-    }}>
-      {currentText}
-      <span style={{ color: '#00ffff', animation: 'blink 1s infinite' }}>|</span>
-    </span>
-  );
-};
 
-// Header Component
-const Header = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  
-  const navLinks = [
-    { href: "/", label: "Home" },
-    { href: "/topup", label: "Top Up Game" }
-  ];
-  
-  const headerStyle = {
-    position: 'fixed',
-    top: 0,
-    left: 0,
-    right: 0,
-    zIndex: 50,
-    backdropFilter: 'blur(10px)',
-    WebkitBackdropFilter: 'blur(10px)'
-  };
-  
-  const navStyle = {
-    padding: '16px',
-    backgroundColor: 'rgba(0, 0, 0, 0.8)',
-    borderBottom: '1px solid rgba(0, 255, 255, 0.3)',
-    boxShadow: '0 4px 20px rgba(0, 255, 255, 0.1)'
-  };
-  
-  return (
-    <header style={headerStyle}>
-      <nav style={navStyle}>
-        <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <div style={{ position: 'relative' }}>
-            <div style={{
-              fontSize: '20px',
-              fontWeight: 'bold',
-              background: 'linear-gradient(to right, #00ffff, #9333ea, #ec4899)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text'
-            }}>
-              <Typing />
-            </div>
-          </div>
-          
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            style={{
-              position: 'relative',
-              padding: '12px',
-              borderRadius: '8px',
-              background: 'linear-gradient(to right, rgba(0, 255, 255, 0.2), rgba(147, 51, 234, 0.2))',
-              border: '1px solid rgba(0, 255, 255, 0.3)',
-              cursor: 'pointer',
-              transition: 'all 0.3s ease'
-            }}
-          >
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', width: '24px' }}>
-              <span style={{
-                display: 'block',
-                height: '2px',
-                backgroundColor: '#00ffff',
-                transform: isOpen ? 'rotate(45deg) translateY(8px)' : 'none',
-                transition: 'all 0.3s ease'
-              }}></span>
-              <span style={{
-                display: 'block',
-                height: '2px',
-                backgroundColor: '#00ffff',
-                opacity: isOpen ? 0 : 1,
-                transition: 'all 0.3s ease'
-              }}></span>
-              <span style={{
-                display: 'block',
-                height: '2px',
-                backgroundColor: '#00ffff',
-                transform: isOpen ? 'rotate(-45deg) translateY(-8px)' : 'none',
-                transition: 'all 0.3s ease'
-              }}></span>
-            </div>
-          </button>
-        </div>
-        
-        {isOpen && (
-          <div style={{
-            position: 'absolute',
-            top: '100%',
-            left: 0,
-            right: 0,
-            backgroundColor: 'rgba(0, 0, 0, 0.9)',
-            borderBottom: '1px solid rgba(0, 255, 255, 0.3)',
-            backdropFilter: 'blur(10px)'
-          }}>
-            <nav style={{ maxWidth: '1200px', margin: '0 auto', padding: '16px' }}>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                {navLinks.map((link) => (
-                  <a
-                    key={link.href}
-                    href={link.href}
-                    onClick={() => setIsOpen(false)}
-                    style={{
-                      display: 'block',
-                      padding: '12px 16px',
-                      borderRadius: '8px',
-                      color: '#00ffff',
-                      textDecoration: 'none',
-                      border: '1px solid transparent',
-                      transition: 'all 0.3s ease'
-                    }}
-                    onMouseEnter={(e) => {
-                      e.target.style.color = '#ffffff';
-                      e.target.style.borderColor = 'rgba(0, 255, 255, 0.5)';
-                      e.target.style.backgroundColor = 'rgba(0, 255, 255, 0.1)';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.target.style.color = '#00ffff';
-                      e.target.style.borderColor = 'transparent';
-                      e.target.style.backgroundColor = 'transparent';
-                    }}
-                  >
-                    {link.label}
-                  </a>
-                ))}
-              </div>
-            </nav>
-          </div>
-        )}
-      </nav>
-    </header>
-  );
-};
 
 // Main Page Component
 export default function CyberpunkDonatePage() {
@@ -221,26 +48,10 @@ export default function CyberpunkDonatePage() {
   
   const mainStyle = {
     minHeight: '100vh',
-    backgroundColor: '#000000',
+    backgroundColor: '#0f172a',
     color: '#ffffff',
     position: 'relative',
     overflow: 'hidden'
-  };
-  
-  const backgroundStyle = {
-    position: 'fixed',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: '#000000',
-    backgroundImage: `
-      linear-gradient(rgba(0, 255, 255, 0.1) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0, 255, 255, 0.1) 1px, transparent 1px)
-    `,
-    backgroundSize: '50px 50px',
-    animation: 'gridMove 20s linear infinite',
-    opacity: 0.2
   };
   
   const contentStyle = {
@@ -261,20 +72,18 @@ export default function CyberpunkDonatePage() {
     textAlign: 'center',
     position: 'relative',
     marginBottom: '48px',
-    background: 'linear-gradient(to right, #00ffff, #9333ea, #ec4899)',
+    background: 'linear-gradient(to right, #fbbf24, #f97316, #ec4899)',
     WebkitBackgroundClip: 'text',
     WebkitTextFillColor: 'transparent',
-    backgroundClip: 'text',
-    textShadow: '0 0 30px rgba(0, 255, 255, 0.5)'
+    backgroundClip: 'text'
   };
   
   const qrisContainerStyle = {
     position: 'relative',
     marginBottom: '32px',
     padding: '24px',
-    backgroundColor: 'rgba(17, 24, 39, 0.8)',
-    backdropFilter: 'blur(10px',
-    border: '1px solid rgba(0, 255, 255, 0.5)',
+    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+    border: '1px solid rgba(107, 114, 128, 0.5)',
     borderRadius: '12px',
     transition: 'all 0.5s ease',
     cursor: 'pointer'
@@ -284,8 +93,8 @@ export default function CyberpunkDonatePage() {
     position: 'relative',
     marginBottom: '16px',
     padding: '16px',
-    backgroundColor: 'rgba(17, 24, 39, 0.8)',
-    backdropFilter: 'blur(10px)',
+    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+    border: '1px solid rgba(107, 114, 128, 0.3)',
     borderRadius: '12px',
     transition: 'all 0.3s ease',
     cursor: 'pointer'
@@ -295,73 +104,17 @@ export default function CyberpunkDonatePage() {
     position: 'relative',
     marginTop: '48px',
     padding: '24px',
-    border: '1px solid rgba(147, 51, 234, 0.5)',
-    backgroundColor: 'rgba(17, 24, 39, 0.8)',
+    border: '1px solid rgba(107, 114, 128, 0.5)',
+    backgroundColor: 'rgba(0, 0, 0, 0.8)',
     borderRadius: '12px',
     textAlign: 'center',
     transition: 'all 0.5s ease'
   };
   
   return (
-    <>
-      <style jsx>{`
-        @keyframes gridMove {
-          0% { transform: translate(0, 0); }
-          100% { transform: translate(50px, 50px); }
-        }
-        
-        @keyframes gradientShift {
-          0% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-          100% { background-position: 0% 50%; }
-        }
-        
-        @keyframes blink {
-          0%, 50% { opacity: 1; }
-          51%, 100% { opacity: 0; }
-        }
-        
-        @keyframes pulse {
-          0%, 100% { opacity: 0.3; }
-          50% { opacity: 0.7; }
-        }
-        
-        .hover-scale:hover {
-          transform: scale(1.05);
-        }
-        
-        .hover-glow:hover {
-          box-shadow: 0 0 30px rgba(0, 255, 255, 0.3);
-        }
-      `}</style>
-      
-      <div style={mainStyle}>
-        {/* Animated Grid Background */}
-        <div style={backgroundStyle}></div>
-        
-        {/* Floating Particles */}
-        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, pointerEvents: 'none', zIndex: 5 }}>
-          {[...Array(15)].map((_, i) => (
-            <div
-              key={i}
-              style={{
-                position: 'absolute',
-                width: '4px',
-                height: '4px',
-                backgroundColor: '#00ffff',
-                borderRadius: '50%',
-                opacity: 0.5,
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                animation: `pulse ${3 + Math.random() * 4}s ease-in-out infinite ${Math.random() * 2}s`
-              }}
-            />
-          ))}
-        </div>
-        
-        <Header />
-        
-        <main style={contentStyle}>
+    <div style={mainStyle} className="grid-bg">
+      <Header />
+      <main style={contentStyle}>
           {/* Glitch Title */}
           <h1 style={titleStyle}>
             {glitchText}
@@ -612,8 +365,7 @@ export default function CyberpunkDonatePage() {
               ))}
             </div>
           </div>
-        </main>
-      </div>
-    </>
+      </main>
+    </div>
   );
 }
